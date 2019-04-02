@@ -1,0 +1,22 @@
+@startuml
+actor Arzt
+actor Patient
+
+rectangle "Patienten Management System" as pms{
+    (Ziel definieren) as goal
+    (Termin für Ziel vereinabren) as date
+    (Ziele auswerten) as evaluate
+
+    goal ..> date: <includes>
+}
+
+Arzt -left-> goal
+Arzt -left-> date
+Arzt -left-> evaluate
+
+Patient -right-> date
+Patient -right-> evaluate
+
+
+
+@enduml

@@ -1,0 +1,23 @@
+@startuml
+actor Arzt
+rectangle System
+
+rectangle "Patienten Management System" as pms {
+    (Report einscannen) as scan
+    (Geschriebenes in Report umwandeln) as convert
+    (Report überarbeiten) as edit
+    (Report speichern) as save
+
+    scan .up.> convert: <includes>
+    convert .up.> edit: <includes>
+    edit .up.> save: <includes>
+}
+
+Arzt -right-> scan
+Arzt -right-> edit
+Arzt -right-> save
+
+System -left-> convert
+
+
+@enduml

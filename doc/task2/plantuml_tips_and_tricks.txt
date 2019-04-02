@@ -1,0 +1,21 @@
+
+
+The formatting of the elements is mainly done using the "connecting arrows".
+So the alignment of a connection can be done in different ways:
+
+    If there is no direction specified, PlantUML will choose the alignment
+    of the connection (up or down / left or right)
+
+    ->      horizontal aligned connection
+    -->     vertical aligned connection
+
+    But you can force the alignment to as you desire, by simply
+    writing down the direction:
+    -up->
+    -down->
+    -left->
+    -right->
+
+    But have in mind that if there are some many-to-many connections,
+    PlantUML will not always be able to do 100% as you intended.
+    In general it works quite nicely though.
