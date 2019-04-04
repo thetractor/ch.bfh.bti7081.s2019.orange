@@ -1,0 +1,36 @@
+@startuml
+|Arzt 1|
+start
+ :Report]
+ :Report lesen;
+ if (Unklarheit) then (Ja)
+    repeat
+        :Rückfrage erstellen;
+        :Rückfrage]
+        :Rückfrage senden;
+        fork
+            :Report weiter bearbeiten;
+        fork again
+            |Arzt 2|
+            :Rückfrage einsehen;
+            :Antwort versenden;
+        fork again
+                |Arzt n|
+                -[#black,dotted]->
+                :Rückfrage einsehen;
+                -[#black,dotted]-> Optional;
+                :Antwort versenden;
+                -[#black,dotted]->
+        end fork
+
+        |Arzt 1|
+        :Antwort]
+        :Antwort einsehen;
+    repeat while (Immer noch unklar) -> Ja
+    -> Nein;
+    stop
+ else (Nein)
+    stop
+
+
+@enduml

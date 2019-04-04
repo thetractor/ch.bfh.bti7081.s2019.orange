@@ -9,13 +9,20 @@
 |Arzt|
 start
 :Ziel definieren;
+:Ziel]
 |#AntiqueWhite|Arzt und Patient|
 repeat
-    :Mit Patienten besprechen\nund falls nötig bearbeiten;
+    :Ziel mit Patienten besprechen
+    und falls nötig bearbeiten;
     :Termin für Abschluss des Zieles \nmit dem Patienten ausmachen;
+    :Termin]
     |Patient|
     :Versucht das Ziel zu erfüllen;
     |#AntiqueWhite|Arzt und Patient|
+    -[dashed]->
+    :Warten bis zum Termin;
+    detach
+    :Vereinbarter Termin]
     :Ziel auswerten;
 
 repeat while (Ziel erfüllt) -> Nein
@@ -25,19 +32,19 @@ repeat while (Ziel erfüllt) -> Nein
 
 
 
-fork
+split
     |Arzt|
+    -[dotted]-> Optional;
 	:Folgeziel definieren;
 	note left
-      Wieder am Anfang
-      des Prozesses
+      Prozess beginnt
+      von Neuem
     end note
-  fork again
+    stop
+split again
     |#AntiqueWhite|Arzt und Patient|
-	:Ziel abschliessen;
-  end fork
+    :Ziel abschliessen;
+    stop
 
-|Arzt|
-stop
 
 @enduml
