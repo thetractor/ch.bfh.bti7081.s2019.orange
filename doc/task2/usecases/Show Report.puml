@@ -1,12 +1,12 @@
 @startuml
 actor Arzt
-actor "Fredi Hinz" as patient
+actor "Patient" as patient
 
 rectangle "Patienten Management System" as pms {
     (Report generieren) as generate
     (Report anzeigen) as showR
 
-    generate .down.> showR: <includes>
+    generate <.down. showR: <extend>
 }
 
 Arzt -right-> generate

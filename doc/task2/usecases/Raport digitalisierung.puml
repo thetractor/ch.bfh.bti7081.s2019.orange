@@ -3,14 +3,14 @@ actor Arzt
 rectangle System
 
 rectangle "Patienten Management System" as pms {
-    (Report einscannen) as scan
-    (Geschriebenes in Report umwandeln) as convert
-    (Report überarbeiten) as edit
-    (Report speichern) as save
+    (Analoger Report einscannen) as scan
+    (Geschriebenes in digitalen Report umwandeln) as convert
+    (Digitaler Report überarbeiten) as edit
+    (Digitaler Report speichern) as save
 
-    scan .up.> convert: <includes>
-    convert .up.> edit: <includes>
-    edit .up.> save: <includes>
+    scan <.down. convert: <includes>
+    convert <.down. edit: <includes>
+    edit <.down. save: <includes>
 }
 
 Arzt -right-> scan
