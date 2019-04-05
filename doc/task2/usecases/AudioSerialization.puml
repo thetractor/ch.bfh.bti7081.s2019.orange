@@ -1,0 +1,23 @@
+@startuml
+actor Arzt
+actor System
+
+rectangle "Patienten Management System" as pms{
+    (Audio hochladen) as upload
+    (Convert Audio to Text) as convert
+    (Adjust generated data) as adjust
+    (Save report) as save
+
+    upload ..> convert: <includes>
+    convert ..> adjust: <includes>
+    adjust ..> save: <includes>
+}
+
+Arzt -left-> upload
+Arzt -left-> adjust
+Arzt -left-> save
+
+System -right-> convert
+
+
+@enduml

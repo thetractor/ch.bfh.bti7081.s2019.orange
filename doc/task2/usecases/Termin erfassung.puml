@@ -1,0 +1,31 @@
+@startuml
+actor Arzt
+actor "Fredi Hinz" as Patient
+actor System
+
+rectangle "Patienten Management System" as pms{
+    (Termin abmachen) as appointment
+    (Termin akzeptieren/decline) as accept
+    (Termin bei System anfragen) as sysCall
+    (Termin bestätigen) as bestätigung
+    (Freier Termin suchen) as freeDate
+    (Terminkalender zeigen) as showCal
+
+    appointment <.up. accept: <includes>
+    appointment <.up. sysCall: <includes>
+    sysCall <.up. freeDate: <includes>
+    sysCall <.up. bestätigung: <includes>
+    freeDate <.up. showCal: <includes>
+
+}
+
+Arzt -right-> appointment
+Arzt -right-> sysCall
+
+System -right-> freeDate
+System -right-> showCal
+
+Patient -right-> accept
+
+
+@enduml
