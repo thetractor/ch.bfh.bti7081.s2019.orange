@@ -9,7 +9,7 @@ start
         :Rückfrage]
         :Rückfrage senden;
         fork
-            :Report weiter bearbeiten;
+            :Weiter bearbeiten;
         fork again
             |Arzt 2|
             :Rückfrage einsehen;

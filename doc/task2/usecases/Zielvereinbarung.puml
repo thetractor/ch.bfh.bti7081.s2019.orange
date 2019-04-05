@@ -7,7 +7,9 @@ rectangle "Patienten Management System" as pms{
     (Termin für Ziel vereinabren) as date
     (Ziele auswerten) as evaluate
 
-    goal ..> date: <includes>
+    goal <.. date: <includes>
+    evaluate ..> goal: <includes>
+    evaluate ..> date: <includes>
 }
 
 Arzt -left-> goal

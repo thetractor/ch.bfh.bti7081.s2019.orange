@@ -1,7 +1,7 @@
 @startuml
 actor Arzt
-actor "Fredi Hinz" as Patient
-actor System
+actor "Patient" as Patient
+rectangle System
 
 rectangle "Patienten Management System" as pms{
     (Termin abmachen) as appointment
