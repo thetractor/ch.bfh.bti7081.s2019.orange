@@ -15,14 +15,13 @@ repeat
     :Ziel mit Patienten besprechen
     und falls nötig bearbeiten;
     :Termin für Abschluss des Zieles \nmit dem Patienten ausmachen;
-    :Termin]
+    :Ziel mit Termin]
+
     |Patient|
     :Versucht das Ziel zu erfüllen;
     |#AntiqueWhite|Arzt und Patient|
-    -[dashed]->
-    :Warten bis zum Termin;
-    detach
-    :Vereinbarter Termin]
+    :Sitzungstermin warnehmen;
+    ':Vereinbarter Termin]
     :Ziel auswerten;
 
 repeat while (Ziel erfüllt) -> Nein
