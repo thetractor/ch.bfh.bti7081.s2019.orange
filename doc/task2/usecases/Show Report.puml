@@ -1,0 +1,17 @@
+@startuml
+actor Arzt
+actor "Patient" as patient
+
+rectangle "Patienten Management System" as pms {
+    (Report generieren) as generate
+    (Report anzeigen) as showR
+
+    generate <.down. showR: <extend>
+}
+
+Arzt -right-> generate
+patient -left-> showR
+
+
+
+@enduml

@@ -1,0 +1,49 @@
+@startuml
+
+'swimlane Arzt
+
+'swimlane Arzt und Patient
+'swimlane Patient
+
+
+|Arzt|
+start
+:Ziel definieren;
+:Ziel]
+|#AntiqueWhite|Arzt und Patient|
+repeat
+    :Ziel mit Patienten besprechen
+    und falls nötig bearbeiten;
+    :Termin für Abschluss des Zieles \nmit dem Patienten ausmachen;
+    :Ziel mit Termin]
+
+    |Patient|
+    :Versucht das Ziel zu erfüllen;
+    |#AntiqueWhite|Arzt und Patient|
+    :Sitzungstermin warnehmen;
+    ':Vereinbarter Termin]
+    :Ziel auswerten;
+
+repeat while (Ziel erfüllt) -> Nein
+    ->Ja;
+    |Arzt|
+    |#AntiqueWhite|Arzt und Patient|
+
+
+
+split
+    |Arzt|
+    -[dotted]-> Optional;
+	:Folgeziel definieren;
+	note left
+      Prozess beginnt
+      von Neuem
+    end note
+    stop
+split again
+    |#AntiqueWhite|Arzt und Patient|
+    :Ziel abschliessen;
+    stop
+
+
+@enduml

@@ -1,0 +1,32 @@
+@startuml
+
+/'
+
+This is just an example in order to create our architecture overview.
+
+'/
+
+database "Database" as db{
+
+}
+note left of db : Eine Art persistente\nDatenablage ist nötig
+
+
+cloud "Cloud" as cloud{
+
+}
+note top of cloud : Guarantee connection to other facilities
+
+
+() "Some Interface" as interface1
+note left of interface1 : Do we need some other interfaces?
+
+node SomeNode{
+
+    [Connection to] --> interface1
+    [As well as to] -up-> cloud
+    [And don't forget the] --> db
+}
+
+
+@enduml
