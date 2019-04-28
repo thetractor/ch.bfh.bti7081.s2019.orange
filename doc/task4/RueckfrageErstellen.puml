@@ -1,0 +1,39 @@
+@startuml
+
+actor DoctorX
+
+participant Message
+participant Report
+
+actor DoctorN
+
+activate DoctorX
+alt Response to another message
+    create Message
+    DoctorX -> Message: Message(content, sender, refferingMessage)
+    'TODO?
+else else new message
+    create Message
+        DoctorX -> Message: Message(content, sender)
+end
+
+
+Message --> DoctorX
+
+DoctorX -> Report: addMessage(msg)
+activate Report
+Report -> Report: notify()
+activate Report
+
+loop for each doctor in report
+    Report -> DoctorN: update(msg)
+    activate DoctorN
+    DoctorN --> Report
+    deactivate DoctorN
+end
+deactivate Report
+Report --> DoctorX
+deactivate Report
+
+
+@enduml

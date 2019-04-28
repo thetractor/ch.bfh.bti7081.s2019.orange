@@ -1,0 +1,13 @@
+@startuml
+actor DoctorX
+
+participant Report
+
+DoctorX -> Report: subscribe(...)
+activate Report
+
+Report -> Report: add doctor to subscriptions
+
+Report --> DoctorX
+deactivate Report
+@enduml
