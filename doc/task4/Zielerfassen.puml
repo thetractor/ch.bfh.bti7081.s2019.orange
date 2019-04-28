@@ -1,0 +1,25 @@
+@startuml
+
+actor DoctorX
+
+participant Objective
+
+activate DoctorX
+
+DoctorX -> Objective : create(ziel,date)
+activate Objective
+Objective --> DoctorX
+
+
+DoctorX -> Objective : updateDueDate(ziel,date)
+Objective --> DoctorX
+
+DoctorX -> Objective : finish(ziel)
+Objective --> DoctorX
+
+DoctorX -> Objective : evaluate/show()
+Objective --> DoctorX
+
+deactivate Objective
+deactivate DoctorX
+@enduml
