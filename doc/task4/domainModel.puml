@@ -1,0 +1,45 @@
+@startuml
+
+class Doctor{
+    -patients[]
+}
+
+class Patient{
+    -currentDoctor
+    -objectives[]
+    -dossier
+}
+
+class Objective{
+    -dueDate
+    -creatingDoctor
+}
+
+class Report{
+    -editingDocotrs
+    -messages[]
+    -content
+}
+
+class Dossier{
+    -reports[]
+}
+
+class Message{
+    -content
+    -fromDoctor
+    -toDoctor
+    -refferingMessage
+}
+
+Objective "*" o-- "1" Doctor
+Doctor "1" o- "*" Patient
+Patient "1" o-- "*" Objective
+Report " *  " o-- "*" Doctor
+Report "1" o-- "*" Message
+Message "*" o-- "1" Doctor
+Message "*" o-- "1" Doctor
+Dossier "1" --* "1" Patient
+Report "*" -* "1" Dossier
+
+@enduml
