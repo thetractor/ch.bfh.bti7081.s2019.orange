@@ -1,0 +1,90 @@
+@startuml
+package Controller <<Frame>> {
+       class MainController{
+           -controller: FunctionController
+           +routeRequest(): void
+           +finishRequest(): void
+       }
+       abstract class FunctionController{
+          -view: View
+          +handleRequest(): View
+       }
+       class ObjectiveController{
+         -objective: Objective
+         -createObjective(): void
+       }
+       class DossierController{
+          -dossier: Dossier
+          -createDossier(): void
+          -addReport(): void
+       }
+
+}
+package View <<Frame>> {
+    class View{
+        -Template: String
+        +output(): void
+    }
+}
+package Model <<Frame>> {
+    class Doctor{
+        -patients: Patient[]
+        +receiveNotification(): void
+        -createAndAddMessage(Message: msg) : void
+        -handleObjective(Message: msg) : void
+    }
+
+    class Patient{
+        -currentDoctor: Doctor
+        -objectives: Objective[]
+        -dossier: Dossier
+    }
+
+    class Objective{
+        -dueDate: Date
+        -creator: Doctor
+        -content: String
+        -finished: Boolean
+        +create(): void
+        +update(): void
+    }
+
+    class Report{
+        -creator: Doctor[]
+        -messages: Message[]
+        -content: String
+        +addMessage(Message: msg) : void
+        +notify() : void
+    }
+
+    class Dossier{
+        -reports: Report[]
+    }
+
+    class Message{
+        -content: String
+        -fromDoctor: Doctor
+        -referringMessage: Message
+        +create(): void
+        +update(): void
+        +evaluate(): Message
+    }
+}
+Objective "*" o-- "1" Doctor
+Doctor "1" o- "*" Patient
+Patient "1" o-- "*" Objective
+Report " *  " o-- "*" Doctor
+Report "1" o-- "*" Message
+Message "*" o-- "1" Doctor
+Dossier "1" --* "1" Patient
+Report "*" -* "1" Dossier
+
+FunctionController <|-- DossierController
+Dossier "1"--"1" DossierController
+Objective "1"--"1" ObjectiveController
+FunctionController <|-- ObjectiveController
+View "1" -- "1" FunctionController
+FunctionController "1" - "1" MainController
+
+note top of Model: Every model class has a setter and a getter for all attribute
+@enduml
