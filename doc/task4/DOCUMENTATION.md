@@ -23,11 +23,11 @@ gearbeitet haben werden benachrichtigt.
 
 Die Ziele können nur vom Doktor verwaltet werden. Jedes Ziel hat ein Enddatum,
 an welchem der Patient das Ziel erfüllt haben sollte. Die Prüfung, ob dies der 
-Fall ist wird vom Doktor erledigt. ANschliessend kann der Doktor das Ziel schliessen.
+Fall ist wird vom Doktor erledigt. Anschliessend kann der Doktor das Ziel schliessen.
 ## Klassendiagramm
 ![Klassendiagramm](classdiagram.png "Klassendiagramm")
 
 Unserer Software soll nach MVC aufgebaut werden.
 Die Klassen für den Controller und die View werden noch erweitert und ergänzt, 
-sobaldwir uns mit dem Framework auseinandersetzen konnten.
+sobald wir uns mit dem Framework auseinandersetzen konnten.
 
