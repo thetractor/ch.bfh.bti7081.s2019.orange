@@ -10,7 +10,7 @@ actor DoctorN
 activate DoctorX
 alt Response to another message
     create Message
-    DoctorX -> Message: Message(content, sender, refferingMessage)
+    DoctorX -> Message: Message(content, sender, referingMessage)
     'TODO?
 else else new message
     create Message
