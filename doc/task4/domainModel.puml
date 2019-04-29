@@ -21,5 +21,6 @@ Objective "*" o-- "1" Doctor : is managed
 Patient "1" o-- "*" Objective  : comply
 Report "1" o-- "*" Message : contains
 Dossier "1" --* "1" Patient : is assigned to
+Doctor "1" o- "*" Patient : is supported by
 
 @enduml
