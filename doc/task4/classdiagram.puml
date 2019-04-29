@@ -43,6 +43,7 @@ package Model <<Frame>> {
     class Objective{
         -dueDate: Date
         -creator: Doctor
+        -content: String
         -finished: Boolean
         +create(): void
         +update(): void
@@ -79,8 +80,8 @@ Dossier "1" --* "1" Patient
 Report "*" -* "1" Dossier
 
 FunctionController <|-- DossierController
-Dossier <|-- DossierController
-Objective <|-- ObjectiveController
+Dossier "1"--"1" DossierController
+Objective "1"--"1" ObjectiveController
 FunctionController <|-- ObjectiveController
 View "1" -- "1" FunctionController
 FunctionController "1" - "1" MainController
