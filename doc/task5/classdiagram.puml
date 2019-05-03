@@ -1,0 +1,86 @@
+@startuml
+package Presenter {
+       class MainPresenter{
+           -view: View
+           +showView(ContentPresenter: content): void
+       }
+       abstract class ContentPresenter{
+          - element: ? implements Storable
+          +loadContentView(): void
+          +storeElement(): void
+       }
+
+
+}
+package View {
+    class View<extends VerticalLayout>{
+        +output(): void
+    }
+}
+package Model {
+    class Doctor{
+        -patients: Patient[]
+        +receiveNotification(): void
+        -createAndAddMessage(Message: msg) : void
+        -handleObjective(Message: msg) : void
+    }
+
+    class Patient{
+        -currentDoctor: Doctor
+        -objectives: Objective[]
+        -dossier: Dossier
+    }
+
+    class Objective{
+        -dueDate: Date
+        -creator: Doctor
+        -content: String
+        -finished: Boolean
+        +create(): void
+        +update(): void
+    }
+
+    class Report{
+        -creator: Doctor[]
+        -messages: Message[]
+        -content: String
+        +addMessage(Message: msg) : void
+        +notify() : void
+    }
+
+    class Dossier{
+        -reports: Report[]
+    }
+
+    class Message{
+        -content: String
+        -fromDoctor: Doctor
+        -referringMessage: Message
+        +create(): void
+        +update(): void
+        +evaluate(): Message
+    }
+    class Storable{
+        -element: Object
+        +persist(): void
+        +store(): void
+    }
+}
+
+Report "1" o-- "*" Message
+Report "*" -left "*" Doctor
+Patient "1" - "*" Objective
+Report "*" *-right "1" Dossier
+Dossier "1" --* "1" Patient
+Objective "*" - "1" Doctor
+Doctor "1" o- "*" Patient
+Message "*" -left- "1" Doctor
+
+
+View "1" -- "1" MainPresenter
+ContentPresenter "1" - "1" MainPresenter
+Storable "1" - "1" ContentPresenter
+
+note top of Model: Every model class has a setter and a getter for all attribute
+note top of Model: Every model class implements Storable
+@enduml
