@@ -1,0 +1,16 @@
+@startuml
+node <<executable>>\nClient{
+    [Frontend]
+}
+
+node <<executable>>\nServer{
+    [Vaadin]
+    [Backend]
+    [Database]
+}
+
+[Frontend] -(0-- [Vaadin]:"  http(s)"
+[Vaadin] -0)- [Backend]
+[Database] <- [Backend]
+
+@enduml

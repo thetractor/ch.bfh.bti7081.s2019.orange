@@ -1,0 +1,26 @@
+@startuml
+
+Node "Client Computer"{
+    Node "Browser"{
+    [Frontend]
+    }
+}
+
+Node "Application Server"{
+    Node "Jetty"{
+        [Vaadin]
+        [Backend]
+    }
+    Node "MongoDB" {
+        [Database]
+    }
+}
+
+cloud Internet
+
+[Internet] -- [Vaadin]
+[Frontend] -- [Internet]
+[Vaadin] -- [Backend]
+[Database] - [Backend]
+
+@enduml
