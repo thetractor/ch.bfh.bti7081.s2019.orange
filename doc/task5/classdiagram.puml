@@ -1,0 +1,103 @@
+@startuml
+package Presenter {
+       class MainPresenter{
+           -view: View
+           -unitOfWork: UnitOfWork
+           +showView(ContentPresenter: content): void
+       }
+       abstract class ContentPresenter{
+          - element: ? implements Storable
+          +loadContentView(): void
+       }
+       class HomePresenter{
+       - loadDoctorView(): void
+       - loadPatientView(): void
+       }
+       class DossierPresenter{
+       - loadDossierView(): void
+       }
+       class ReportPresenter{
+       - loadReportView(): void
+       - loadMessageView(): void
+       }
+
+
+}
+package View {
+    class View<extends VerticalLayout>{
+        +output(): void
+    }
+}
+package Model {
+    class Doctor{
+        -patients: Patient[]
+        +receiveNotification(): void
+        -createAndAddMessage(Message: msg) : void
+        -handleObjective(Message: msg) : void
+    }
+
+    class Patient{
+        -currentDoctor: Doctor
+        -objectives: Objective[]
+        -dossier: Dossier
+    }
+
+    class Objective{
+        -dueDate: Date
+        -creator: Doctor
+        -content: String
+        -finished: Boolean
+
+    }
+
+    class Report{
+        -creator: Doctor[]
+        -messages: Message[]
+        -content: String
+        +addMessage(Message: msg) : void
+        +notify() : void
+    }
+
+    class Dossier{
+        -reports: Report[]
+    }
+
+    class Message{
+        -content: String
+        -fromDoctor: Doctor
+        -referringMessage: Message
+        +evaluate(): Message
+    }
+    class ModelRepository<Type>{
+        +add(element: Object): void
+        +delete(element: Object): void
+        +get(filters: Array): void
+    }
+    class UnitOfWork{
+        - connection: MongoClient
+        - repositories: ModelRepository
+        + store(): boolean
+    }
+}
+
+Report "1" *-- "*" Message
+Report "*" -left-o "*" Doctor
+Patient "1" *- "*" Objective
+Report "*" -right* "1" Dossier
+Dossier "1" --* "1" Patient
+Objective "*" - "1" Doctor
+Doctor "1" - "*" Patient
+Message "*" -left- "1" Doctor
+UnitOfWork "1" -left- "*" ModelRepository
+UnitOfWork "1" -left- "*" MainPresenter
+
+
+View "1" -- "1" MainPresenter
+ContentPresenter "1" - "1" MainPresenter
+ContentPresenter <|.. HomePresenter
+ContentPresenter <|.. DossierPresenter
+ContentPresenter <|.. ReportPresenter
+
+note top of Model: Every model class has a setter and a getter for all attribute
+
+@enduml
