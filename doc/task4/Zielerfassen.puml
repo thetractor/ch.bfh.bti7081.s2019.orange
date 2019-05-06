@@ -6,15 +6,14 @@ participant Objective
 
 activate DoctorX
 
-DoctorX -> Objective : create(ziel,date)
+DoctorX -> Objective : create(objective,date)
 activate Objective
 Objective --> DoctorX
 
-
-DoctorX -> Objective : updateDueDate(ziel,date)
+DoctorX -> Objective : updateDueDate(objective,date)
 Objective --> DoctorX
 
-DoctorX -> Objective : finish(ziel)
+DoctorX -> Objective : finish(objective)
 Objective --> DoctorX
 
 DoctorX -> Objective : evaluate/show()
