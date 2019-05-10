@@ -1,8 +1,7 @@
 package model;
 
-import model.Entities.Doctor;
+import model.Entities.IEntity;
 import org.bson.types.ObjectId;
-
 import java.util.List;
 
 public abstract class Querier<T extends IEntity> {

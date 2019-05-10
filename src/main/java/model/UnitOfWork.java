@@ -2,10 +2,7 @@ package model;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import model.Entities.Doctor;
-import model.Entities.Dossier;
-import model.Entities.Patient;
-import model.Entities.Report;
+import model.Entities.*;
 import model.MongoHelpers.MongoAttributes;
 import model.MongoHelpers.MongoCollections;
 
@@ -17,10 +14,21 @@ import java.util.Map;
 import static com.mongodb.client.model.Filters.eq;
 
 public class UnitOfWork {
-    private MongoDatabase dbContext = DbConnector.getDatabase();
-
     public UnitOfWork(){
+        MongoDatabase dbContext = DbConnector.getDatabase();
         initCaches();
+
+        //init Collections
+        doctorCollection = dbContext.getCollection(MongoCollections.Doctor, Doctor.class);
+        patientCollection = dbContext.getCollection(MongoCollections.Patient, Patient.class);
+        dossierCollection = dbContext.getCollection(MongoCollections.Dossier, Dossier.class);
+        reportCollection = dbContext.getCollection(MongoCollections.Report, Report.class);
+
+        //init repos
+        doctorRepo  = new ModelRepository<>(doctorCollection,doctorCache);
+        patientRepo = new ModelRepository<>(patientCollection, patientCache);
+        dossierRepo = new ModelRepository<>(dossierCollection, dossierCache);
+        reportRepo  = new ModelRepository<>(reportCollection, reportCache);
     }
 
     //Caches to track changes in memory until commit
@@ -30,16 +38,16 @@ public class UnitOfWork {
     private Map<Operation, List<Report>> reportCache;
 
     //Mongo Collections
-    private MongoCollection<Doctor> doctorCollection = dbContext.getCollection(MongoCollections.Doctor, Doctor.class);
-    private MongoCollection<Patient> patientCollection = dbContext.getCollection(MongoCollections.Patient, Patient.class);
-    private MongoCollection<Dossier> dossierCollection = dbContext.getCollection(MongoCollections.Dossier, Dossier.class);
-    private MongoCollection<Report> reportCollection = dbContext.getCollection(MongoCollections.Report, Report.class);
+    private MongoCollection<Doctor> doctorCollection;
+    private MongoCollection<Patient> patientCollection;
+    private MongoCollection<Dossier> dossierCollection;
+    private MongoCollection<Report> reportCollection;
 
     //private Repositories
-    private ModelRepository<Doctor> doctorRepo = new ModelRepository<>(doctorCollection,doctorCache);
-    private ModelRepository<Patient> patientRepo = new ModelRepository<>(patientCollection, patientCache);
-    private ModelRepository<Dossier> dossierRepo = new ModelRepository<>(dossierCollection, dossierCache);
-    private ModelRepository<Report> reportRepo = new ModelRepository<>(reportCollection, reportCache);
+    private ModelRepository<Doctor> doctorRepo;
+    private ModelRepository<Patient> patientRepo;
+    private ModelRepository<Dossier> dossierRepo;
+    private ModelRepository<Report> reportRepo;
 
     //getters for repositories
     public ModelRepository<Doctor> getDoctorRepo() {
@@ -74,6 +82,7 @@ public class UnitOfWork {
         commitEntity(dossierCollection, dossierCache);
         commitEntity(reportCollection, reportCache);
         commitEntity(patientCollection, patientCache);
+
         initCaches();
     }
 
@@ -87,16 +96,17 @@ public class UnitOfWork {
 
     //generic methods for persisting specific collections
     private static <T extends IEntity> void  commitEntity(MongoCollection<T> collection, Map<Operation, List<T>> cache){
-        if(cache.get(Operation.INSERT).size() > 0) {
-            collection.insertMany(cache.get(Operation.INSERT));
-        }
-
-        for (T entity : cache.get(Operation.DELETE)){
-            collection.deleteOne(eq(MongoAttributes.IdAttribute, entity.getId()));
+        List<T> insertList = cache.get(Operation.INSERT);
+        if(insertList.size() > 0) {
+            collection.insertMany(insertList);
         }
 
         for (T entity : cache.get(Operation.UPDATE)){
             collection.updateOne(eq(MongoAttributes.IdAttribute, entity.getId()),eq(MongoAttributes.IdAttribute, entity.getId()));
+        }
+
+        for (T entity : cache.get(Operation.DELETE)){
+            collection.deleteOne(eq(MongoAttributes.IdAttribute, entity.getId()));
         }
     }
 
@@ -113,7 +123,7 @@ public class UnitOfWork {
         patients.add(new Patient("Robert", "Pfeiffer"));
         patients.add(new Patient("Stefan", "Precht"));
         */
-        unitOfWork.doctorRepo.setAll(doctors);
+        unitOfWork.getDoctorRepo().setAll(doctors);
         //unitOfWork.patientRepo.setAll(patients);
 
         unitOfWork.commit();

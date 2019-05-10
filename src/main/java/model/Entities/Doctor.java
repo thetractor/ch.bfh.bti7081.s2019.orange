@@ -1,6 +1,5 @@
 package model.Entities;
 
-import model.IEntity;
 import org.bson.types.ObjectId;
 
 import java.io.Serializable;
