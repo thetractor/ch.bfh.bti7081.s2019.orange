@@ -3,17 +3,19 @@ package model.Entities;
 import org.bson.types.ObjectId;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Doctor implements Serializable, IEntity {
-
-    private ObjectId id;
-    private String name;
-    private String surname;
-
     public Doctor(String name, String surname){
         this.name = name;
         this.surname = surname;
     }
+    public Doctor(){
+
+    }
+    private ObjectId id;
+    private String name;
+    private String surname;
 
     public ObjectId getId() {
         return id;
@@ -39,6 +41,17 @@ public class Doctor implements Serializable, IEntity {
         this.surname = surname;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Doctor doctor = (Doctor) o;
+        return Objects.equals(name, doctor.name) &&
+                Objects.equals(surname, doctor.surname);
+    }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, surname);
+    }
 }

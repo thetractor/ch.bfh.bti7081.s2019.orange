@@ -14,8 +14,6 @@ import java.util.Map;
 import static com.mongodb.client.model.Filters.eq;
 
 public class UnitOfWork {
-
-
     public UnitOfWork(){
         MongoDatabase dbContext = DbConnector.getDatabase();
         initCaches();
