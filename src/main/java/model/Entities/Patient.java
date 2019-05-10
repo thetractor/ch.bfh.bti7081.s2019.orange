@@ -1,26 +1,20 @@
-package model;
+package model.Entities;
 
+import model.IEntity;
 import org.bson.types.ObjectId;
 
-import java.io.Serializable;
-
-public class Doctor implements Serializable {
-
+public class Patient implements IEntity {
     private ObjectId id;
+
     private String name;
     private String surname;
 
-    public Doctor(String name, String surname){
+    public Patient(String name, String surname){
         this.name = name;
         this.surname = surname;
     }
-
     public ObjectId getId() {
         return id;
-    }
-
-    public void setId(final ObjectId id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -38,7 +32,4 @@ public class Doctor implements Serializable {
     public void setSurname(String surname) {
         this.surname = surname;
     }
-
-
-
 }

@@ -2,10 +2,14 @@ package model;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import model.MongoHelpers.MongoAttributes;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class ModelRepository <T>{
 
@@ -19,11 +23,15 @@ public class ModelRepository <T>{
 
     public List<T> getAll(){
         final FindIterable<T> models = collection.find();
-        List<T> modelList = new ArrayList<T>();
+        List<T> modelList = new ArrayList<>();
         for(T t : models){
             modelList.add(t);
         }
         return modelList;
+    }
+
+    public T get(ObjectId id){
+         return collection.find(eq(MongoAttributes.IdAttribute, id)).first();
     }
 
     public void setAll(List<T> modelList){
