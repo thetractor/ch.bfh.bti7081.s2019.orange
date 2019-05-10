@@ -131,9 +131,9 @@ UnitOfWork "1" -left- "*" ModelRepository
 
 
 View "1" -- "1" MainPresenter
-MainPresenter <|.. HomePresenter
-MainPresenter <|.. DossierPresenter
-MainPresenter <|.. ReportPresenter
+MainPresenter <|-- HomePresenter
+MainPresenter <|-- DossierPresenter
+MainPresenter <|-- ReportPresenter
 ReportPresenter -up- MessageBuilder
 ReportPresenter -up- MessageQuerier
 HomePresenter -up- DoctorQuerier
