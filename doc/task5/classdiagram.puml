@@ -1,34 +1,69 @@
 @startuml
 package Presenter {
-       class MainPresenter{
+       abstract class MainPresenter{
            -view: View
-           -unitOfWork: UnitOfWork
+           -builder: LogicBuilder
            +showView(ContentPresenter: content): void
        }
-       abstract class ContentPresenter{
-          - element: ? implements Storable
-          +loadContentView(): void
-       }
        class HomePresenter{
-       - loadDoctorView(): void
-       - loadPatientView(): void
+         - loadDoctorView(): void
+         - loadPatientView(): void
        }
        class DossierPresenter{
-       - loadDossierView(): void
+         - loadDossierView(): void
        }
        class ReportPresenter{
-       - loadReportView(): void
-       - loadMessageView(): void
+         - loadReportView(): void
+         - loadMessageView(): void
        }
-
-
 }
+
 package View {
     class View<extends VerticalLayout>{
         +output(): void
     }
 }
+
 package Model {
+    interface Buildable {
+      +build(): T
+    }
+    interface Queriable {
+      +getById(): T
+      +getBy(filters: Array): T
+      +getAll(): list<t>
+    }
+    package Message {
+        class MessageBuilder implements Buildable {
+          - unitOfWork: UnitOfWork
+        }
+        class MessageQuerier implements Queriable {
+          - unitOfWork: UnitOfWork
+        }
+    }
+
+    package Doctor {
+        class DoctorQuerier implements Queriable {
+          - unitOfWork: UnitOfWork
+        }
+    }
+
+    package Patient {
+        class PatientQuerier implements Queriable {
+          - unitOfWork: UnitOfWork
+        }
+    }
+
+    package Report {
+        class ReportQuerier implements Queriable {
+          - unitOfWork: UnitOfWork
+        }
+    }
+    package Dossier {
+        class DossierQuerier implements Queriable {
+          - unitOfWork: UnitOfWork
+        }
+    }
     class Doctor{
         -patients: Patient[]
         +receiveNotification(): void
@@ -68,15 +103,19 @@ package Model {
         -referringMessage: Message
         +evaluate(): Message
     }
-    class ModelRepository<Type>{
-        +add(element: Object): void
-        +delete(element: Object): void
+    class ModelRepository<Type T>{
+        +add(element: T): void
+        +delete(element: T): void
         +get(filters: Array): void
     }
     class UnitOfWork{
         - connection: MongoClient
         - repositories: ModelRepository
         + store(): boolean
+    }
+
+    class MessageBuilder{
+        + createAndNotify(): boolean
     }
 }
 
@@ -89,14 +128,25 @@ Objective "*" - "1" Doctor
 Doctor "1" - "*" Patient
 Message "*" -left- "1" Doctor
 UnitOfWork "1" -left- "*" ModelRepository
-UnitOfWork "1" -left- "*" MainPresenter
 
 
 View "1" -- "1" MainPresenter
-ContentPresenter "1" - "1" MainPresenter
-ContentPresenter <|.. HomePresenter
-ContentPresenter <|.. DossierPresenter
-ContentPresenter <|.. ReportPresenter
+MainPresenter <|-- HomePresenter
+MainPresenter <|-- DossierPresenter
+MainPresenter <|-- ReportPresenter
+ReportPresenter -up- MessageBuilder
+ReportPresenter -up- MessageQuerier
+HomePresenter -up- DoctorQuerier
+HomePresenter -up- PatientQuerier
+ReportPresenter -up- ReportQuerier
+DossierPresenter -up- DossierQuerier
+
+DossierQuerier "1" -up- "1" UnitOfWork
+DoctorQuerier "1" -- "1" UnitOfWork
+PatientQuerier "1" -- "1" UnitOfWork
+ReportQuerier "1" -- "1" UnitOfWork
+MessageQuerier "1" -- "1" UnitOfWork
+MessageBuilder "1" -- "1" UnitOfWork
 
 note top of Model: Every model class has a setter and a getter for all attribute
 
