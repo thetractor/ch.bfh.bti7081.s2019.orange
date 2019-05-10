@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -96,18 +97,16 @@ public class UnitOfWork {
 
     //generic methods for persisting specific collections
     private static <T extends IEntity> void  commitEntity(MongoCollection<T> collection, Map<Operation, List<T>> cache){
-        List<T> insertList = cache.get(Operation.INSERT);
-        if(insertList.size() > 0) {
-            collection.insertMany(insertList);
+        List<T> list = cache.get(Operation.INSERT);
+        if(list.size() > 0) {
+            collection.insertMany(list);
         }
+        
+        cache.get(Operation.UPDATE)
+                .forEach(x -> collection.updateOne(eq(MongoAttributes.IdAttribute, x.getId()),eq(MongoAttributes.IdAttribute, x.getId())));
 
-        for (T entity : cache.get(Operation.UPDATE)){
-            collection.updateOne(eq(MongoAttributes.IdAttribute, entity.getId()),eq(MongoAttributes.IdAttribute, entity.getId()));
-        }
-
-        for (T entity : cache.get(Operation.DELETE)){
-            collection.deleteOne(eq(MongoAttributes.IdAttribute, entity.getId()));
-        }
+        cache.get(Operation.DELETE)
+                .forEach(x -> collection.deleteOne(eq(MongoAttributes.IdAttribute, x.getId())));
     }
 
     public static void main(String[] args){
