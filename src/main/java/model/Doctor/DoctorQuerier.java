@@ -1,11 +1,12 @@
 package model.Doctor;
 
 import model.Entities.Doctor;
+import model.Entities.Patient;
 import model.Querier;
-import model.UnitOfWork;
 import org.bson.types.ObjectId;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DoctorQuerier extends Querier<Doctor> {
     @Override
@@ -16,5 +17,13 @@ public class DoctorQuerier extends Querier<Doctor> {
     @Override
     public Doctor get(ObjectId id) {
         return transaction.getDoctorRepo().get(id);
+    }
+
+    public List<Patient> getPatients(ObjectId id){
+        return this.get(id)
+                .getPatients()
+                .stream()
+                .map(x -> transaction.getPatientRepo().get(x))
+                .collect(Collectors.toList());
     }
 }

@@ -14,8 +14,7 @@ import java.util.Map;
 import static com.mongodb.client.model.Filters.eq;
 
 public class UnitOfWork {
-    public UnitOfWork(){
-        MongoDatabase dbContext = DbConnector.getDatabase();
+    public UnitOfWork(MongoDatabase dbContext){
         initCaches();
 
         //init Collections
@@ -63,23 +62,18 @@ public class UnitOfWork {
     public ModelRepository<Doctor> getDoctorRepo() {
         return doctorRepo;
     }
-
     public ModelRepository<Patient> getPatientRepo() {
         return patientRepo;
     }
-
     public ModelRepository<Dossier> getDossierRepo() {
         return dossierRepo;
     }
-
     public ModelRepository<Report> getReportRepo() {
         return reportRepo;
     }
-
     public ModelRepository<Objective> getObjectiveRepo() {
         return objectiveRepo;
     }
-
     public ModelRepository<Message> getMessageRepo() {
         return messageRepo;
     }
@@ -95,7 +89,7 @@ public class UnitOfWork {
     }
 
     //persist changes on caches
-    public void commit(){
+    void commit(){
         commitEntity(doctorCollection, doctorCache);
         commitEntity(dossierCollection, dossierCache);
         commitEntity(reportCollection, reportCache);
@@ -132,12 +126,12 @@ public class UnitOfWork {
     }
 
     public static void main(String[] args){
-        UnitOfWork unitOfWork = new UnitOfWork();
+        UnitOfWork unitOfWork = new UnitOfWork(DbConnector.getDatabase());
 
         List<Doctor> doctors = new ArrayList<>();
-        doctors.add(new Doctor("Albert", "Amman"));
-        doctors.add(new Doctor("Peter", "Petersen"));
-        doctors.add(new Doctor("Hans", "Horst"));
+        doctors.add(new Doctor("Albert", "Amman",new ArrayList<>() ));
+        doctors.add(new Doctor("Peter", "Petersen", new ArrayList<>()));
+        doctors.add(new Doctor("Hans", "Horst", new ArrayList<>()));
 
         /*
         List<Patient> patients = new ArrayList<Patient>();

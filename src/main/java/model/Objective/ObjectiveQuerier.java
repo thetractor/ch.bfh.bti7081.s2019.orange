@@ -1,6 +1,5 @@
 package model.Objective;
 
-import model.Entities.Message;
 import model.Entities.Objective;
 import model.Querier;
 import org.bson.types.ObjectId;
