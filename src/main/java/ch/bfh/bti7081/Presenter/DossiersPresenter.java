@@ -7,6 +7,7 @@ import model.Entities.Patient;
 import model.Patient.PatientQuerier;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DossiersPresenter {
 
@@ -17,8 +18,13 @@ public class DossiersPresenter {
     }
 
     public List<Patient> GetDossiersByName(String name) {
-        return patientQuerier.getAll();
-        //ToDo: implement filtering
+
+        List<Patient> list = patientQuerier.getAll();
+        if (name.isEmpty()) { return list; }
+        return list
+                .stream()
+                .filter(x -> x.getName().startsWith(name) ||x.getSurname().startsWith(name))
+                .collect(Collectors.toList());
     }
 
     public void ViewDossier(Patient patient){
