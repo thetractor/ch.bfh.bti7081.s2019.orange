@@ -1,5 +1,6 @@
 package model.Entities;
 
+import javafx.scene.Parent;
 import org.bson.types.ObjectId;
 
 import java.io.Serializable;
@@ -52,6 +53,10 @@ public class Doctor implements Serializable, IEntity {
 
     public void setPatients(List<ObjectId> patients) {
         this.patients = patients;
+    }
+
+    public void addPatient(Patient patient){
+        patients.add(patient.getId());
     }
 
     @Override

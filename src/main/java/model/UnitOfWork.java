@@ -26,7 +26,7 @@ public class UnitOfWork {
         messageCollection = dbContext.getCollection(MongoCollections.Message, Message.class);
 
         //init repos
-        doctorRepo  = new ModelRepository<>(doctorCollection,doctorCache);
+        doctorRepo  = new ModelRepository<>(doctorCollection, doctorCache);
         patientRepo = new ModelRepository<>(patientCollection, patientCache);
         dossierRepo = new ModelRepository<>(dossierCollection, dossierCache);
         reportRepo  = new ModelRepository<>(reportCollection, reportCache);
@@ -97,7 +97,7 @@ public class UnitOfWork {
         commitEntity(objectiveCollection, objectiveCache);
         commitEntity(messageCollection, messageCache);
 
-        initCaches();
+        clearCaches();
     }
 
     //call to reinit and init the chaches
@@ -110,6 +110,21 @@ public class UnitOfWork {
         messageCache = initializeMap();
     }
 
+    private void clearCaches(){
+        // TODO: Update the references to caches in the repos too!
+        // TODO: Have a look at "clear" on the lists
+        // TODO: loop over enum
+
+        for(Operation operation : Operation.values()){
+            doctorCache.get(operation).clear();
+            dossierCache.get(operation).clear();
+            reportCache.get(operation).clear();
+            patientCache.get(operation).clear();
+            objectiveCache.get(operation).clear();
+            messageCache.get(operation).clear();
+        }
+    }
+
     //generic methods for persisting specific collections
     private static <T extends IEntity> void  commitEntity(MongoCollection<T> collection, Map<Operation, List<T>> cache){
         //insertmany doesnt accept empty list
@@ -118,29 +133,15 @@ public class UnitOfWork {
             collection.insertMany(list);
         }
 
+        // TODO: Would be cleaner to use the updateOne function.
         cache.get(Operation.UPDATE)
-                .forEach(x -> collection.updateOne(eq(MongoAttributes.IdAttribute, x.getId()),eq(MongoAttributes.IdAttribute, x.getId())));
+                //.forEach(x -> collection.updateOne(eq(MongoAttributes.IdAttribute, x.getId()),eq(MongoAttributes.IdAttribute, x.getId())));
+                .forEach(x -> {
+                    collection.deleteOne(eq(MongoAttributes.IdAttribute, x.getId()));
+                    collection.insertOne(x);
+                });
 
         cache.get(Operation.DELETE)
                 .forEach(x -> collection.deleteOne(eq(MongoAttributes.IdAttribute, x.getId())));
-    }
-
-    public static void main(String[] args){
-        UnitOfWork unitOfWork = new UnitOfWork(DbConnector.getDatabase());
-
-        List<Doctor> doctors = new ArrayList<>();
-        doctors.add(new Doctor("Albert", "Amman",new ArrayList<>() ));
-        doctors.add(new Doctor("Peter", "Petersen", new ArrayList<>()));
-        doctors.add(new Doctor("Hans", "Horst", new ArrayList<>()));
-
-        /*
-        List<Patient> patients = new ArrayList<Patient>();
-        patients.add(new Patient("Robert", "Pfeiffer"));
-        patients.add(new Patient("Stefan", "Precht"));
-        */
-        unitOfWork.getDoctorRepo().setAll(doctors);
-        //unitOfWork.patientRepo.setAll(patients);
-
-        unitOfWork.commit();
     }
 }

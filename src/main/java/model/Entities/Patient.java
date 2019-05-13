@@ -11,10 +11,9 @@ public class Patient implements IEntity {
     private String surname;
     private ObjectId dossierId;
 
-    public Patient(String name, String surname, ObjectId dossierId){
+    public Patient(String name, String surname){
         this.name = name;
         this.surname = surname;
-        this.dossierId = dossierId;
     }
 
     public Patient(){
