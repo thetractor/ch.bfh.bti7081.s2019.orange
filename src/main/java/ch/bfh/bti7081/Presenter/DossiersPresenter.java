@@ -1,19 +1,28 @@
 package ch.bfh.bti7081.Presenter;
 
-import ch.bfh.bti7081.Model.DemoDossier;
-import ch.bfh.bti7081.Model.DemoDossierService;
+import com.vaadin.flow.component.notification.Notification;
+import model.Dossier.DossierQuerier;
+import model.Entities.Dossier;
+import model.Entities.Patient;
+import model.Patient.PatientQuerier;
 
 import java.util.List;
 
 public class DossiersPresenter {
 
-    private DemoDossierService dossierService;
+    private PatientQuerier patientQuerier;
 
     public DossiersPresenter(){
-        dossierService = DemoDossierService.getInstance();
+        patientQuerier = new PatientQuerier();
     }
 
-    public List<DemoDossier> GetDossiersByName(String name) {
-        return dossierService.findAll(name);
+    public List<Patient> GetDossiersByName(String name) {
+        return patientQuerier.getAll();
+        //ToDo: implement filtering
+    }
+
+    public void ViewDossier(Patient patient){
+        Notification.show(patient.toString() + " wurde ausgewählt.");
+        //@ToDo: Implement
     }
 }
