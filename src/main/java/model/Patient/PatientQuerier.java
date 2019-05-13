@@ -1,6 +1,6 @@
 package model.Patient;
 
-import model.Entities.Doctor;
+import model.Entities.Dossier;
 import model.Entities.Patient;
 import model.Querier;
 import org.bson.types.ObjectId;
@@ -16,5 +16,10 @@ public class PatientQuerier extends Querier<Patient> {
     @Override
     public Patient get(ObjectId id) {
         return transaction.getPatientRepo().get(id);
+    }
+
+    public Dossier getDossier(ObjectId id){
+        ObjectId dossierId = this.get(id).getDossierId();
+        return transaction.getDossierRepo().get(dossierId);
     }
 }

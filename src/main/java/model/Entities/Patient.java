@@ -9,12 +9,12 @@ public class Patient implements IEntity {
 
     private String name;
     private String surname;
-    private ObjectId currentDoctorid;
     private ObjectId dossierId;
 
-    public Patient(String name, String surname){
+    public Patient(String name, String surname, ObjectId dossierId){
         this.name = name;
         this.surname = surname;
+        this.dossierId = dossierId;
     }
 
     public Patient(){
@@ -45,14 +45,6 @@ public class Patient implements IEntity {
         this.surname = surname;
     }
 
-    public ObjectId getCurrentDoctorid() {
-        return currentDoctorid;
-    }
-
-    public void setCurrentDoctorid(ObjectId currentDoctorid) {
-        this.currentDoctorid = currentDoctorid;
-    }
-
     public ObjectId getDossierId() {
         return dossierId;
     }
@@ -68,12 +60,11 @@ public class Patient implements IEntity {
         Patient patient = (Patient) o;
         return Objects.equals(name, patient.name) &&
                 Objects.equals(surname, patient.surname) &&
-                Objects.equals(currentDoctorid, patient.currentDoctorid) &&
                 Objects.equals(dossierId, patient.dossierId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, surname, currentDoctorid, dossierId);
+        return Objects.hash(name, surname, dossierId);
     }
 }

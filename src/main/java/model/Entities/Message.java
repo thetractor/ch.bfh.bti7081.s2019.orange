@@ -15,11 +15,11 @@ public class Message implements IEntity {
     private ObjectId fromDoctorId;
     private ObjectId reportId;
 
-    public Message(String content, ObjectId referringMessageId, ObjectId fromDoctorId, ObjectId reportID) {
+    public Message(String content, ObjectId referringMessageId, ObjectId fromDoctorId, ObjectId reportId) {
         this.content = content;
         this.referringMessageId = referringMessageId;
         this.fromDoctorId = fromDoctorId;
-        reportId = reportID;
+        this.reportId = reportId;
     }
 
     public Message(){
