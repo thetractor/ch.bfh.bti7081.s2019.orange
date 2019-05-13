@@ -3,6 +3,7 @@ package model;
 import model.Entities.Doctor;
 import model.Entities.Dossier;
 import model.Entities.Patient;
+import model.Entities.Report;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -26,6 +27,11 @@ class DataGenerator {
         System.out.println("[*] Going to delete all dossiers in db...");
         DataGenerator.unitOfWork.getDossierRepo().getAll().forEach(x -> unitOfWork.getDossierRepo().delete(x));
         System.out.println("[+] Dossiers have been deleted");
+
+        System.out.println("[*] Going to delete all reports in db...");
+        DataGenerator.unitOfWork.getReportRepo().getAll().forEach(x -> unitOfWork.getReportRepo().delete(x));
+        System.out.println("[+] Reports have been deleted");
+
 
         // Make changes valid
         unitOfWork.commit();
@@ -70,8 +76,6 @@ class DataGenerator {
           unitOfWork.getPatientRepo().update(x);
         });
         unitOfWork.getDossierRepo().setAll(dossiers);
-
-
         unitOfWork.commit();
     }
 
@@ -88,14 +92,19 @@ class DataGenerator {
             if(doctorListSize > 1){
                 doctors.get((patientListIterator.nextIndex() + 1) % doctorListSize).addPatient(patient);
             }
-
         }
         unitOfWork.getDoctorRepo().updateMany(doctors);
         unitOfWork.commit();
     }
 
-    public void generateReports(){
-        //unitOfWork.getDossierRepo().getAll().forEach();
+    private static void generateReports(){
+        List<Report> reports = new ArrayList<>();
+        unitOfWork.getDossierRepo().getAll().forEach(x ->{
+            reports.add(new Report("Some content", x.getId()));
+            reports.add(new Report("Some further content", x.getId()));
+        });
+        unitOfWork.getReportRepo().setAll(reports);
+        unitOfWork.commit();
     }
 
     //private stat
@@ -113,6 +122,7 @@ class DataGenerator {
         DataGenerator.generateDoctors();
         DataGenerator.generatePatients();
         DataGenerator.assignPatientsToDoctors();
+        DataGenerator.generateReports();
 
     }
 }

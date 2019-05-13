@@ -1,6 +1,5 @@
 package model.Entities;
 
-import javafx.scene.Parent;
 import org.bson.types.ObjectId;
 
 import java.io.Serializable;
