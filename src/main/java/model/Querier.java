@@ -1,6 +1,6 @@
 package model;
 
-import model.entitiess.IEntity;
+import model.entities.IEntity;
 import org.bson.types.ObjectId;
 import java.util.List;
 

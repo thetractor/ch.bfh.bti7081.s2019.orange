@@ -1,6 +1,6 @@
-package model.objectives;
+package model.objective;
 
-import model.entitiess.Objective;
+import model.entities.Objective;
 import model.Querier;
 import org.bson.types.ObjectId;
 

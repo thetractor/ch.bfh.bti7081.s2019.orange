@@ -2,7 +2,7 @@ package model;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import model.mongohelperss.MongoAttributes;
+import model.mongohelpers.MongoAttributes;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;

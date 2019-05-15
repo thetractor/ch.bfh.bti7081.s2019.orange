@@ -1,4 +1,4 @@
-package model.entitiess;
+package model.entities;
 
 import org.bson.types.ObjectId;
 

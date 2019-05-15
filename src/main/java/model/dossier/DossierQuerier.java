@@ -1,7 +1,7 @@
-package model.dossiers;
+package model.dossier;
 
-import model.entitiess.Dossier;
-import model.entitiess.Report;
+import model.entities.Dossier;
+import model.entities.Report;
 import model.Querier;
 import org.bson.types.ObjectId;
 

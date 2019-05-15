@@ -1,9 +1,9 @@
 package model;
 
-import model.entitiess.Doctor;
-import model.entitiess.Dossier;
-import model.entitiess.Patient;
-import model.entitiess.Report;
+import model.entities.Doctor;
+import model.entities.Dossier;
+import model.entities.Patient;
+import model.entities.Report;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;

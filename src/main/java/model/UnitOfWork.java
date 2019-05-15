@@ -2,9 +2,9 @@ package model;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import model.entitiess.*;
-import model.mongohelperss.MongoAttributes;
-import model.mongohelperss.MongoCollections;
+import model.entities.*;
+import model.mongohelpers.MongoAttributes;
+import model.mongohelpers.MongoCollections;
 
 import java.util.ArrayList;
 import java.util.HashMap;
