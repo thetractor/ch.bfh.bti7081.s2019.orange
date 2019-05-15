@@ -8,6 +8,10 @@ import org.bson.types.ObjectId;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * API to Query dossier related stuff
+ * @author gian.demarmels@students.bfh.ch
+ */
 public class DossierQuerier extends Querier<Dossier> {
     @Override
     public List<Dossier> getAll() {

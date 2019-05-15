@@ -6,6 +6,10 @@ import org.bson.types.ObjectId;
 
 import java.util.List;
 
+/**
+ * API to Query objective related stuff
+ * @author gian.demarmels@students.bfh.ch
+ */
 public class ObjectiveQuerier extends Querier<Objective> {
     @Override
     public List<Objective> getAll() {

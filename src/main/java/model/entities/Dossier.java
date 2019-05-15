@@ -4,11 +4,13 @@ import org.bson.types.ObjectId;
 
 import java.util.Objects;
 
+/**
+ * @author gian.demarmels@students.bf.ch
+ * @author yannis.schmutz@students.bf.ch
+ */
 public class Dossier implements IEntity {
     private ObjectId id;
-    public ObjectId getId() {
-        return id;
-    }
+    private ObjectId patientId;
 
     public Dossier(ObjectId patientId) {
         this.patientId = patientId;
@@ -18,7 +20,9 @@ public class Dossier implements IEntity {
 
     }
 
-    private ObjectId patientId;
+    public ObjectId getId() {
+        return id;
+    }
 
     public void setId(final ObjectId id) {
         this.id = id;

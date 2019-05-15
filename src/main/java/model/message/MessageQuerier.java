@@ -6,6 +6,10 @@ import org.bson.types.ObjectId;
 
 import java.util.List;
 
+/**
+ * API to Query dossier related stuff
+ * @author gian.demarmels@students.bfh.ch
+ */
 public class MessageQuerier extends Querier<Message> {
     @Override
     public List<Message> getAll() {

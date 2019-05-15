@@ -4,7 +4,12 @@ import org.bson.types.ObjectId;
 
 import java.util.Objects;
 
+/**
+ * @author gian.demarmels@students.bf.ch
+ * @author yannis.schmutz@students.bf.ch
+ */
 public class Report implements IEntity {
+
     private ObjectId id;
     public ObjectId getId() {
         return id;

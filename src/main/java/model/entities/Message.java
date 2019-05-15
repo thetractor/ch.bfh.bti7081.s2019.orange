@@ -4,12 +4,13 @@ import org.bson.types.ObjectId;
 
 import java.util.Objects;
 
+/**
+ * @author gian.demarmels@students.bf.ch
+ * @author yannis.schmutz@students.bf.ch
+ */
 public class Message implements IEntity {
-    private ObjectId id;
-    public ObjectId getId() {
-        return id;
-    }
 
+    private ObjectId id;
     private String content;
     private ObjectId referringMessageId;
     private ObjectId fromDoctorId;
@@ -36,6 +37,10 @@ public class Message implements IEntity {
 
     public void setId(ObjectId id) {
         this.id = id;
+    }
+
+    public ObjectId getId() {
+        return id;
     }
 
     public String getContent() {
