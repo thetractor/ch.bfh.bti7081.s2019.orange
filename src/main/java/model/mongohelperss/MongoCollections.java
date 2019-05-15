@@ -1,4 +1,4 @@
-package model.mongohelpers;
+package model.mongohelperss;
 
 public class MongoCollections {
     public final static String Doctor = "doctor";

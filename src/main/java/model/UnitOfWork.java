@@ -2,9 +2,9 @@ package model;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import model.entities.*;
-import model.mongohelpers.MongoAttributes;
-import model.mongohelpers.MongoCollections;
+import model.entitiess.*;
+import model.mongohelperss.MongoAttributes;
+import model.mongohelperss.MongoCollections;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +14,12 @@ import java.util.Map;
 import static com.mongodb.client.model.Filters.eq;
 
 public class UnitOfWork {
+    /**
+     *
+     * @param dbContext
+     */
     public UnitOfWork(MongoDatabase dbContext){
+        //
         initCaches();
 
         //init Collections
@@ -100,7 +105,9 @@ public class UnitOfWork {
         clearCaches();
     }
 
-    //call to reinit and init the chaches
+    /**
+     * Initializes the caches with an empty map
+     */
     private void initCaches(){
         doctorCache = initializeMap();
         dossierCache = initializeMap();
