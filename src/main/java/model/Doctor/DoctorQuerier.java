@@ -1,7 +1,7 @@
-package model.Doctor;
+package model.doctor;
 
-import model.Entities.Doctor;
-import model.Entities.Patient;
+import model.entities.Doctor;
+import model.entities.Patient;
 import model.Querier;
 import org.bson.types.ObjectId;
 

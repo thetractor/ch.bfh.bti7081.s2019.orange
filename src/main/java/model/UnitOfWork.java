@@ -2,9 +2,9 @@ package model;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import model.Entities.*;
-import model.MongoHelpers.MongoAttributes;
-import model.MongoHelpers.MongoCollections;
+import model.entities.*;
+import model.mongohelpers.MongoAttributes;
+import model.mongohelpers.MongoCollections;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,10 +111,6 @@ public class UnitOfWork {
     }
 
     private void clearCaches(){
-        // TODO: Update the references to caches in the repos too!
-        // TODO: Have a look at "clear" on the lists
-        // TODO: loop over enum
-
         for(Operation operation : Operation.values()){
             doctorCache.get(operation).clear();
             dossierCache.get(operation).clear();

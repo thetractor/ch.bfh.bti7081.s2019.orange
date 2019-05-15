@@ -1,6 +1,6 @@
-package model.Report;
+package model.report;
 
-import model.Entities.Report;
+import model.entities.Report;
 import model.Querier;
 import org.bson.types.ObjectId;
 

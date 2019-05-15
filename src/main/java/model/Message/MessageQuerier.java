@@ -1,6 +1,6 @@
-package model.Message;
+package model.message;
 
-import model.Entities.Message;
+import model.entities.Message;
 import model.Querier;
 import org.bson.types.ObjectId;
 

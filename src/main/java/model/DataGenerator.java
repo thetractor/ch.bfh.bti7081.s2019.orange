@@ -1,9 +1,9 @@
 package model;
 
-import model.Entities.Doctor;
-import model.Entities.Dossier;
-import model.Entities.Patient;
-import model.Entities.Report;
+import model.entities.Doctor;
+import model.entities.Dossier;
+import model.entities.Patient;
+import model.entities.Report;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -37,6 +37,10 @@ class DataGenerator {
         unitOfWork.commit();
     }
 
+
+    /**
+     *
+     */
     private static void generateDoctors(){
         System.out.println("[*] Going to create all doctors...");
         List<Doctor> doctors = new ArrayList<>();
@@ -89,6 +93,7 @@ class DataGenerator {
             Patient patient = patientListIterator.next();
             doctors.get(patientListIterator.nextIndex() % doctorListSize).addPatient(patient);
             // Assign the patient to two doctors if more than one doctor is defined
+            // This assignment will be relevant in order to notify at least one doctor for a given message
             if(doctorListSize > 1){
                 doctors.get((patientListIterator.nextIndex() + 1) % doctorListSize).addPatient(patient);
             }
@@ -107,13 +112,13 @@ class DataGenerator {
         unitOfWork.commit();
     }
 
-    //private stat
-
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args){
         /*
-
         Mongo Daemon has to be started!
-
          */
 
         System.out.println("[*] Starting DataGenerator");
@@ -123,6 +128,5 @@ class DataGenerator {
         DataGenerator.generatePatients();
         DataGenerator.assignPatientsToDoctors();
         DataGenerator.generateReports();
-
     }
 }
