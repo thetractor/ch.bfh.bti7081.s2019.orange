@@ -4,9 +4,13 @@ import org.bson.types.ObjectId;
 
 import java.util.Objects;
 
+/**
+ * @author gian.demarmels@students.bf.ch
+ * @author yannis.schmutz@students.bf.ch
+ */
 public class Patient implements IEntity {
-    private ObjectId id;
 
+    private ObjectId id;
     private String name;
     private String surname;
     private ObjectId dossierId;

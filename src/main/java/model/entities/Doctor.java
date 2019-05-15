@@ -6,7 +6,17 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author gian.demarmels@students.bf.ch
+ * @author yannis.schmutz@students.bf.ch
+ */
 public class Doctor implements Serializable, IEntity {
+
+    private ObjectId id;
+    private String name;
+    private String surname;
+    private List<ObjectId> patients;
+
     public Doctor(String name, String surname, List<ObjectId> patients){
         this.name = name;
         this.surname = surname;
@@ -16,11 +26,6 @@ public class Doctor implements Serializable, IEntity {
     public Doctor(){
 
     }
-
-    private ObjectId id;
-    private String name;
-    private String surname;
-    private List<ObjectId> patients;
 
     public ObjectId getId() {
         return id;

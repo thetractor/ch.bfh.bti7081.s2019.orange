@@ -23,12 +23,12 @@ public class UnitOfWork {
         initCaches();
 
         //init Collections
-        doctorCollection = dbContext.getCollection(MongoCollections.Doctor, Doctor.class);
-        patientCollection = dbContext.getCollection(MongoCollections.Patient, Patient.class);
-        dossierCollection = dbContext.getCollection(MongoCollections.Dossier, Dossier.class);
-        reportCollection = dbContext.getCollection(MongoCollections.Report, Report.class);
-        objectiveCollection = dbContext.getCollection(MongoCollections.Objective, Objective.class);
-        messageCollection = dbContext.getCollection(MongoCollections.Message, Message.class);
+        doctorCollection = dbContext.getCollection(MongoCollections.DOCTOR, Doctor.class);
+        patientCollection = dbContext.getCollection(MongoCollections.PATIENT, Patient.class);
+        dossierCollection = dbContext.getCollection(MongoCollections.DOSSIER, Dossier.class);
+        reportCollection = dbContext.getCollection(MongoCollections.REPORT, Report.class);
+        objectiveCollection = dbContext.getCollection(MongoCollections.OBJECTIVE, Objective.class);
+        messageCollection = dbContext.getCollection(MongoCollections.MESSAGE, Message.class);
 
         //init repos
         doctorRepo  = new ModelRepository<>(doctorCollection, doctorCache);
@@ -138,13 +138,13 @@ public class UnitOfWork {
 
         // TODO: Would be cleaner to use the updateOne function.
         cache.get(Operation.UPDATE)
-                //.forEach(x -> collection.updateOne(eq(MongoAttributes.IdAttribute, x.getId()),eq(MongoAttributes.IdAttribute, x.getId())));
+                //.forEach(x -> collection.updateOne(eq(MongoAttributes.ID_ATTRIBUTE, x.getId()),eq(MongoAttributes.ID_ATTRIBUTE, x.getId())));
                 .forEach(x -> {
-                    collection.deleteOne(eq(MongoAttributes.IdAttribute, x.getId()));
+                    collection.deleteOne(eq(MongoAttributes.ID_ATTRIBUTE, x.getId()));
                     collection.insertOne(x);
                 });
 
         cache.get(Operation.DELETE)
-                .forEach(x -> collection.deleteOne(eq(MongoAttributes.IdAttribute, x.getId())));
+                .forEach(x -> collection.deleteOne(eq(MongoAttributes.ID_ATTRIBUTE, x.getId())));
     }
 }
