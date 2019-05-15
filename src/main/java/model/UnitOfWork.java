@@ -13,30 +13,54 @@ import java.util.Map;
 
 import static com.mongodb.client.model.Filters.eq;
 
+/**
+ * Implementation of the <code>UnitOfWork</code> class.
+ * For further information please refer to the authors.
+ *
+ * @author yannisvalentin.schmutz@students.bfh.ch
+ * @author gian.demarmelsz@students.bfh.ch
+ */
 public class UnitOfWork {
+
+    /**
+     * Generic method to initialize maps for caching
+     *
+     * @param <T>   Generic of type IEntity
+     * @return      Map object
+     */
+    private static <T extends IEntity> Map<Operation, List<T>> initializeMap(){
+        // To make sure every Map has an empty ArrayList in it (prevent null-pointer-exception)
+        Map<Operation, List<T>> map = new HashMap<>();
+        map.put(Operation.INSERT, new ArrayList<>());
+        map.put(Operation.UPDATE, new ArrayList<>());
+        map.put(Operation.DELETE, new ArrayList<>());
+        return map;
+    }
+
     /**
      *
-     * @param dbContext
+     * generic methods for persisting specific collections
+     *
+     * @param collection    MongoCollection
+     * @param cache         Cache for the given MongoCollection
+     * @param <T>           Generic of the type IEntity
      */
-    public UnitOfWork(MongoDatabase dbContext){
-        //
-        initCaches();
+    private static <T extends IEntity> void  commitEntity(MongoCollection<T> collection, Map<Operation, List<T>> cache){
+        //insertmany doesnt accept empty list
+        List<T> list = cache.get(Operation.INSERT);
+        if(list.size() > 0) {
+            collection.insertMany(list);
+        }
 
-        //init Collections
-        doctorCollection = dbContext.getCollection(MongoCollections.Doctor, Doctor.class);
-        patientCollection = dbContext.getCollection(MongoCollections.Patient, Patient.class);
-        dossierCollection = dbContext.getCollection(MongoCollections.Dossier, Dossier.class);
-        reportCollection = dbContext.getCollection(MongoCollections.Report, Report.class);
-        objectiveCollection = dbContext.getCollection(MongoCollections.Objective, Objective.class);
-        messageCollection = dbContext.getCollection(MongoCollections.Message, Message.class);
+        // TODO: Would be cleaner to use the updateOne function.
+        cache.get(Operation.UPDATE)
+                .forEach(x -> {
+                    collection.deleteOne(eq(MongoAttributes.IdAttribute, x.getId()));
+                    collection.insertOne(x);
+                });
 
-        //init repos
-        doctorRepo  = new ModelRepository<>(doctorCollection, doctorCache);
-        patientRepo = new ModelRepository<>(patientCollection, patientCache);
-        dossierRepo = new ModelRepository<>(dossierCollection, dossierCache);
-        reportRepo  = new ModelRepository<>(reportCollection, reportCache);
-        objectiveRepo  = new ModelRepository<>(objectiveCollection, objectiveCache);
-        messageRepo  = new ModelRepository<>(messageCollection, messageCache);
+        cache.get(Operation.DELETE)
+                .forEach(x -> collection.deleteOne(eq(MongoAttributes.IdAttribute, x.getId())));
     }
 
     //Caches to track changes in memory until commit
@@ -83,17 +107,30 @@ public class UnitOfWork {
         return messageRepo;
     }
 
-    // generic method to initialize maps for caching
-    private static <T extends IEntity> Map<Operation, List<T>> initializeMap(){
-        // To make sure every Map has an empty ArrayList in it (prevent null-pointer-exception)
-        Map<Operation, List<T>> map = new HashMap<>();
-        map.put(Operation.INSERT, new ArrayList<>());
-        map.put(Operation.UPDATE, new ArrayList<>());
-        map.put(Operation.DELETE, new ArrayList<>());
-        return map;
+    public UnitOfWork(MongoDatabase dbContext){
+        // Prepare caches in order to prevent NullPointerExceptions!
+        initCaches();
+
+        //init Collections
+        doctorCollection = dbContext.getCollection(MongoCollections.Doctor, Doctor.class);
+        patientCollection = dbContext.getCollection(MongoCollections.Patient, Patient.class);
+        dossierCollection = dbContext.getCollection(MongoCollections.Dossier, Dossier.class);
+        reportCollection = dbContext.getCollection(MongoCollections.Report, Report.class);
+        objectiveCollection = dbContext.getCollection(MongoCollections.Objective, Objective.class);
+        messageCollection = dbContext.getCollection(MongoCollections.Message, Message.class);
+
+        //init repos
+        doctorRepo  = new ModelRepository<>(doctorCollection, doctorCache);
+        patientRepo = new ModelRepository<>(patientCollection, patientCache);
+        dossierRepo = new ModelRepository<>(dossierCollection, dossierCache);
+        reportRepo  = new ModelRepository<>(reportCollection, reportCache);
+        objectiveRepo  = new ModelRepository<>(objectiveCollection, objectiveCache);
+        messageRepo  = new ModelRepository<>(messageCollection, messageCache);
     }
 
-    //persist changes on caches
+    /**
+     * Persist changes on caches
+     */
     void commit(){
         commitEntity(doctorCollection, doctorCache);
         commitEntity(dossierCollection, dossierCache);
@@ -106,7 +143,8 @@ public class UnitOfWork {
     }
 
     /**
-     * Initializes the caches with an empty map
+     * Initializes the caches with an empty map.
+     * Has to be called at first in the constructor of <code>UnitOfWork</code>
      */
     private void initCaches(){
         doctorCache = initializeMap();
@@ -117,6 +155,10 @@ public class UnitOfWork {
         messageCache = initializeMap();
     }
 
+    /**
+     * Clears the ArrayList in all caches.
+     * Must be called after every commit.
+     */
     private void clearCaches(){
         for(Operation operation : Operation.values()){
             doctorCache.get(operation).clear();
@@ -126,25 +168,5 @@ public class UnitOfWork {
             objectiveCache.get(operation).clear();
             messageCache.get(operation).clear();
         }
-    }
-
-    //generic methods for persisting specific collections
-    private static <T extends IEntity> void  commitEntity(MongoCollection<T> collection, Map<Operation, List<T>> cache){
-        //insertmany doesnt accept empty list
-        List<T> list = cache.get(Operation.INSERT);
-        if(list.size() > 0) {
-            collection.insertMany(list);
-        }
-
-        // TODO: Would be cleaner to use the updateOne function.
-        cache.get(Operation.UPDATE)
-                //.forEach(x -> collection.updateOne(eq(MongoAttributes.IdAttribute, x.getId()),eq(MongoAttributes.IdAttribute, x.getId())));
-                .forEach(x -> {
-                    collection.deleteOne(eq(MongoAttributes.IdAttribute, x.getId()));
-                    collection.insertOne(x);
-                });
-
-        cache.get(Operation.DELETE)
-                .forEach(x -> collection.deleteOne(eq(MongoAttributes.IdAttribute, x.getId())));
     }
 }

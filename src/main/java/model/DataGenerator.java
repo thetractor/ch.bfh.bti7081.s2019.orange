@@ -10,10 +10,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+/**
+ * Used to generate dummy data.
+ * This class is only used to provide a greenfield for all developer, so they all can work with the same data.
+ *
+ * @author yannisvalentin.schmutz@students.bfh.ch
+ */
 class DataGenerator {
 
     private static UnitOfWork unitOfWork = new UnitOfWork(DbConnector.getDatabase());
 
+    /**
+     * Purges all content of the used database to provide a greenfield.
+     */
     private static void purgeAll(){
         // Delete all doctors in DB
         System.out.println("[*] Going to delete all doctors in db...");
@@ -32,14 +41,13 @@ class DataGenerator {
         DataGenerator.unitOfWork.getReportRepo().getAll().forEach(x -> unitOfWork.getReportRepo().delete(x));
         System.out.println("[+] Reports have been deleted");
 
-
         // Make changes valid
         unitOfWork.commit();
     }
 
 
     /**
-     *
+     * Generates doctor dummy data
      */
     private static void generateDoctors(){
         System.out.println("[*] Going to create all doctors...");
@@ -54,6 +62,9 @@ class DataGenerator {
         System.out.println("[+] Doctors have been committed");
     }
 
+    /**
+     * Generates patient dummy data as well as the corresponding dossiers
+     */
     private static void generatePatients(){
 
         List<Patient> patients = new ArrayList<>();
@@ -83,6 +94,9 @@ class DataGenerator {
         unitOfWork.commit();
     }
 
+    /**
+     * Assigns the already existing patients to doctors
+     */
     private static void assignPatientsToDoctors(){
         List<Patient> patients = unitOfWork.getPatientRepo().getAll();
         List<Doctor> doctors = unitOfWork.getDoctorRepo().getAll();
@@ -102,6 +116,9 @@ class DataGenerator {
         unitOfWork.commit();
     }
 
+    /**
+     * Generates report dummy data
+     */
     private static void generateReports(){
         List<Report> reports = new ArrayList<>();
         unitOfWork.getDossierRepo().getAll().forEach(x ->{
@@ -114,13 +131,14 @@ class DataGenerator {
 
     /**
      *
-     * @param args
+     * @param args  System arguments, what else?
      */
     public static void main(String[] args){
         /*
-        Mongo Daemon has to be started!
+        Mongo Daemon has to be started using the "mongod" command in a terminal!
          */
 
+        // Todo: Implement a logger...
         System.out.println("[*] Starting DataGenerator");
 
         DataGenerator.purgeAll();
@@ -128,5 +146,7 @@ class DataGenerator {
         DataGenerator.generatePatients();
         DataGenerator.assignPatientsToDoctors();
         DataGenerator.generateReports();
+
+        System.out.println("[+] DataGenerator completed");
     }
 }
