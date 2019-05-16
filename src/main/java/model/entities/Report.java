@@ -59,4 +59,9 @@ public class Report implements IEntity {
     public int hashCode() {
         return Objects.hash(content, dossierId);
     }
+
+    @Override
+    public String toString(){
+        return String.format("Report(id=%s, dossierID=%s)", id, dossierId);
+    }
 }

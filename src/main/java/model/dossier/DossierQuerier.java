@@ -27,7 +27,7 @@ public class DossierQuerier extends Querier<Dossier> {
         return transaction.getReportRepo()
                 .getAll()
                 .stream()
-                .filter(x -> x.getDossierId() == id)
+                .filter(x -> x.getDossierId().equals(id))
                 .collect(Collectors.toList());
     }
 }
