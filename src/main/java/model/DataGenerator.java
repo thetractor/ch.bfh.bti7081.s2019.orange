@@ -74,12 +74,12 @@ class DataGenerator {
         patients.add(new Patient("Robert", "Pfeiffer"));
         patients.add(new Patient("Stefan", "Precht"));
         patients.add(new Patient("Alfred", "Ploch"));
-        /*patients.add(new Patient("Kevin", "Riesen"));
+        patients.add(new Patient("Kevin", "Riesen"));
         patients.add(new Patient("Gian", "Demarmels"));
         patients.add(new Patient("Yannis", "Schmutz"));
         patients.add(new Patient("Lars", "Peyer"));
         patients.add(new Patient("Adrian", "Berger"));
-        patients.add(new Patient("Matthias", "Ossola"));*/
+        patients.add(new Patient("Matthias", "Ossola"));
 
         unitOfWork.getPatientRepo().setAll(patients);
         unitOfWork.commit();
