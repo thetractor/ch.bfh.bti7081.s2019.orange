@@ -1,4 +1,4 @@
-package model.Entities;
+package model.entities;
 
 import org.bson.types.ObjectId;
 
@@ -6,7 +6,17 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author gian.demarmels@students.bf.ch
+ * @author yannis.schmutz@students.bf.ch
+ */
 public class Doctor implements Serializable, IEntity {
+
+    private ObjectId id;
+    private String name;
+    private String surname;
+    private List<ObjectId> patients;
+
     public Doctor(String name, String surname, List<ObjectId> patients){
         this.name = name;
         this.surname = surname;
@@ -16,11 +26,6 @@ public class Doctor implements Serializable, IEntity {
     public Doctor(){
 
     }
-
-    private ObjectId id;
-    private String name;
-    private String surname;
-    private List<ObjectId> patients;
 
     public ObjectId getId() {
         return id;
@@ -54,6 +59,10 @@ public class Doctor implements Serializable, IEntity {
         this.patients = patients;
     }
 
+    public void addPatient(Patient patient){
+        patients.add(patient.getId());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -67,5 +76,10 @@ public class Doctor implements Serializable, IEntity {
     @Override
     public int hashCode() {
         return Objects.hash(name, surname, patients);
+    }
+
+    @Override
+    public String toString(){
+        return String.format("Doctor(%s, %s, %s)", name, surname, id);
     }
 }

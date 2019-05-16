@@ -1,13 +1,17 @@
-package model.Dossier;
+package model.dossier;
 
-import model.Entities.Dossier;
-import model.Entities.Report;
+import model.entities.Dossier;
+import model.entities.Report;
 import model.Querier;
 import org.bson.types.ObjectId;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * API to Query dossier related stuff
+ * @author gian.demarmels@students.bfh.ch
+ */
 public class DossierQuerier extends Querier<Dossier> {
     @Override
     public List<Dossier> getAll() {
@@ -23,7 +27,7 @@ public class DossierQuerier extends Querier<Dossier> {
         return transaction.getReportRepo()
                 .getAll()
                 .stream()
-                .filter(x -> x.getDossierId() == id)
+                .filter(x -> x.getDossierId().equals(id))
                 .collect(Collectors.toList());
     }
 }

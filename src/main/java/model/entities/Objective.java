@@ -1,15 +1,22 @@
-package model.Entities;
+package model.entities;
 
 import org.bson.types.ObjectId;
 
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * @author gian.demarmels@students.bf.ch
+ * @author yannis.schmutz@students.bf.ch
+ */
 public class Objective implements IEntity {
+
     private ObjectId id;
-    public ObjectId getId() {
-        return id;
-    }
+    private ObjectId patientId;
+    private String content;
+    private boolean finished;
+    private Date dueDate;
+    private ObjectId creatorId;
 
     public Objective(Date dueDate, ObjectId creatorId, ObjectId patientId, String content, boolean finished) {
         this.dueDate = dueDate;
@@ -23,14 +30,12 @@ public class Objective implements IEntity {
 
     }
 
-    private ObjectId patientId;
-    private String content;
-    private boolean finished;
-    private Date dueDate;
-    private ObjectId creatorId;
-
     public void setId(ObjectId id) {
         this.id = id;
+    }
+
+    public ObjectId getId() {
+        return id;
     }
 
     public Date getDueDate() {

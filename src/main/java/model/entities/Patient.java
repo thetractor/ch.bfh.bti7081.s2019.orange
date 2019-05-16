@@ -1,20 +1,23 @@
-package model.Entities;
+package model.entities;
 
 import org.bson.types.ObjectId;
 
 import java.util.Objects;
 
+/**
+ * @author gian.demarmels@students.bf.ch
+ * @author yannis.schmutz@students.bf.ch
+ */
 public class Patient implements IEntity {
-    private ObjectId id;
 
+    private ObjectId id;
     private String name;
     private String surname;
     private ObjectId dossierId;
 
-    public Patient(String name, String surname, ObjectId dossierId){
+    public Patient(String name, String surname){
         this.name = name;
         this.surname = surname;
-        this.dossierId = dossierId;
     }
 
     public Patient(){
@@ -66,5 +69,10 @@ public class Patient implements IEntity {
     @Override
     public int hashCode() {
         return Objects.hash(name, surname, dossierId);
+    }
+
+    @Override
+    public String toString(){
+        return String.format("Patient(%s, %s, %s)", name, surname, id);
     }
 }

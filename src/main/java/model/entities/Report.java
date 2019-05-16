@@ -1,10 +1,15 @@
-package model.Entities;
+package model.entities;
 
 import org.bson.types.ObjectId;
 
 import java.util.Objects;
 
+/**
+ * @author gian.demarmels@students.bf.ch
+ * @author yannis.schmutz@students.bf.ch
+ */
 public class Report implements IEntity {
+
     private ObjectId id;
     public ObjectId getId() {
         return id;
@@ -53,5 +58,10 @@ public class Report implements IEntity {
     @Override
     public int hashCode() {
         return Objects.hash(content, dossierId);
+    }
+
+    @Override
+    public String toString(){
+        return String.format("Report(id=%s, dossierID=%s)", id, dossierId);
     }
 }
