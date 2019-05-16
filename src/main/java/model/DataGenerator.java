@@ -1,9 +1,8 @@
 package model;
 
-import model.entities.Doctor;
-import model.entities.Dossier;
-import model.entities.Patient;
-import model.entities.Report;
+import model.dossier.DossierQuerier;
+import model.entities.*;
+import model.patient.PatientQuerier;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -40,6 +39,10 @@ class DataGenerator {
         System.out.println("[*] Going to delete all reports in db...");
         DataGenerator.unitOfWork.getReportRepo().getAll().forEach(x -> unitOfWork.getReportRepo().delete(x));
         System.out.println("[+] Reports have been deleted");
+
+        System.out.println("[*] Going to delete all messages in db...");
+        DataGenerator.unitOfWork.getMessageRepo().getAll().forEach(x -> unitOfWork.getMessageRepo().delete(x));
+        System.out.println("[+] Messages have been deleted");
 
         // Make changes valid
         unitOfWork.commit();
@@ -130,6 +133,32 @@ class DataGenerator {
     }
 
     /**
+     * Generates message dummy data
+     *
+     * for every doctor:
+     *     for every one of doctor's patients:
+     *         get patient's dossier
+     *         for every report in dossier
+     *             add one message for this report, written by a specific docter
+     */
+    private static void generateMessages(){
+        List<Message> messages = new ArrayList<>();
+        PatientQuerier patientQuerier = new PatientQuerier();
+        DossierQuerier dossierQuerier = new DossierQuerier();
+
+        unitOfWork.getDoctorRepo().getAll().forEach(doctor -> {
+            doctor.getPatients().forEach(patientID -> {
+                dossierQuerier.getReports(patientQuerier.getDossier(patientID).getId()).forEach(report -> {
+                    messages.add(new Message("Dummy message", doctor.getId(), report.getId()));
+                });
+            });
+        });
+
+        unitOfWork.getMessageRepo().setAll(messages);
+        unitOfWork.commit();
+    }
+
+    /**
      *
      * @param args  System arguments, what else?
      */
@@ -146,6 +175,7 @@ class DataGenerator {
         DataGenerator.generatePatients();
         DataGenerator.assignPatientsToDoctors();
         DataGenerator.generateReports();
+        DataGenerator.generateMessages();
 
         System.out.println("[+] DataGenerator completed");
     }

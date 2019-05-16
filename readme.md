@@ -20,3 +20,47 @@ Branching information:
 * `v11` the version for Vaadin 11
 * `v12` the version for Vaadin 12
 * `v13` the version for Vaadin 13
+
+
+Setup MongoDB on Mac OS X
+-------------------------
+
+Open terminal 
+```
+brew update
+brew install mongodb
+```
+Default mongodb file location /data/db/
+```
+mkdir -p /data/db
+```
+
+Handle directory permissions
+```
+sudo chown -R `id -un` /data/db
+```
+
+Start service
+```
+mongod
+```
+
+Access DB in another terminal tab
+```
+mongo
+```
+
+Use MongoDB via terminal
+```
+help
+db.help()
+collection.help()
+```
+
+Display the content of all collections in a DB
+```
+show dbs
+use <db name>
+show collections
+db.<collectionName>.find().pretty()
+```

@@ -70,4 +70,9 @@ public class Patient implements IEntity {
     public int hashCode() {
         return Objects.hash(name, surname, dossierId);
     }
+
+    @Override
+    public String toString(){
+        return String.format("Patient(%s, %s, %s)", name, surname, id);
+    }
 }

@@ -77,4 +77,9 @@ public class Doctor implements Serializable, IEntity {
     public int hashCode() {
         return Objects.hash(name, surname, patients);
     }
+
+    @Override
+    public String toString(){
+        return String.format("Doctor(%s, %s, %s)", name, surname, id);
+    }
 }

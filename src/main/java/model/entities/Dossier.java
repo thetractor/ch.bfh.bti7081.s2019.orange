@@ -48,4 +48,9 @@ public class Dossier implements IEntity {
     public int hashCode() {
         return Objects.hash(patientId);
     }
+
+    @Override
+    public String toString(){
+        return String.format("Dossier(id=%s, patientID=%s)", id, patientId);
+    }
 }
