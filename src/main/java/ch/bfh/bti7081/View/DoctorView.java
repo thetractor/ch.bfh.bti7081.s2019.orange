@@ -14,8 +14,8 @@ import model.entities.Doctor;
  *
  * @author kevin.riesen@students.bfh.ch
  */
-@Route("")
-@PWA(name = "Project Base for Vaadin Flow", shortName = "Project Base")
+@Route("old")
+//@PWA(name = "Project Base for Vaadin Flow", shortName = "Project Base")
 public class DoctorView extends VerticalLayout {
 
     private HomePresenter presenter;
