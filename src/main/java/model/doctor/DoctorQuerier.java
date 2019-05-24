@@ -1,8 +1,9 @@
 package model.doctor;
 
+import model.DbConnector;
+import model.UnitOfWork;
 import model.entities.Doctor;
 import model.entities.Patient;
-import model.Querier;
 import org.bson.types.ObjectId;
 
 import java.util.List;
@@ -12,14 +13,14 @@ import java.util.stream.Collectors;
  * API to Query doctor related stuff
  * @author gian.demarmels@students.bfh.ch
  */
-public class DoctorQuerier extends Querier<Doctor> {
+public class DoctorQuerier{
+    //ToDo dependency injection for UnitOfWork
+    private UnitOfWork transaction = new UnitOfWork(DbConnector.getDatabase());
 
-    @Override
     public List<Doctor> getAll() {
         return transaction.getDoctorRepo().getAll();
     }
 
-    @Override
     public Doctor get(ObjectId id) {
         return transaction.getDoctorRepo().get(id);
     }

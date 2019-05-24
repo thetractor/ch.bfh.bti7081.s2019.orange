@@ -1,0 +1,18 @@
+@startuml
+
+package View {
+
+    class DoctorView<extends VerticalLayout>{
+        - presenter: HomePresenter
+    }
+
+    class PatientView<extends VerticalLayout>{
+        - presenter: PatientPresenter
+    }
+
+    class ReportView<extends VerticalLayout>{
+            - presenter: ReportPresenter
+    }
+}
+
+@enduml

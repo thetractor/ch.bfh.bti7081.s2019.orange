@@ -1,0 +1,127 @@
+@startuml
+
+package model{
+
+!include classdiagram_entities.puml
+
+    package message {
+        class MessageQuerier {
+          - unitOfWork: UnitOfWork
+          + get(ObjectId id): Message
+          + getAll(): List<Message>
+        }
+        class MessageManipulator {
+          - unitOfWork: UnitOfWork
+          + build(): void
+          + delete(): void
+          + deleteMany(): void
+        }
+    }
+
+    package doctor {
+        class DoctorQuerier {
+          - unitOfWork: UnitOfWork
+          + get(ObjectId id): Doctor
+          + getAll(): List<Doctor>
+        }
+        class DoctorManipulator {
+          - unitOfWork: UnitOfWork
+          + build(): void
+          + delete(): void
+          + deleteMany(): void
+        }
+    }
+
+    package patient {
+        class PatientQuerier {
+          - unitOfWork: UnitOfWork
+          + get(ObjectId id): Patient
+          + getAll(): List<Patient>
+        }
+        class PatientManipulator {
+          - unitOfWork: UnitOfWork
+          + build(): void
+          + delete(): void
+          + deleteMany(): void
+        }
+    }
+
+    package report {
+        class ReportQuerier {
+          - unitOfWork: UnitOfWork
+          + get(ObjectId id): Report
+          + getAll(): List<Report>
+        }
+        class ReportManipulator {
+          - unitOfWork: UnitOfWork
+          + build(): void
+          + delete(): void
+          + deleteMany(): void
+        }
+    }
+    package dossier {
+        class DossierQuerier {
+          - unitOfWork: UnitOfWork
+          + get(ObjectId id): Dossier
+          + getAll(): List<Dossier>
+        }
+        class DossierManipulator {
+          - unitOfWork: UnitOfWork
+          + build(): void
+          + delete(): void
+          + deleteMany(): void
+        }
+    }
+    package objective {
+        class ObjectiveQuerier {
+          - unitOfWork: UnitOfWork
+          + get(ObjectId id): Objective
+          + getAll(): List<Objective>
+        }
+        class ObjectiveManipulator {
+          - unitOfWork: UnitOfWork
+          + build(): void
+          + delete(): void
+          + deleteMany(): void
+        }
+    }
+
+
+    class ModelRepository<Type T>{
+        - collection: MongoCollection<T>
+        - operationCache: Map<Operation, List<T>>
+
+        + add(element: T): void
+        + delete(element: T): void
+        + get(ObjectId: id): T
+        + updateMany(List<T> objects): T
+        + setAll(List<T> modelList): void
+        }
+
+    class UnitOfWork{
+        - doctorCollection: MongoCollection<Doctor>
+        - patientCollection: MongoCollection<Patient>
+        - dossierCollection: MongoCollection<Dossier>
+        - reportCollection: MongoCollection<Report>
+        - objectiveCollection: MongoCollection<Objective>
+        - messageCollection: MongoCollection<Message>
+
+        - doctorRepo: ModelRepository<Doctor>
+        - patientRepo: ModelRepository<Patient>
+        - dossierRepo: ModelRepository<Dossier>
+        - reportRepo: ModelRepository<Report>
+        - objectiveRepo: ModelRepository<Objective>
+        - messageRepo: ModelRepository<Message>
+
+        + getDoctorRepo(): ModelRepository<Doctor>
+        + getPatientRepo(): ModelRepository<Patient>
+        + getDossierRepo(): ModelRepository<Dossier>
+        + getReportRepo(): ModelRepository<Report>
+        + getObjectiveRepo(): ModelRepository<Objective>
+        + getMessageRepo(): ModelRepository<Message>
+    }
+}
+
+UnitOfWork "1" - "n" ModelRepository
+
+@enduml
