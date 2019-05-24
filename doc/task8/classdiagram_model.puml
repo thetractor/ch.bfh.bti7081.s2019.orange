@@ -1,0 +1,75 @@
+@startuml
+
+package model{
+
+!include classdiagram_entities.puml
+!include classdiagram_presenter.puml
+!include classdiagram_view.puml
+
+package message {
+        class MessageQuerier {
+          - unitOfWork: UnitOfWork
+        }
+    }
+
+    package doctor {
+        class DoctorQuerier {
+          - unitOfWork: UnitOfWork
+        }
+    }
+
+    package patient {
+        class PatientQuerier {
+          - unitOfWork: UnitOfWork
+        }
+    }
+
+    package report {
+        class ReportQuerier {
+          - unitOfWork: UnitOfWork
+        }
+    }
+    package dossier {
+        class DossierQuerier {
+          - unitOfWork: UnitOfWork
+        }
+    }
+
+
+    class ModelRepository<Type T>{
+        - collection: MongoCollection<T>
+        - operationCache: Map<Operation, List<T>>
+
+        + add(element: T): void
+        + delete(element: T): void
+        + get(ObjectId: id): T
+        + updateMany(List<T> objects): T
+        + setAll(List<T> modelList): void
+        }
+
+    class UnitOfWork{
+        - doctorCollection: MongoCollection<Doctor>
+        - patientCollection: MongoCollection<Patient>
+        - dossierCollection: MongoCollection<Dossier>
+        - reportCollection: MongoCollection<Report>
+        - objectiveCollection: MongoCollection<Objective>
+        - messageCollection: MongoCollection<Message>
+
+        - doctorRepo: ModelRepository<Doctor>
+        - patientRepo: ModelRepository<Patient>
+        - dossierRepo: ModelRepository<Dossier>
+        - reportRepo: ModelRepository<Report>
+        - objectiveRepo: ModelRepository<Objective>
+        - messageRepo: ModelRepository<Message>
+
+        - getDoctorRepo(): ModelRepository<Doctor>
+        - getPatientRepo(): ModelRepository<Patient>
+        - getDossierRepo(): ModelRepository<Dossier>
+        - getReportRepo(): ModelRepository<Report>
+        - getObjectiveRepo(): ModelRepository<Objective>
+        - getMessageRepo(): ModelRepository<Message>
+    }
+
+}
+
+@enduml

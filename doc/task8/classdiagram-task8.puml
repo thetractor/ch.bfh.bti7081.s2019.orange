@@ -1,0 +1,7 @@
+@startuml
+
+!include classdiagram_entities.puml
+
+
+
+@enduml
