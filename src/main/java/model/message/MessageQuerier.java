@@ -12,6 +12,7 @@ import java.util.List;
  * @author gian.demarmels@students.bfh.ch
  */
 public class MessageQuerier {
+    //ToDo dependency injection for UnitOfWork
     private UnitOfWork transaction = new UnitOfWork(DbConnector.getDatabase());
 
     public List<Message> getAll() {

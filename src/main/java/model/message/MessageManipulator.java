@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
  * @author gian.demarmels@students.bfh.ch
  */
 public class MessageManipulator {
+    //ToDo dependency injection for UnitOfWork
     private UnitOfWork transaction = new UnitOfWork(DbConnector.getDatabase());
 
     public Message build(String content, ObjectId doctor, ObjectId report){

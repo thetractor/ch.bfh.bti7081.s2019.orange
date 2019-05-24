@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
  * @author gian.demarmels@students.bfh.ch
  */
 public class DoctorQuerier{
+    //ToDo dependency injection for UnitOfWork
     private UnitOfWork transaction = new UnitOfWork(DbConnector.getDatabase());
 
     public List<Doctor> getAll() {

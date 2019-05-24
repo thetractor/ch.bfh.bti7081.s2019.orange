@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
  * @author gian.demarmels@students.bfh.ch
  */
 public class ObjectiveManipulator{
+    //ToDo dependency injection for UnitOfWork
     private UnitOfWork transaction = new UnitOfWork(DbConnector.getDatabase());
 
     public Objective build(String content, Date dueDate, ObjectId creator, ObjectId patient){

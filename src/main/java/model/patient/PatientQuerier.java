@@ -13,6 +13,7 @@ import java.util.List;
  * @author gian.demarmels@students.bfh.ch
  */
 public class PatientQuerier {
+    //ToDo dependency injection for UnitOfWork
     private UnitOfWork transaction = new UnitOfWork(DbConnector.getDatabase());
     public List<Patient> getAll() {
         return transaction.getPatientRepo().getAll();

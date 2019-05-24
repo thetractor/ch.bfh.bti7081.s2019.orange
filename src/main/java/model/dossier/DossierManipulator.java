@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
  * @author gian.demarmels@students.bfh.ch
  */
 public class DossierManipulator {
+    //ToDo dependency injection for UnitOfWork
     private UnitOfWork transaction = new UnitOfWork(DbConnector.getDatabase());
 
     public Dossier build(ObjectId patientID){
