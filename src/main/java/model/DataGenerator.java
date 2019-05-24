@@ -139,7 +139,7 @@ class DataGenerator {
      *     for every one of doctor's patients:
      *         get patient's dossier
      *         for every report in dossier
-     *             add one message for this report, written by a specific docter
+     *             add one message for this report, written by a specific doctor
      */
     private static void generateMessages(){
         List<Message> messages = new ArrayList<>();

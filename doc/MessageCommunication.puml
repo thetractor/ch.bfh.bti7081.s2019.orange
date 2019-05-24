@@ -1,0 +1,65 @@
+@startuml
+actor Doctor1
+participant View
+participant Presenter
+participant Querier
+participant MessageDispatcher
+actor Doctor2
+
+'asynchron: a ->> b
+
+
+activate Doctor1
+== Initial page access ==
+Doctor1 -> View: access
+activate View
+' ********* Register ********
+View -> View
+activate View
+View -> MessageDispatcher: register
+activate MessageDispatcher
+
+MessageDispatcher --> View
+deactivate MessageDispatcher
+View --> View
+deactivate View
+' ***************************
+
+View -> Presenter: get existing message
+activate Presenter
+Presenter -> Querier: get existing message
+activate Querier
+Querier --> Presenter
+deactivate Querier
+Presenter --> View: return existing messages
+deactivate Presenter
+View --> Doctor1: display content
+deactivate View
+
+== ==
+...
+
+==  ==
+Doctor1 -> View: Type in message and submit
+activate View
+View -> Presenter: Pass message
+activate Presenter
+Presenter -> Querier: save message
+activate Querier
+Querier --> Presenter
+deactivate Querier
+Presenter --> View
+deactivate Presenter
+
+View -> MessageDispatcher
+
+View --> Doctor1
+deactivate View
+== ==
+
+...
+
+
+
+
+@enduml
