@@ -5,7 +5,60 @@
 !include classdiagram_view.puml
 
 
+ObjectiveQuerier "1" - "1" UnitOfWork
+DossierQuerier "1" - "1" UnitOfWork
+DoctorQuerier "1" - "1" UnitOfWork
+PatientQuerier "1" - "1" UnitOfWork
+ReportQuerier "1" - "1" UnitOfWork
+MessageQuerier "1" - "1" UnitOfWork
+
+ObjectiveManipulator "1" - "1" UnitOfWork
+DossierManipulator "1" - "1" UnitOfWork
+DoctorManipulator "1" - "1" UnitOfWork
+PatientManipulator "1" - "1" UnitOfWork
+ReportManipulator "1" - "1" UnitOfWork
+MessageManipulator "1" - "1" UnitOfWork
+
+DoctorView "1" -- "1" HomePresenter
+PatientView "1" -- "1" PatientPresenter
+ReportView "1" -- "1" ReportPresenter
+
+HomePresenter "1" -- "1" DoctorQuerier
+HomePresenter "1" -- "1" DoctorManipulator
+PatientPresenter "1" -- "1" DoctorQuerier
+ReportPresenter "1" -- "1" DoctorQuerier
+ReportPresenter "1" -- "1" PatientQuerier
+ReportPresenter "1" -- "1" DossierQuerier
+ReportPresenter "1" -- "1" DossierManipulator
+ReportPresenter "1" -- "1" ReportQuerier
+ReportPresenter "1" -- "1" ReportManipulator
 
 
+
+'Report "1" *-- "*" Message
+'Report "*" -left-o "*" Doctor
+'Patient "1" *- "*" Objective
+'Report "*" -right* "1" Dossier
+'Dossier "1" --* "1" Patient
+'Objective "*" - "1" Doctor
+'Doctor "1" - "*" Patient
+'Message "*" -left- "1" Doctor
+'UnitOfWork "1" -left- "*" ModelRepository
+
+
+'View "1" -- "1" MainPresenter
+'MainPresenter <|-- HomePresenter
+'MainPresenter <|-- DossierPresenter
+'MainPresenter <|-- ReportPresenter
+'ReportPresenter -up- MessageBuilder
+'ReportPresenter -up- MessageQuerier
+'HomePresenter -up- DoctorQuerier
+'HomePresenter -up- PatientQuerier
+'ReportPresenter -up- ReportQuerier
+'DossierPresenter -up- DossierQuerier
+
+
+
+note top of model: Every model class has a setter and a getter for all attribute
 
 @enduml

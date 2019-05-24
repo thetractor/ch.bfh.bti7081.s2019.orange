@@ -72,6 +72,19 @@ package model{
           + deleteMany(): void
         }
     }
+    package objective {
+        class ObjectiveQuerier {
+          - unitOfWork: UnitOfWork
+          + get(ObjectId id): Objective
+          + getAll(): List<Objective>
+        }
+        class ObjectiveManipulator {
+          - unitOfWork: UnitOfWork
+          + build(): void
+          + delete(): void
+          + deleteMany(): void
+        }
+    }
 
 
     class ModelRepository<Type T>{
@@ -107,7 +120,8 @@ package model{
         + getObjectiveRepo(): ModelRepository<Objective>
         + getMessageRepo(): ModelRepository<Message>
     }
-
 }
+
+UnitOfWork "1" - "n" ModelRepository
 
 @enduml
