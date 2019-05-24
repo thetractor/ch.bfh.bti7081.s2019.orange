@@ -3,35 +3,73 @@
 package model{
 
 !include classdiagram_entities.puml
-!include classdiagram_presenter.puml
-!include classdiagram_view.puml
 
-package message {
+    package message {
         class MessageQuerier {
           - unitOfWork: UnitOfWork
+          + get(ObjectId id): Message
+          + getAll(): List<Message>
+        }
+        class MessageManipulator {
+          - unitOfWork: UnitOfWork
+          + build(): void
+          + delete(): void
+          + deleteMany(): void
         }
     }
 
     package doctor {
         class DoctorQuerier {
           - unitOfWork: UnitOfWork
+          + get(ObjectId id): Doctor
+          + getAll(): List<Doctor>
+        }
+        class DoctorManipulator {
+          - unitOfWork: UnitOfWork
+          + build(): void
+          + delete(): void
+          + deleteMany(): void
         }
     }
 
     package patient {
         class PatientQuerier {
           - unitOfWork: UnitOfWork
+          + get(ObjectId id): Patient
+          + getAll(): List<Patient>
+        }
+        class PatientManipulator {
+          - unitOfWork: UnitOfWork
+          + build(): void
+          + delete(): void
+          + deleteMany(): void
         }
     }
 
     package report {
         class ReportQuerier {
           - unitOfWork: UnitOfWork
+          + get(ObjectId id): Report
+          + getAll(): List<Report>
+        }
+        class ReportManipulator {
+          - unitOfWork: UnitOfWork
+          + build(): void
+          + delete(): void
+          + deleteMany(): void
         }
     }
     package dossier {
         class DossierQuerier {
           - unitOfWork: UnitOfWork
+          + get(ObjectId id): Dossier
+          + getAll(): List<Dossier>
+        }
+        class DossierManipulator {
+          - unitOfWork: UnitOfWork
+          + build(): void
+          + delete(): void
+          + deleteMany(): void
         }
     }
 
@@ -62,12 +100,12 @@ package message {
         - objectiveRepo: ModelRepository<Objective>
         - messageRepo: ModelRepository<Message>
 
-        - getDoctorRepo(): ModelRepository<Doctor>
-        - getPatientRepo(): ModelRepository<Patient>
-        - getDossierRepo(): ModelRepository<Dossier>
-        - getReportRepo(): ModelRepository<Report>
-        - getObjectiveRepo(): ModelRepository<Objective>
-        - getMessageRepo(): ModelRepository<Message>
+        + getDoctorRepo(): ModelRepository<Doctor>
+        + getPatientRepo(): ModelRepository<Patient>
+        + getDossierRepo(): ModelRepository<Dossier>
+        + getReportRepo(): ModelRepository<Report>
+        + getObjectiveRepo(): ModelRepository<Objective>
+        + getMessageRepo(): ModelRepository<Message>
     }
 
 }

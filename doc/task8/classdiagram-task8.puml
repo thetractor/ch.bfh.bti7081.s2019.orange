@@ -1,6 +1,10 @@
 @startuml
 
-!include classdiagram_entities.puml
+!include classdiagram_model.puml
+!include classdiagram_presenter.puml
+!include classdiagram_view.puml
+
+
 
 
 
