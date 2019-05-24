@@ -16,7 +16,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
  * @author yannisvalentin.schmutz@students.bfh.ch
  * @author gian.demarmelsz@students.bfh.ch
  */
-class DbConnector {
+public class DbConnector {
     private final static String SERVER = "localhost";   // Running the db locally is just fine for now
                                                         // As well as using the default port (27017)
     private final static String DATABASE_NAME = "test"; // Use built-in database 'test'
@@ -25,7 +25,7 @@ class DbConnector {
      *
      * @return  MongoDatabase object
      */
-    static MongoDatabase getDatabase(){
+    public static MongoDatabase getDatabase(){
         // Configure the CodecRegistry to include a codecs to handle the translation to and from BSON (binary-JSON)
         // for your POJOs (PlainOldJavaObjects).
         CodecRegistry pojoCodecRegistry = fromRegistries(MongoClient.getDefaultCodecRegistry(),

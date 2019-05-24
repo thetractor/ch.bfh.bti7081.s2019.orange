@@ -60,6 +60,14 @@ public class ModelRepository <T>{
     }
 
     /**
+     * delete many entities
+     * @param objects of T
+     */
+    public void deleteMany(List<T> objects){
+        addManyToCache(objects, Operation.DELETE);
+    }
+
+    /**
      * updates a specific entity
      * @param object of T
      */
