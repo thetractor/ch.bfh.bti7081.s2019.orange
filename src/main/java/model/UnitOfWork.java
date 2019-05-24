@@ -6,6 +6,7 @@ import model.entities.*;
 import model.mongohelpers.MongoAttributes;
 import model.mongohelpers.MongoCollections;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -131,7 +132,7 @@ public class UnitOfWork {
     /**
      * Persist changes on caches
      */
-    void commit(){
+    public void commit(){
         commitEntity(doctorCollection, doctorCache);
         commitEntity(dossierCollection, dossierCache);
         commitEntity(reportCollection, reportCache);
