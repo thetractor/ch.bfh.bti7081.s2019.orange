@@ -16,6 +16,7 @@ import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.startup.FakeBrowser;
 import org.apache.commons.io.IOUtils;
+import org.bson.types.ObjectId;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,6 +43,13 @@ public class NaviItem extends Div {
     public NaviItem(VaadinIcon icon, String text,
             Class<? extends Component> navigationTarget) {
         this(text, navigationTarget);
+        link.getElement().insertChild(0, new Icon(icon).getElement());
+    }
+
+    public NaviItem(VaadinIcon icon, String text, boolean login,
+                    Class<? extends Component> navigationTarget) {
+        this(text, navigationTarget);
+        this.showOnlyWhenLoggedIn(login);
         link.getElement().insertChild(0, new Icon(icon).getElement());
     }
 
@@ -136,6 +144,13 @@ public class NaviItem extends Div {
             }
         } else {
             setSubItemsVisible(visible);
+        }
+    }
+
+    private void showOnlyWhenLoggedIn(boolean login) {
+        ObjectId objectId = (ObjectId) VaadinService.getCurrentRequest().getAttribute("doctorId");
+        if (objectId == null) {
+           link.setVisible(login);
         }
     }
 
