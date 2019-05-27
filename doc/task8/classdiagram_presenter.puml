@@ -1,0 +1,19 @@
+@startuml
+
+package Presenter {
+
+       class HomePresenter{
+         - doctorQuerier: DoctorQuerier
+       }
+       class PatientPresenter{
+         - doctorQuerier: DoctorQuerier
+       }
+       class ReportPresenter{
+         - reportQuerier: ReportQuerier
+         - patientQuerier: PatientQuerier
+         - dossierQuerier: DossierQuerier
+         - doctorQuerier: DoctorQuerier
+       }
+}
+
+@enduml

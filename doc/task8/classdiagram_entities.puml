@@ -1,0 +1,64 @@
+@startuml
+
+package entities{
+
+
+    interface IEntity{
+        + getId(): ObjectId
+    }
+
+    class Doctor{
+
+        - id: ObjectId
+        - name: String
+        - surname: String
+        - patients: List<ObjectId>
+
+        + getPatients()
+        + addPatient()
+    }
+
+    class Patient{
+        - id: ObjectId
+        - name: String
+        - surname: String
+        - dossierId: ObjectId
+    }
+
+    class Objective{
+        - id: ObjectId
+        - patientId: ObjectId
+        - content: String
+        - finished: boolean
+        - dueDate: Date
+        - creatorId: ObjectId
+
+    }
+
+    class Report{
+        - id: ObjectId
+        - content: String
+        - dossierId: ObjectId
+    }
+
+    class Dossier{
+        - id: ObjectId
+        - patientId: ObjectId
+    }
+
+    class Message{
+        - id: ObjectId
+        - content: String
+        - fromDoctorId: ObjectId
+        - reportId: ObjectId
+    }
+    Doctor .up.|> IEntity
+    Patient .up.|> IEntity
+    Dossier .up.|> IEntity
+    Report .up.|> IEntity
+    Patient .up.|> IEntity
+    Message .up.|> IEntity
+    Objective .up.|> IEntity
+}
+
+@enduml
