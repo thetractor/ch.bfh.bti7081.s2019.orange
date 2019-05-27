@@ -1,5 +1,6 @@
 package ch.bfh.bti7081.ui.components.navigation.bar;
 
+import ch.bfh.bti7081.Presenter.HomePresenter;
 import ch.bfh.bti7081.ui.MainLayout;
 import ch.bfh.bti7081.ui.components.FlexBoxLayout;
 import ch.bfh.bti7081.ui.components.navigation.tab.NaviTab;
@@ -11,6 +12,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.HasValue;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.contextmenu.ContextMenu;
@@ -21,14 +23,21 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
+import com.vaadin.flow.component.page.Page;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.shared.Registration;
+import java.util.List;
+import model.doctor.DoctorQuerier;
+import model.entities.Doctor;
 
 import static ch.bfh.bti7081.ui.util.UIUtils.IMG_PATH;
 
 public class AppBar extends Composite<FlexLayout> {
+
+    private HomePresenter homePresenter;
 
     private String CLASS_NAME = "app-bar";
 
@@ -113,15 +122,19 @@ public class AppBar extends Composite<FlexLayout> {
 
         ContextMenu contextMenu = new ContextMenu(avatar);
         contextMenu.setOpenOnClick(true);
-        contextMenu.addItem("john.smith@gmail.com",
-                e -> Notification.show("Not implemented yet.", 3000,
-                        Notification.Position.BOTTOM_CENTER));
-        contextMenu.addItem("Settings",
-                e -> Notification.show("Not implemented yet.", 3000,
-                        Notification.Position.BOTTOM_CENTER));
-        contextMenu.addItem("Log Out",
-                e -> Notification.show("Not implemented yet.", 3000,
-                        Notification.Position.BOTTOM_CENTER));
+        homePresenter = new HomePresenter();
+        List<Doctor> doctorList = homePresenter.getDoctors();
+        for (Doctor doctor:doctorList) {
+            String doctroName = doctor.getName() + " " + doctor.getSurname();
+            contextMenu.addItem(doctroName,
+                e -> clickDoctorEvent(doctor));
+        }
+    }
+
+    private void clickDoctorEvent(Doctor doctor){
+        VaadinService.getCurrentRequest().getWrappedSession()
+            .setAttribute("doctorId", doctor.getId());
+        UI.getCurrent().getPage().reload();;
     }
 
     private void initActionItems() {

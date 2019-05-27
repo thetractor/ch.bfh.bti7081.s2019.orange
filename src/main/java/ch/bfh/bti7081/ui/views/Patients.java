@@ -103,10 +103,10 @@ public class Patients extends ViewFrame implements RouterLayout {
      * Load the data for the patient overview
      */
     public void updateList() {
-//        ObjectId doctorId = (ObjectId) VaadinService.getCurrentRequest().getWrappedSession()
-//            .getAttribute("doctorId");
+        ObjectId doctorId = (ObjectId) VaadinService.getCurrentRequest().getWrappedSession()
+            .getAttribute("doctorId");
         // Manuall set a doctor
-        ObjectId doctorId = new ObjectId("5ce59d0108e88e5f80ca1bcc");
+        //ObjectId doctorId = new ObjectId("5cde5d94247b1115c4306063");
         if (doctorId != null) {
             grid.setItems(presenter.getPatientsByDoctorId(doctorId));
         }
