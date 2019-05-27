@@ -14,7 +14,7 @@ import org.bson.types.ObjectId;
  *
  * @author matthias.ossola@students.bfh.ch
  */
-@Route("patients")
+@Route("old_patients")
 public class PatientView extends VerticalLayout {
 
     private PatientPresenter presenter;
