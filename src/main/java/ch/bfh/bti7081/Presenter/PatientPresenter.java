@@ -2,6 +2,7 @@ package ch.bfh.bti7081.Presenter;
 
 import model.doctor.DoctorQuerier;
 import model.entities.Patient;
+import model.patient.PatientQuerier;
 import org.bson.types.ObjectId;
 import java.util.List;
 
@@ -14,9 +15,11 @@ import java.util.List;
 public class PatientPresenter {
 
     private DoctorQuerier doctorQuerier;
+    private PatientQuerier patientQuerier;
 
     public PatientPresenter(){
         doctorQuerier = new DoctorQuerier();
+        patientQuerier = new PatientQuerier();
     }
 
     /**
@@ -27,5 +30,9 @@ public class PatientPresenter {
      */
     public List<Patient> getPatientsByDoctorId(ObjectId id) {
         return doctorQuerier.getPatients(id);
+    }
+
+    public Patient getPatient(ObjectId patientId){
+        return patientQuerier.get(patientId);
     }
 }
