@@ -7,6 +7,7 @@ import ch.bfh.bti7081.ui.util.UIUtils;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.DetachEvent;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
@@ -42,8 +43,8 @@ public class Patients extends ViewFrame implements RouterLayout {
         grid = new Grid<>(Patient.class);
         grid.setId("patients");
         grid.setColumns("name", "surname");
-//        grid.addSelectionListener(event -> event.getFirstSelectedItem()
-//                .ifPresent(this::viewDetails));
+        grid.addSelectionListener(event -> event.getFirstSelectedItem()
+                .ifPresent(this::viewDetails));
 //        grid.setDataProvider(
 //                DataProvider.ofCollection(DummyData.getBankAccounts()));
           grid.setSizeFull();
@@ -78,20 +79,7 @@ public class Patients extends ViewFrame implements RouterLayout {
     }
 
     @Override
-    protected void onAttach(AttachEvent attachEvent){
-        System.out.println("Attached!");
-        ObjectId objectId = (ObjectId) VaadinService.getCurrentRequest().getAttribute("doctorId");
-        System.out.println(objectId);
-        if(objectId == null){
-            // Redirects client to homepage if there is no doctorId in the session
-            // ToDo: update
-            // UI.getCurrent().navigate(Home.class);
-        }
-    }
-
-    @Override
     protected void onDetach(DetachEvent detachEvent){
-        System.out.println("Detached!");
     }
 //
 //    private Component createAvailability(BankAccount bankAccount) {
@@ -107,9 +95,9 @@ public class Patients extends ViewFrame implements RouterLayout {
 //        return label;
 //    }
 //
-//    private void viewDetails(BankAccount bankAccount) {
-//        UI.getCurrent().navigate(AccountDetails.class, bankAccount.getId());
-//    }
+    private void viewDetails(Patient patient) {
+        UI.getCurrent().navigate(PatientDetail.class, patient.getId().toString());
+    }
 
     /**
      * Load the data for the patient overview
