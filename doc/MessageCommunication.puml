@@ -40,7 +40,13 @@ deactivate View
 ...
 
 ==  ==
-Doctor1 -> View: Type in message and submit
+Doctor1 -> View: Types in message and submits
+note left of Doctor1
+    *Save message
+    *"Send" message to other doctors
+    *Notify other doctors
+
+end note
 activate View
 View -> Presenter: Pass message
 activate Presenter
