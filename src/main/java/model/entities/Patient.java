@@ -55,6 +55,10 @@ public class Patient implements IEntity {
     public void setDossierId(ObjectId dossierId) {
         this.dossierId = dossierId;
     }
+    
+    public String getFullName(){
+        return getName() + " " + getSurname();
+    }
 
     @Override
     public boolean equals(Object o) {
