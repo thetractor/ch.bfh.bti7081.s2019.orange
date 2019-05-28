@@ -29,6 +29,7 @@ import com.vaadin.flow.router.AfterNavigationEvent;
 import com.vaadin.flow.router.AfterNavigationObserver;
 import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.server.*;
+import org.bson.types.ObjectId;
 import model.entities.Objective;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,7 +113,7 @@ public class MainLayout extends FlexBoxLayout
     private void initNaviItems() {
         NaviMenu menu = naviDrawer.getMenu();
           menu.addNaviItem(VaadinIcon.HOME, "Home", Home.class);
-          menu.addNaviItem(VaadinIcon.USERS, "Patients", Patients.class);
+          menu.addNaviItem(VaadinIcon.USERS, "Patients", true, Patients.class);
           menu.addNaviItem(VaadinIcon.USERS, "Objectives", Objectives.class);
 //        menu.addNaviItem(VaadinIcon.CREDIT_CARD, "Payments", Payments.class);
 //        menu.addNaviItem(VaadinIcon.CHART, "Statistics", Statistics.class);
