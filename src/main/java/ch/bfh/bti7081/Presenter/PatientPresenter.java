@@ -24,7 +24,7 @@ public class PatientPresenter {
     }
 
     /**
-     * Get all patients of an doctor
+     * Get all patients of a doctor
      *
      * @param id ObjectId of the doctor
      * @return   list of all patients from the given doctor
@@ -35,10 +35,10 @@ public class PatientPresenter {
 
 
     /**
-     * Get all patients of an doctor
+     * Get all objectives of a doctor
      *
      * @param id ObjectId of the doctor
-     * @return   list of all patients from the given doctor
+     * @return   list of all objectives from the given doctor
      */
     public List<Objective> getObjectives(ObjectId id) {
         return objectiveQuerier.getByPatient(id);
