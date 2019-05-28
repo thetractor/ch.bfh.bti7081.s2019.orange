@@ -14,6 +14,7 @@ import com.vaadin.flow.router.AfterNavigationEvent;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.VaadinService;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.startup.FakeBrowser;
 import org.apache.commons.io.IOUtils;
 import org.bson.types.ObjectId;
@@ -148,9 +149,9 @@ public class NaviItem extends Div {
     }
 
     private void showOnlyWhenLoggedIn(boolean login) {
-        ObjectId objectId = (ObjectId) VaadinService.getCurrentRequest().getAttribute("doctorId");
+        ObjectId objectId = (ObjectId) VaadinSession.getCurrent().getAttribute("doctorId");
         if (objectId == null) {
-           link.setVisible(login);
+           link.setVisible(!login);
         }
     }
 

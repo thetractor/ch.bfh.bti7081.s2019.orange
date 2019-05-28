@@ -3,11 +3,9 @@ package ch.bfh.bti7081.ui.views;
 import ch.bfh.bti7081.ui.MainLayout;
 import ch.bfh.bti7081.ui.components.FlexBoxLayout;
 import ch.bfh.bti7081.ui.layout.size.Horizontal;
-import ch.bfh.bti7081.ui.layout.size.Right;
 import ch.bfh.bti7081.ui.layout.size.Vertical;
 import ch.bfh.bti7081.ui.util.UIUtils;
 import ch.bfh.bti7081.ui.util.css.FlexDirection;
-import ch.bfh.bti7081.ui.util.css.FlexWrap;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.html.Anchor;
@@ -25,32 +23,14 @@ public class Home extends ViewFrame {
     }
 
     private Component createContent() {
-        Html intro = new Html("<p>A responsive application template with some dummy data. Loosely based on " +
-                "the <b>responsive layout grid</b> guidelines set by " +
-                "<a href=\"https://material.io/design/layout/responsive-layout-grid.html\">Material Design</a>. " +
-                "Utilises the <a href=\"https://vaadin.com/themes/lumo\">Lumo</a> theme.</p>");
+        Html intro = new Html("<div><h1>Welcome to PMS Orange</h1><h3>The ultimate patients management tool developed by team orange. This is project task in Software Engineering & Design at the BFH Berne</h3></div>");
 
-        Html productivity = new Html("<p>The starter gives you a productivity boost and a head start. " +
-                "You get an app shell with a typical hierarchical left-hand menu. The shell, the views and the " +
-                "components are all responsive and touch friendly, which makes them great for desktop and mobile" +
-                "use. The views are built with Java, which enhances Java developers' productivity by allowing them to" +
-                "do all in one language.</p>");
+        Html readme = new Html("<p>To get started with using the PMS make sure you login as one of the doctors. To do so click on the doctor icon in the top right corner and select the desired doctor." +
+            "This will log you in as the chosen docten and you will have access to its patients through the side navigation on the left side.</p>");
 
-        Html features = new Html("<p>The app comes with multiple list views to edit master-detail data. " +
-                        "Views can be divided horizontally or vertically to open up the details, and the details can " +
-                        "also be split into multiple tabs for extra space. The details can also be opened fullscreen " +
-                        "to maximize the use of space. Additionally there is an opt-in option for opening multiple " +
-                        "application views in tabs within the app, for quick comparison or navigation between data. " +
-                        "You enable this feature by setting <code>MainLayout.navigationTabs</code> to true.</p>");
+        Anchor source = new Anchor("https://github.com/thetractor/ch.bfh.bti7081.s2019.orange", UIUtils.createButton("Get the source code from Github", VaadinIcon.CODE));
 
-        Anchor documentation = new Anchor("https://vaadin.com/docs/business-app/overview.html", UIUtils.createButton("Read the documentation", VaadinIcon.EXTERNAL_LINK));
-        Anchor starter = new Anchor("https://vaadin.com/start/latest/business-app", UIUtils.createButton("Start a new project with Business App", VaadinIcon.EXTERNAL_LINK));
-
-        FlexBoxLayout links = new FlexBoxLayout(documentation, starter);
-        links.setFlexWrap(FlexWrap.WRAP);
-        links.setSpacing(Right.S);
-
-        FlexBoxLayout content = new FlexBoxLayout(intro, productivity, features, links);
+        FlexBoxLayout content = new FlexBoxLayout(intro, readme, source);
         content.setFlexDirection(FlexDirection.COLUMN);
         content.setMargin(Horizontal.AUTO);
         content.setMaxWidth("840px");

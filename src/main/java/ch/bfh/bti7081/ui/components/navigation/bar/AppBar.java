@@ -18,19 +18,17 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.contextmenu.ContextMenu;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
-import com.vaadin.flow.component.page.Page;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.server.VaadinService;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.shared.Registration;
 import java.util.List;
-import model.doctor.DoctorQuerier;
 import model.entities.Doctor;
 
 import static ch.bfh.bti7081.ui.util.UIUtils.IMG_PATH;
@@ -49,6 +47,7 @@ public class AppBar extends Composite<FlexLayout> {
     private H4 title;
     private FlexBoxLayout actionItems;
     private Image avatar;
+    private Label doctorName;
 
     private FlexBoxLayout tabContainer;
     private NaviTabs tabs;
@@ -64,12 +63,14 @@ public class AppBar extends Composite<FlexLayout> {
     public AppBar(String title, NaviTab... tabs) {
         getContent().setClassName(CLASS_NAME);
         getElement().setAttribute(LumoStyles.THEME, LumoStyles.DARK);
+        homePresenter = new HomePresenter();
 
         initMenuIcon();
         initContextIcon();
         initTitle(title);
         initSearch();
         initAvatar();
+        initDoctorName();
         initActionItems();
         initContainer();
         initTabs(tabs);
@@ -122,19 +123,18 @@ public class AppBar extends Composite<FlexLayout> {
 
         ContextMenu contextMenu = new ContextMenu(avatar);
         contextMenu.setOpenOnClick(true);
-        homePresenter = new HomePresenter();
         List<Doctor> doctorList = homePresenter.getDoctors();
         for (Doctor doctor:doctorList) {
-            String doctroName = doctor.getName() + " " + doctor.getSurname();
-            contextMenu.addItem(doctroName,
+            String doctorName = doctor.getName() + " " + doctor.getSurname();
+            contextMenu.addItem(doctorName,
                 e -> clickDoctorEvent(doctor));
         }
     }
 
     private void clickDoctorEvent(Doctor doctor){
-        VaadinService.getCurrentRequest().getWrappedSession()
-            .setAttribute("doctorId", doctor.getId());
-        UI.getCurrent().getPage().reload();;
+        VaadinSession.getCurrent().setAttribute("doctorId", doctor.getId());
+        VaadinSession.getCurrent().setAttribute("doctorName", doctor.getName() + " " + doctor.getSurname());
+        UI.getCurrent().getPage().reload();
     }
 
     private void initActionItems() {
@@ -143,9 +143,14 @@ public class AppBar extends Composite<FlexLayout> {
         actionItems.setVisible(false);
     }
 
+    private void initDoctorName() {
+      String name = (String) VaadinSession.getCurrent().getAttribute("doctorName");
+      doctorName = new Label(name);
+    }
+
     private void initContainer() {
         container = new FlexBoxLayout(menuIcon, contextIcon, this.title, search,
-                actionItems, avatar);
+                actionItems, doctorName, avatar);
         container.addClassName(CLASS_NAME + "__container");
         container.setAlignItems(FlexComponent.Alignment.CENTER);
         container.setFlexGrow(1, search);
