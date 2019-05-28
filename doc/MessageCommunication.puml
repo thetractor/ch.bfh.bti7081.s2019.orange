@@ -1,66 +1,78 @@
 @startuml
 actor Doctor1
-participant View
+participant ReportView
 participant Presenter
-participant Querier
+participant MessageQuerier
+participant MessageHandler
+participant MessageManipulator
 participant MessageDispatcher
-actor Doctor2
+participant MessageNotifier
+actor DoctorN
 
 'asynchron: a ->> b
 
 
 activate Doctor1
+activate DoctorN
 == Initial page access ==
-Doctor1 -> View: access
-activate View
+Doctor1 -> ReportView: access
+activate ReportView
 ' ********* Register ********
-View -> View
-activate View
-View -> MessageDispatcher: register
+ReportView -> ReportView: onAttach
+activate ReportView
+ReportView -> MessageDispatcher: register
 activate MessageDispatcher
 
-MessageDispatcher --> View
+MessageDispatcher --> ReportView
 deactivate MessageDispatcher
-View --> View
-deactivate View
+ReportView --> ReportView
+deactivate ReportView
 ' ***************************
 
-View -> Presenter: get existing message
+ReportView -> Presenter: get existing message
 activate Presenter
-Presenter -> Querier: get existing message
-activate Querier
-Querier --> Presenter
-deactivate Querier
-Presenter --> View: return existing messages
+Presenter -> MessageQuerier: get existing message
+activate MessageQuerier
+MessageQuerier --> Presenter
+deactivate MessageQuerier
+Presenter --> ReportView: return existing messages
 deactivate Presenter
-View --> Doctor1: display content
-deactivate View
+ReportView --> Doctor1: display content
+deactivate ReportView
 
 == ==
 ...
 
 ==  ==
-Doctor1 -> View: Types in message and submits
-note left of Doctor1
-    *Save message
-    *"Send" message to other doctors
-    *Notify other doctors
+Doctor1 -> ReportView: Types in message and submits
+activate ReportView
+ReportView -> MessageHandler: Pass message
+activate MessageHandler
+MessageHandler -> MessageManipulator: save message
+activate MessageManipulator
+MessageManipulator --> MessageHandler
+deactivate MessageManipulator
 
-end note
-activate View
-View -> Presenter: Pass message
-activate Presenter
-Presenter -> Querier: save message
-activate Querier
-Querier --> Presenter
-deactivate Querier
-Presenter --> View
-deactivate Presenter
 
-View -> MessageDispatcher
+MessageHandler -> MessageDispatcher: dispatch
+activate MessageDispatcher
+' TODO
+MessageDispatcher ->> DoctorN: display
+MessageDispatcher --> MessageHandler
+deactivate MessageDispatcher
 
-View --> Doctor1
-deactivate View
+MessageHandler -> MessageNotifier: dispatch
+activate MessageNotifier
+MessageNotifier ->> DoctorN: display
+MessageNotifier --> MessageHandler
+deactivate MessageNotifier
+
+MessageHandler --> ReportView
+deactivate MessageHandler
+
+
+ReportView --> Doctor1
+deactivate ReportView
 == ==
 
 ...

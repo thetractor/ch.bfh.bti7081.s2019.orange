@@ -1,7 +1,7 @@
 package ch.bfh.bti7081.View;
 
 import ch.bfh.bti7081.Presenter.ReportPresenter;
-import ch.bfh.bti7081.ServerComponents.MessageDispatcher;
+import model.message.MessageDispatcher;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.UI;

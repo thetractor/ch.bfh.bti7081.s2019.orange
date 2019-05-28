@@ -118,7 +118,7 @@ public class Patients extends ViewFrame implements RouterLayout {
 //        ObjectId doctorId = (ObjectId) VaadinService.getCurrentRequest().getWrappedSession()
 //            .getAttribute("doctorId");
         // Manuall set a doctor
-        ObjectId doctorId = new ObjectId("5ce59d0108e88e5f80ca1bcc");
+        ObjectId doctorId = new ObjectId("5cdd77e5926b512706f984f9");
         if (doctorId != null) {
             grid.setItems(presenter.getPatientsByDoctorId(doctorId));
         }
