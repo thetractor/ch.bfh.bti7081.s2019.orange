@@ -33,9 +33,10 @@ public class ReportPresenter {
      * @param patientId ObjectId of the patient
      * @return          list of all reports from the given patient
      */
-    public List<Report> getReportsByPatentId(ObjectId patientId) {
+    public List<Report> getReportsByPatentId(ObjectId patientId, Integer limit) {
         return dossierQuerier.getReports(
-                getPatientById(patientId).getDossierId()
+                getPatientById(patientId).getDossierId(),
+                limit
         );
     }
 

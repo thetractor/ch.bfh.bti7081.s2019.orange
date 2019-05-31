@@ -114,7 +114,6 @@ public class MainLayout extends FlexBoxLayout
         NaviMenu menu = naviDrawer.getMenu();
           menu.addNaviItem(VaadinIcon.HOME, "Home", Home.class);
           menu.addNaviItem(VaadinIcon.USERS, "Patients", true, Patients.class);
-          menu.addNaviItem(VaadinIcon.USERS, "Objectives", Objectives.class);
 //        menu.addNaviItem(VaadinIcon.CREDIT_CARD, "Payments", Payments.class);
 //        menu.addNaviItem(VaadinIcon.CHART, "Statistics", Statistics.class);
     }

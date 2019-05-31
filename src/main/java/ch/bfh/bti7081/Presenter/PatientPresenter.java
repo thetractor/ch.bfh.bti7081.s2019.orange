@@ -3,9 +3,12 @@ package ch.bfh.bti7081.Presenter;
 import model.doctor.DoctorQuerier;
 import model.entities.Objective;
 import model.entities.Patient;
+import model.objective.ObjectiveManipulator;
 import model.patient.PatientQuerier;
 import model.objective.ObjectiveQuerier;
 import org.bson.types.ObjectId;
+
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -47,7 +50,29 @@ public class PatientPresenter {
      * @param id ObjectId of the doctor
      * @return   list of all objectives from the given doctor
      */
-    public List<Objective> getObjectives(ObjectId id) {
-        return objectiveQuerier.getByPatient(id);
+    public List<Objective> getObjectives(ObjectId id, ObjectId parent) {
+        return objectiveQuerier.getByPatient(id, parent);
+    }
+
+    /**
+     * Get all objectives of a doctor
+     *
+     * @param id ObjectId of the doctor
+     * @return   list of all objectives from the given doctor
+     */
+    public void createOrUpdateObjectives(
+            ObjectId id, String title, String content, LocalDate dueDate,
+            double progress, double weight, ObjectId patientId, ObjectId doctorId
+    ) {
+        ObjectiveManipulator manipulator = new ObjectiveManipulator();
+        if (id == null) {
+            manipulator.build(
+                    content, java.sql.Date.valueOf(dueDate), doctorId, patientId, title, weight, progress, null
+            );
+        } else {
+            manipulator.update(
+                    id, content, java.sql.Date.valueOf(dueDate), title, weight, progress
+            );
+        }
     }
 }
