@@ -15,6 +15,7 @@ import ch.bfh.bti7081.ui.views.Home;
 //import ch.bfh.bti7081.ui.views.Statistics;
 //import ch.bfh.bti7081.ui.views.personnel.Accountants;
 //import ch.bfh.bti7081.ui.views.personnel.Managers;
+import ch.bfh.bti7081.ui.views.Objectives;
 import ch.bfh.bti7081.ui.views.Patients;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasElement;
@@ -28,6 +29,8 @@ import com.vaadin.flow.router.AfterNavigationEvent;
 import com.vaadin.flow.router.AfterNavigationObserver;
 import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.server.*;
+import org.bson.types.ObjectId;
+import model.entities.Objective;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -110,7 +113,8 @@ public class MainLayout extends FlexBoxLayout
     private void initNaviItems() {
         NaviMenu menu = naviDrawer.getMenu();
           menu.addNaviItem(VaadinIcon.HOME, "Home", Home.class);
-          menu.addNaviItem(VaadinIcon.USERS, "Patients", Patients.class);
+          menu.addNaviItem(VaadinIcon.USERS, "Patients", true, Patients.class);
+          menu.addNaviItem(VaadinIcon.USERS, "Objectives", Objectives.class);
 //        menu.addNaviItem(VaadinIcon.CREDIT_CARD, "Payments", Payments.class);
 //        menu.addNaviItem(VaadinIcon.CHART, "Statistics", Statistics.class);
     }

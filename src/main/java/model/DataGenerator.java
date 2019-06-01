@@ -6,6 +6,7 @@ import model.patient.PatientQuerier;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -42,6 +43,10 @@ class DataGenerator {
 
         System.out.println("[*] Going to delete all messages in db...");
         DataGenerator.unitOfWork.getMessageRepo().getAll().forEach(x -> unitOfWork.getMessageRepo().delete(x));
+        System.out.println("[+] Messages have been deleted");
+
+        System.out.println("[*] Going to delete all objectives in db...");
+        DataGenerator.unitOfWork.getObjectiveRepo().getAll().forEach(x -> unitOfWork.getObjectiveRepo().delete(x));
         System.out.println("[+] Messages have been deleted");
 
         // Make changes valid
@@ -97,6 +102,35 @@ class DataGenerator {
         unitOfWork.commit();
     }
 
+    /**
+     * Generates patient dummy data as well as the corresponding dossiers
+     */
+    private static void generateObjectives(){
+
+        List<Objective> objectives = new ArrayList<>();
+        List<Patient> patients = unitOfWork.getPatientRepo().getAll();
+        List<Doctor> doctors = unitOfWork.getDoctorRepo().getAll();
+
+        patients.forEach(x -> {
+            objectives.add(new Objective(
+                    new Date(),
+                    doctors.get(0).getId(),
+                    x.getId(),
+                    "This is my goal",
+                    false
+            ));
+            objectives.add(new Objective(
+                    new Date(),
+                    doctors.get(1).getId(),
+                    x.getId(),
+                    "This is my goal 2",
+                    false
+            ));
+        });
+
+        unitOfWork.getObjectiveRepo().setAll(objectives);
+        unitOfWork.commit();
+    }
     /**
      * Assigns the already existing patients to doctors
      */
@@ -176,6 +210,7 @@ class DataGenerator {
         DataGenerator.assignPatientsToDoctors();
         DataGenerator.generateReports();
         DataGenerator.generateMessages();
+        DataGenerator.generateObjectives();
 
         System.out.println("[+] DataGenerator completed");
     }
