@@ -21,10 +21,10 @@ import org.bson.types.ObjectId;
 @Push
 @Route("tryout")
 public class TryoutMessageDispatchView extends Div {
-    VerticalLayout verticalLayout = new VerticalLayout();
-    VerticalLayout messageLayout = new VerticalLayout();
+    private VerticalLayout verticalLayout = new VerticalLayout();
+    private VerticalLayout messageLayout = new VerticalLayout();
 
-    Registration messageDispatchRegistration;
+    private Registration messageDispatchRegistration;
 
     private ObjectId doctorId;
     private ReportPresenter presenter;
@@ -61,15 +61,16 @@ public class TryoutMessageDispatchView extends Div {
     private void initializeMessagePart(){
         TextField messageField = new TextField();
 
-        Button sendButton = new Button("Send", e -> {
-            // Sends value of the text field to the broadcaster, which dispatches it
-            MessageDispatcher.dispatch(messageField.getValue(), doctorId);
-            messageField.setValue("");
-        });
+//        Button sendButton = new Button("Send", e -> {
+//            // Sends value of the text field to the broadcaster, which dispatches it
+//            MessageDispatcher.dispatch(messageField.getValue(), doctorId);
+//            messageField.setValue("");
+//        });
         Button tryoutButton = new Button("Back Home", e -> {
             getUI().ifPresent(ui -> ui.navigate(""));
         });
-        HorizontalLayout sendBar = new HorizontalLayout(messageField, sendButton);
+        //HorizontalLayout sendBar = new HorizontalLayout(messageField, sendButton);
+        HorizontalLayout sendBar = new HorizontalLayout(messageField);
         verticalLayout.add(sendBar, messageLayout, tryoutButton);
     }
 
@@ -90,9 +91,9 @@ public class TryoutMessageDispatchView extends Div {
         UI ui = attachEvent.getUI();
         // Register a lambda function to the Broadcaster, which defines what to do in dispatch()
         // Register returns a lambda, used to remove the registration
-        messageDispatchRegistration = MessageDispatcher.register(newMessage -> {
-            ui.access(() -> messageLayout.add(new Span(newMessage)));
-        }, doctorId);
+//        messageDispatchRegistration = MessageDispatcher.register(newMessage -> {
+//            ui.access(() -> messageLayout.add(new Span(newMessage)));
+//        }, doctorId);
     }
 
     /**

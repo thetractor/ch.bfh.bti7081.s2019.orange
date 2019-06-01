@@ -16,6 +16,7 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
@@ -40,7 +41,6 @@ import java.util.List;
 import java.util.function.Function;
 
 import static ch.bfh.bti7081.ui.util.UIUtils.IMG_PATH;
-
 
 @Route(value = "patient-details", layout = MainLayout.class)
 @PageTitle("Patient Details")
