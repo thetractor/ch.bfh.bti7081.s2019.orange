@@ -33,6 +33,7 @@ import ch.bfh.bti7081.ui.layout.size.Vertical;
 import ch.bfh.bti7081.ui.util.BoxShadowBorders;
 import ch.bfh.bti7081.ui.util.css.FlexDirection;
 import ch.bfh.bti7081.ui.util.css.FlexWrap;
+import com.vaadin.flow.server.VaadinSession;
 import model.entities.Patient;
 import model.entities.Report;
 import org.bson.types.ObjectId;
@@ -60,6 +61,12 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
 
   @Override
   protected void onAttach(AttachEvent attachEvent) {
+    ObjectId doctorId = (ObjectId) VaadinSession.getCurrent().getAttribute("doctorId");
+    if (doctorId == null || !patientPresenter.getPatientsByDoctorId(doctorId).contains(patient)){
+      UI.getCurrent().navigate(Home.class);
+      return;
+    }
+
     super.onAttach(attachEvent);
     AppBar appBar = initAppBar();
     appBar.setTitle(patient.getName() + " " + patient.getSurname());
