@@ -10,25 +10,32 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import model.doctor.DoctorQuerier;
 import model.entities.Patient;
 import model.entities.Report;
-import org.bson.types.ObjectId;
-
 import java.util.List;
 import java.util.function.Function;
 
+
+/**
+ * Implementation of the report view
+ *
+ * @author lars.peyer@students.bfh.ch
+ * @author yannisvalentin.schmutz@students.bfh.ch
+ */
 public class ReportsWidget extends Div {
 
     private ReportPresenter reportPresenter = new ReportPresenter();
     private Patient patient;
-    List<Report> patientReports;
-    ComponentEventListener<ClickEvent<Button>> clickEvent;
-    Function<Report, ComponentEventListener<ClickEvent<Button>>> callBackFunction;
+    private List<Report> patientReports;
+    private Function<Report, ComponentEventListener<ClickEvent<Button>>> callBackFunction;
+    private DoctorQuerier doctorQuerier;
 
     public ReportsWidget(Patient patient, Function<Report, ComponentEventListener<ClickEvent<Button>>> callBackFunction) {
         this.patient = patient;
-        patientReports = reportPresenter.getReportsByPatentId(patient.getId());
         this.callBackFunction = callBackFunction;
+        patientReports = reportPresenter.getReportsByPatentId(patient.getId());
+        doctorQuerier = new DoctorQuerier();
 
         addClassNames(BoxShadowBorders.BOTTOM,
                 LumoStyles.Padding.Bottom.L);
@@ -43,11 +50,10 @@ public class ReportsWidget extends Div {
             Report report = patientReports.get(i);
 
             Button details = UIUtils.createSmallButton("Details");
-            // todo: Pass report object to showDetails function
             details.addClickListener(callBackFunction.apply(report));
             ListItem item = new ListItem(UIUtils.createTertiaryIcon(VaadinIcon.EDIT),
                     report.getContent(),
-                    "Doctor name",
+                    "Doc",  // TODO: find out doctor from report
                     details
             );
 

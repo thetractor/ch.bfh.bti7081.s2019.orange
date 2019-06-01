@@ -183,7 +183,7 @@ class DataGenerator {
         unitOfWork.getDoctorRepo().getAll().forEach(doctor -> {
             doctor.getPatients().forEach(patientID -> {
                 dossierQuerier.getReports(patientQuerier.getDossier(patientID).getId()).forEach(report -> {
-                    messages.add(new Message("Dummy message", doctor.getId(), report.getId(), new Date()));
+                    messages.add(new Message("Hi guys", doctor.getId(), report.getId(), new Date()));
                 });
             });
         });

@@ -7,6 +7,12 @@ import org.bson.types.ObjectId;
 
 import java.util.Date;
 
+/**
+ * Handles the message being sent by a view.
+ *
+ * @author yannisvalentin.schmutz@students.bfh.ch
+ * @author kevin.riesen@students.bfh.ch
+ */
 public class MessageHandler {
     private MessageManipulator messageManipulator;
 
@@ -17,7 +23,7 @@ public class MessageHandler {
 
     public void handleSentMessage(String messageContent, Report affectedReport){
         Message message = saveMessage(messageContent, affectedReport);
-        MessageDispatcher.dispatch(message, affectedReport.getId());
+        MessageDispatcher.dispatch(message);
         // TODO: @Kevin add your Notification-dispatching code here ;)
     }
 

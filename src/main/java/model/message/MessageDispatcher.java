@@ -10,52 +10,45 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
-
+/**
+ * Dispatches message to all matching, registered views.
+ *
+ * @author yannisvalentin.schmutz@students.bfh.ch
+ */
 public class MessageDispatcher {
     static Executor executor = Executors.newSingleThreadExecutor();
 
-    //static LinkedList<Consumer<String>> listeners = new LinkedList<>();
     static LinkedList<Pair<ObjectId, Consumer<Message>>> listeners = new LinkedList<>();
 
     /**
      *
      *
      * @param listener
+     * @param reportId
      * @return
      */
     public static synchronized Registration register(Consumer<Message> listener, ObjectId reportId) {
-
-        System.out.println(String.format("Register: %s", listener.toString()));
-
         Pair<ObjectId, Consumer<Message>> listenerPair = new Pair<>(reportId, listener);
         listeners.add(listenerPair);
-        //listeners.add(listener);
 
+        // Used to remove the listener when leaving the
         return () -> {
             synchronized (MessageDispatcher.class) {
                 listeners.remove(listenerPair);
-                System.out.println("********* ---------------- **************");
-                //listeners.remove(listener);
             }
         };
     }
 
     /**
+     * Sends message to all registered listener which share the same report.
      *
      * @param message
      */
-    public static synchronized void dispatch(Message message, ObjectId reportId) {
-        System.out.println(String.format("Dispatching message: %s", message));
-
+    public static synchronized void dispatch(Message message) {
 
         for (Pair<ObjectId, Consumer<Message>> listenerPair : listeners) {
-        //for (Consumer<String> listener : listeners) {
-            System.out.println(String.format("Execute message [%s] on listener [%s]", message, listenerPair.toString()));
-
-            // TODO: change logic of course
-            if (reportId.equals(listenerPair.getKey())){
-                // Accept
-                System.out.println("Accept!");
+            // Dispatch message to all registered listeners on the same report as the given message
+            if (message.getReportId().equals(listenerPair.getKey())){
                 executor.execute(() -> listenerPair.getValue().accept(message));
             }
         }
