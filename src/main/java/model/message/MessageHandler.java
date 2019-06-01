@@ -18,7 +18,7 @@ public class MessageHandler {
     public void handleSentMessage(String messageContent, Report affectedReport){
         Message message = saveMessage(messageContent, affectedReport);
         MessageDispatcher.dispatch(message, affectedReport.getId());
-        // TODO: @Kevin add your Notification-dispatching code here ;)
+        MessageNotificationDispatcher.dispatch(message);
     }
 
     private Message saveMessage(String messageText, Report affectedReport){
