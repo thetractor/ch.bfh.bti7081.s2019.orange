@@ -55,13 +55,6 @@ public class Patients extends ViewFrame implements RouterLayout {
         return grid;
     }
 
-//    private Component createPatientInfo(Patient patient) {
-//        ListItem item = new ListItem(patient.getName(),
-//                patient.getSurname());
-//        item.setHorizontalPadding(false);
-//        return item;
-//    }
-
     private void viewDetails(Patient patient) {
         UI.getCurrent().navigate(PatientDetail.class, patient.getId().toString());
     }

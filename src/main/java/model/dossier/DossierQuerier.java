@@ -25,11 +25,12 @@ public class DossierQuerier{
         return transaction.getDossierRepo().get(id);
     }
 
-    public List<Report> getReports(ObjectId id){
+    public List<Report> getReports(ObjectId id, Integer limit){
         return transaction.getReportRepo()
                 .getAll()
                 .stream()
                 .filter(x -> x.getDossierId().equals(id))
+                .limit(limit)
                 .collect(Collectors.toList());
     }
 }

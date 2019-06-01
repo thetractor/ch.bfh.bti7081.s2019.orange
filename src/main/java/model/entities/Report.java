@@ -11,9 +11,6 @@ import java.util.Objects;
 public class Report implements IEntity {
 
     private ObjectId id;
-    public ObjectId getId() {
-        return id;
-    }
     private String content;
     private ObjectId dossierId;
 
@@ -24,6 +21,10 @@ public class Report implements IEntity {
 
     public Report(){
 
+    }
+
+    public ObjectId getId() {
+        return id;
     }
 
     public void setId(ObjectId id) {

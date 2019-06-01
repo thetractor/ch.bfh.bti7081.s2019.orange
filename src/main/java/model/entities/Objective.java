@@ -13,17 +13,32 @@ public class Objective implements IEntity {
 
     private ObjectId id;
     private ObjectId patientId;
+    private String title;
     private String content;
-    private boolean finished;
+    private ObjectId parent;
+    private double weight;
+    private double progress;
     private Date dueDate;
     private ObjectId creatorId;
 
-    public Objective(Date dueDate, ObjectId creatorId, ObjectId patientId, String content, boolean finished) {
+    public Objective(
+            Date dueDate,
+            ObjectId creatorId,
+            ObjectId patientId,
+            String content,
+            String title,
+            double weight,
+            double progress,
+            ObjectId parent
+    ) {
         this.dueDate = dueDate;
         this.creatorId = creatorId;
         this.patientId = patientId;
         this.content = content;
-        this.finished = finished;
+        this.title = title;
+        this.weight = weight;
+        this.progress = progress;
+        this.parent = parent;
     }
 
     public Objective(){
@@ -62,12 +77,36 @@ public class Objective implements IEntity {
         this.content = content;
     }
 
-    public boolean isFinished() {
-        return finished;
+    public String getTitle() {
+        return title;
     }
 
-    public void setFinished(boolean finished) {
-        this.finished = finished;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public double getProgress() {
+        return progress;
+    }
+
+    public void setProgress(double progress) {
+        this.progress = progress;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public ObjectId getParent() {
+        return parent;
+    }
+
+    public void setParent(ObjectId parent) {
+        this.parent = parent;
     }
 
     public ObjectId getPatientId() {
@@ -83,14 +122,13 @@ public class Objective implements IEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Objective objective = (Objective) o;
-        return finished == objective.finished &&
-                Objects.equals(dueDate, objective.dueDate) &&
+        return Objects.equals(dueDate, objective.dueDate) &&
                 creatorId.equals(objective.creatorId) &&
                 content.equals(objective.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dueDate, creatorId, content, finished);
+        return Objects.hash(dueDate, creatorId, content);
     }
 }
