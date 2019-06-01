@@ -24,16 +24,19 @@ import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.page.Viewport;
 import com.vaadin.flow.router.AfterNavigationEvent;
 import com.vaadin.flow.router.AfterNavigationObserver;
 import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.server.*;
+import com.vaadin.flow.shared.communication.PushMode;
 import org.bson.types.ObjectId;
 import model.entities.Objective;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Push
 @HtmlImport("frontend://styles/shared-styles.html")
 @Viewport("width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes")
 @PWA(name = "PMS Orange", shortName = "PMS Orange", iconPath = "images/logo.png", backgroundColor = "#233348", themeColor = "#233348")

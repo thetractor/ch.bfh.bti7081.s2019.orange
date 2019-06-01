@@ -16,7 +16,6 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
@@ -37,8 +36,6 @@ import com.vaadin.flow.server.VaadinSession;
 import model.entities.Patient;
 import model.entities.Report;
 import org.bson.types.ObjectId;
-
-import java.util.List;
 import java.util.function.Function;
 
 import static ch.bfh.bti7081.ui.util.UIUtils.IMG_PATH;
@@ -47,16 +44,12 @@ import static ch.bfh.bti7081.ui.util.UIUtils.IMG_PATH;
 @PageTitle("Patient Details")
 public class PatientDetail extends SplitViewFrame implements HasUrlParameter<String> {
 
-  public int LENGTH_REPORT_LIST = 2;
-
   private DetailsDrawer detailsDrawer;
   private Patient patient;
   private ListItem patientName;
   private ListItem patientDisorder;
   private ListItem patientMedication;
   private PatientPresenter patientPresenter = new PatientPresenter();
-  private ReportPresenter reportPresenter = new ReportPresenter();
-  List<Report> patientReports;
 
 
   @Override
@@ -73,7 +66,6 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     UI.getCurrent().getPage().setTitle(patient.getName() + " " + patient.getSurname());
 
     setViewContent(createContent());
-    //setViewDetails(createDetailsDrawer());
   }
 
   @Override
@@ -165,44 +157,11 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
 
   private void showDetails(Report report) {
     setViewDetails(createDetailsDrawer(report));
-    //detailsDrawer.setContent(createDetails(report)); // todo: pass report object
     detailsDrawer.show();
   }
 
-  private Component createDetails(Report report) {  // todo: Expect report object
-//    ListItem status = new ListItem(payment.getStatus().getIcon(),
-//        payment.getStatus().getName(), "Status");
-//
-//    status.getContent().setAlignItems(FlexComponent.Alignment.BASELINE);
-//    status.getContent().setSpacing(Bottom.XS);
-//    UIUtils.setTheme(payment.getStatus().getTheme().getThemeName(),
-//        status.getPrimary());
-//    UIUtils.setTooltip(payment.getStatus().getDesc(), status);
-//
-//    ListItem from = new ListItem(
-//        UIUtils.createTertiaryIcon(VaadinIcon.UPLOAD_ALT),
-//        payment.getFrom() + "\n" + payment.getFromIBAN(), "Sender");
-//    ListItem to = new ListItem(
-//        UIUtils.createTertiaryIcon(VaadinIcon.DOWNLOAD_ALT),
-//        payment.getTo() + "\n" + payment.getToIBAN(), "Receiver");
-//    ListItem amount = new ListItem(
-//        UIUtils.createTertiaryIcon(VaadinIcon.DOLLAR),
-//        UIUtils.formatAmount(payment.getAmount()), "Amount");
-//    ListItem date = new ListItem(
-//        UIUtils.createTertiaryIcon(VaadinIcon.CALENDAR),
-//        UIUtils.formatDate(payment.getDate()), "Date");
-//
-//    for (ListItem item : new ListItem[] { status, from, to, amount,
-//        date }) {
-//      item.setReverse(true);
-//      item.setWhiteSpace(WhiteSpace.PRE_LINE);
-//    }
-//
-//    Div details = new Div(status, from, to, amount, date);
-//    details.addClassName(LumoStyles.Padding.Vertical.S);
-//    return details;
-
-
+  private Component createDetails(Report report) {
+    // TODO: Implement details view
     Div details = new Div(new Label("Details"));
     details.addClassNames(LumoStyles.Padding.Responsive.Horizontal.L, LumoStyles.Padding.Vertical.L);
     return details;

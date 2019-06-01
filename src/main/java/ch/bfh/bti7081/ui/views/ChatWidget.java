@@ -2,7 +2,6 @@ package ch.bfh.bti7081.ui.views;
 
 import ch.bfh.bti7081.Presenter.MessagePresenter;
 import ch.bfh.bti7081.ui.components.Divider;
-import ch.bfh.bti7081.ui.layout.size.Vertical;
 import ch.bfh.bti7081.ui.util.LumoStyles;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
@@ -11,25 +10,27 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.server.VaadinService;
-import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.shared.Registration;
 import model.doctor.DoctorQuerier;
 import model.entities.Message;
 import model.entities.Report;
 import model.message.MessageDispatcher;
 import model.message.MessageHandler;
-import model.message.MessageManipulator;
-import org.bson.types.ObjectId;
 
-import java.util.Date;
-import java.util.List;
 
-//@Push
+/**
+ * Implementation of the ChatWidget
+ * This class sends message-strings to the message handler and also registers to MessageDispatcher.
+ * So it gets updated every time a new message was sent for the same report.
+ *
+ * @author yannisvalentin.schmutz@students.bfh.ch
+ */
+@Push
+@Route("push")
 public class ChatWidget extends VerticalLayout {
 
     private MessagePresenter messagePresenter;
@@ -61,14 +62,10 @@ public class ChatWidget extends VerticalLayout {
         messagePresenter.getMessagesByReportId(report.getId())
                 .forEach(message -> messageLayout.add(createMessageLabel(message)));
 
-        //Div form = new Div(new Label("Form"));
         TextField messageField = new TextField();
         Div formDivider = new Div(new Divider("1px"));
-        // TODO: Replace e -> with injected event listener?
         Button sendButton = new Button("Send", e -> {
             messageHandler.handleSentMessage(messageField.getValue(), report);
-            //saveMessage(messageField.getValue());
-            //messageLayout.add(new Label(messageField.getValue())); // TODO: change this, DISPATCH message
             messageField.setValue("");
         });
 
@@ -95,7 +92,7 @@ public class ChatWidget extends VerticalLayout {
     protected void onAttach(AttachEvent attachEvent) {
 
         UI ui = attachEvent.getUI();
-        // Register a lambda function to the Broadcaster, which defines what to do in dispatch()
+        // Register a lambda function to the MessageDispatcher, which defines what to do in dispatch()
         // Register returns a lambda, used to remove the registration
         messageDispatchRegistration = MessageDispatcher.register(newMessage -> {
             ui.access(() -> messageLayout.add(createMessageLabel(newMessage)));
@@ -110,7 +107,6 @@ public class ChatWidget extends VerticalLayout {
      */
     @Override
     protected void onDetach(DetachEvent detachEvent) {
-        // ToDo: be also able to remove the registration if the window gets closed.
         if(messageDispatchRegistration != null){
             messageDispatchRegistration.remove();
             messageDispatchRegistration = null;
