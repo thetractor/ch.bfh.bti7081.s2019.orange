@@ -58,20 +58,19 @@ public class PatientPresenter {
      * Get all objectives of a doctor
      *
      * @param id ObjectId of the doctor
-     * @return   list of all objectives from the given doctor
      */
     public void createOrUpdateObjectives(
             ObjectId id, String title, String content, LocalDate dueDate,
-            double progress, double weight, ObjectId patientId, ObjectId doctorId
+            double progress, double weight, ObjectId patientId, ObjectId parentId,ObjectId doctorId
     ) {
         ObjectiveManipulator manipulator = new ObjectiveManipulator();
         if (id == null) {
             manipulator.build(
-                    content, java.sql.Date.valueOf(dueDate), doctorId, patientId, title, weight, progress, null
+                    content, java.sql.Date.valueOf(dueDate), doctorId, patientId, title, weight, progress, parentId
             );
         } else {
             manipulator.update(
-                    id, content, java.sql.Date.valueOf(dueDate), title, weight, progress
+                    id, content, java.sql.Date.valueOf(dueDate), title, weight, progress, parentId
             );
         }
     }

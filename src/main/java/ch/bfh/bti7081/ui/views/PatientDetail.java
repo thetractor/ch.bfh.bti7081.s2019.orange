@@ -12,6 +12,7 @@ import ch.bfh.bti7081.ui.util.UIUtils;
 import ch.bfh.bti7081.ui.util.css.BorderRadius;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
@@ -41,8 +42,11 @@ import com.vaadin.flow.server.VaadinSession;
 import model.entities.Objective;
 import model.entities.Patient;
 import model.entities.Report;
+import model.objective.ObjectiveQuerier;
+import model.patient.PatientQuerier;
 import org.bson.types.ObjectId;
 
+import javax.swing.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
@@ -272,13 +276,19 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     NumberField weightField = new NumberField("Weight");
     weightField.setWidth("40%");
     weightField.addClassName(LumoStyles.Margin.Horizontal.L);
+
+    ComboBox<Objective> cmbBox = new ComboBox<>("Parent");
+    cmbBox.setItems(new ObjectiveQuerier().getByPatient(patient.getId(), null));
+    cmbBox.setItemLabelGenerator(Objective::getTitle);
+    cmbBox.setWidth("100%");
+
     Button saveButton = new Button("Save");
 
     ObjectId doctorId = (ObjectId) VaadinSession.getCurrent().getAttribute("doctorId");
     saveButton.addClickListener(
             e -> patientPresenter.createOrUpdateObjectives(
                     objective == null ? null : objective.getId(), titleField.getValue(), contentField.getValue(),
-                    dateField.getValue(), progressField.getValue(), weightField.getValue(), patient.getId(), doctorId
+                    dateField.getValue(), progressField.getValue(), weightField.getValue(), patient.getId(), cmbBox.getValue().getId(), doctorId
             )
     );
 
@@ -286,8 +296,8 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
       titleField.setValue(objective.getTitle());
       contentField.setValue(objective.getContent());
       dateField.setValue(objective.getDueDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-      progressField.setValue((double) objective.getProgress());
-      weightField.setValue((double) objective.getWeight());
+      progressField.setValue(objective.getProgress());
+      weightField.setValue(objective.getWeight());
     }
 
     // add fields to view
@@ -296,6 +306,7 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     objectives.add(dateField);
     objectives.add(progressField);
     objectives.add(weightField);
+    objectives.add(cmbBox);
     objectives.add(saveButton);
 
     return objectives;
