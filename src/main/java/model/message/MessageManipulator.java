@@ -20,8 +20,8 @@ public class MessageManipulator {
     //ToDo dependency injection for UnitOfWork
     private UnitOfWork transaction = new UnitOfWork(DbConnector.getDatabase());
 
-    public Message build(String content, ObjectId doctor, ObjectId report){
-        Message obj = new Message(content, doctor,report);
+    public Message build(String content, ObjectId doctor, ObjectId report, Date sentDate){
+        Message obj = new Message(content, doctor,report, sentDate);
         transaction.getMessageRepo().set(obj);
         transaction.commit();
         return obj;

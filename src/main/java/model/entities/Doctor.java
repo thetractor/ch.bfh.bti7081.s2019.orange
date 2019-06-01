@@ -51,6 +51,10 @@ public class Doctor implements Serializable, IEntity {
         this.surname = surname;
     }
 
+    public String getFullName(){
+        return getName() + " " + getSurname();
+    }
+
     public List<ObjectId> getPatients() {
         return patients;
     }

@@ -1,7 +1,7 @@
 package ch.bfh.bti7081.ui.views;
 
 import ch.bfh.bti7081.Presenter.PatientPresenter;
-import ch.bfh.bti7081.ui.components.Divider;
+import ch.bfh.bti7081.Presenter.ReportPresenter;
 import ch.bfh.bti7081.ui.components.ListItem;
 import ch.bfh.bti7081.ui.components.detailsdrawer.DetailsDrawer;
 import ch.bfh.bti7081.ui.components.detailsdrawer.DetailsDrawerHeader;
@@ -9,10 +9,7 @@ import ch.bfh.bti7081.ui.layout.size.Top;
 import ch.bfh.bti7081.ui.util.LumoStyles;
 import ch.bfh.bti7081.ui.util.UIUtils;
 import ch.bfh.bti7081.ui.util.css.BorderRadius;
-import ch.bfh.bti7081.ui.util.css.WhiteSpace;
-import com.vaadin.flow.component.AttachEvent;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
@@ -39,7 +36,8 @@ import model.entities.Patient;
 import model.entities.Report;
 import org.bson.types.ObjectId;
 
-import java.time.LocalDate;
+import java.util.List;
+import java.util.function.Function;
 
 import static ch.bfh.bti7081.ui.util.UIUtils.IMG_PATH;
 
@@ -52,10 +50,12 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
 
   private DetailsDrawer detailsDrawer;
   private Patient patient;
-  private ListItem patrientName;
+  private ListItem patientName;
   private ListItem patientDisorder;
   private ListItem patientMedication;
   private PatientPresenter patientPresenter = new PatientPresenter();
+  private ReportPresenter reportPresenter = new ReportPresenter();
+  List<Report> patientReports;
 
 
   @Override
@@ -66,13 +66,13 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     UI.getCurrent().getPage().setTitle(patient.getName() + " " + patient.getSurname());
 
     setViewContent(createContent());
-    setViewDetails(createDetailsDrawer());
+    //setViewDetails(createDetailsDrawer());
   }
 
   @Override
   public void setParameter(BeforeEvent beforeEvent, String patientIdString) {
-    setViewContent(createContent());
     patient = patientPresenter.getPatient(new ObjectId(patientIdString));
+    setViewContent(createContent());
   }
 
   private AppBar initAppBar() {
@@ -103,12 +103,12 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     UIUtils.setBorderRadius(BorderRadius._50, image);
 
 
-    patrientName = new ListItem(
+    patientName = new ListItem(
         UIUtils.createTertiaryIcon(VaadinIcon.USER_CARD), "Patient Name",
         "Patient");
-    patrientName.getPrimary().addClassName(LumoStyles.Heading.H2);
-    patrientName.setDividerVisible(true);
-    patrientName.setReverse(true);
+    patientName.getPrimary().addClassName(LumoStyles.Heading.H2);
+    patientName.setDividerVisible(true);
+    patientName.setReverse(true);
 
     patientDisorder = new ListItem(
         UIUtils.createTertiaryIcon(VaadinIcon.SPARK_LINE), "Anxiety disorders",
@@ -123,7 +123,7 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     patientMedication.getPrimary().addClassName(LumoStyles.Heading.H2);
     patientMedication.setReverse(true);
 
-    FlexBoxLayout listItems = new FlexBoxLayout(patrientName, patientDisorder, patientMedication);
+    FlexBoxLayout listItems = new FlexBoxLayout(patientName, patientDisorder, patientMedication);
     listItems.setFlexDirection(FlexDirection.COLUMN);
 
     FlexBoxLayout section = new FlexBoxLayout(image, listItems);
@@ -146,34 +146,23 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
   }
 
   private Component createRecentReportsList() {
-    Div items = new Div();
-    items.addClassNames(BoxShadowBorders.BOTTOM,
-        LumoStyles.Padding.Bottom.L);
-
-    for (int i = 0; i < LENGTH_REPORT_LIST; i++) {
-      Button details = UIUtils.createSmallButton("Details");
-      // todo: Pass report object to showDetails function
-      details.addClickListener(e -> showDetails());
-      ListItem item = new ListItem(UIUtils.createTertiaryIcon(VaadinIcon.EDIT),
-          "Report Title",
-          "Doctor name",
-          details
-         );
-
-      // Dividers for all but the last item
-      item.setDividerVisible(i < LENGTH_REPORT_LIST - 1);
-      items.add(item);
-    }
-
-    return items;
+    // Passes a reference to the showDetails function which shall be called after pressing of a reports
+    // Detail-button. The showDetails function requires the id of the given report.
+    Function<Report, ComponentEventListener<ClickEvent<Button>>> callBackFunction =  (report) -> {
+      ComponentEventListener<ClickEvent<Button>> clickEvent = e -> showDetails(report);
+      return clickEvent;
+    };
+    ReportsWidget reportsWidget = new ReportsWidget(patient, callBackFunction);
+    return reportsWidget;
   }
 
-  private void showDetails() {  // todo: Expect report object
-    detailsDrawer.setContent(createDetails()); // todo: pass report object
+  private void showDetails(Report report) {
+    setViewDetails(createDetailsDrawer(report));
+    //detailsDrawer.setContent(createDetails(report)); // todo: pass report object
     detailsDrawer.show();
   }
 
-  private Component createDetails() {  // todo: Expect report object
+  private Component createDetails(Report report) {  // todo: Expect report object
 //    ListItem status = new ListItem(payment.getStatus().getIcon(),
 //        payment.getStatus().getName(), "Status");
 //
@@ -206,19 +195,15 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
 //    details.addClassName(LumoStyles.Padding.Vertical.S);
 //    return details;
 
+
     Div details = new Div(new Label("Details"));
     details.addClassNames(LumoStyles.Padding.Responsive.Horizontal.L, LumoStyles.Padding.Vertical.L);
     return details;
   }
 
-  private Component cerateMessages() {
-    Div header = new Div(new Label("Messages"));
-    Div divider = new Div(new Divider("1px"));
-    divider.addClassName(LumoStyles.Padding.Responsive.Vertical.M);
-    Div form = new Div(new Label("Form"));
-    Div messages = new Div(header, divider, form);
-    messages.addClassNames(LumoStyles.Padding.Responsive.Horizontal.L, LumoStyles.Padding.Vertical.L);
-    return messages;
+  private Component createMessageView(Report report) {
+    ChatWidget messageView = new ChatWidget(report);
+    return messageView;
   }
 
   private Component createGoals() {
@@ -227,7 +212,7 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     return goals;
   }
 
-  private DetailsDrawer createDetailsDrawer() {
+  private DetailsDrawer createDetailsDrawer(Report report) {
     detailsDrawer = new DetailsDrawer(DetailsDrawer.Position.RIGHT);
 
     // Header
@@ -240,9 +225,9 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     tabs.addSelectedChangeListener(e -> {
       Tab selectedTab = tabs.getSelectedTab();
       if (selectedTab.equals(details)) {
-        detailsDrawer.setContent(createDetails());
+        detailsDrawer.setContent(createDetails(report));
       } else if (selectedTab.equals(messages)) {
-        detailsDrawer.setContent(cerateMessages());
+        detailsDrawer.setContent(createMessageView(report));
       } else if (selectedTab.equals(goals)) {
         detailsDrawer.setContent(createGoals());
       }

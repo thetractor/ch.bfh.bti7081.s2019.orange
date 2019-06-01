@@ -43,11 +43,11 @@ class DataGenerator {
 
         System.out.println("[*] Going to delete all messages in db...");
         DataGenerator.unitOfWork.getMessageRepo().getAll().forEach(x -> unitOfWork.getMessageRepo().delete(x));
-        System.out.println("[+] Messages have been deleted");
+        System.out.println("[+] ChatWidget have been deleted");
 
         System.out.println("[*] Going to delete all objectives in db...");
         DataGenerator.unitOfWork.getObjectiveRepo().getAll().forEach(x -> unitOfWork.getObjectiveRepo().delete(x));
-        System.out.println("[+] Messages have been deleted");
+        System.out.println("[+] ChatWidget have been deleted");
 
         // Make changes valid
         unitOfWork.commit();
@@ -183,7 +183,7 @@ class DataGenerator {
         unitOfWork.getDoctorRepo().getAll().forEach(doctor -> {
             doctor.getPatients().forEach(patientID -> {
                 dossierQuerier.getReports(patientQuerier.getDossier(patientID).getId()).forEach(report -> {
-                    messages.add(new Message("Dummy message", doctor.getId(), report.getId()));
+                    messages.add(new Message("Dummy message", doctor.getId(), report.getId(), new Date()));
                 });
             });
         });
