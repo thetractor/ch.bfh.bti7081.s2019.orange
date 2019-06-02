@@ -34,7 +34,7 @@ public class ReportsWidget extends Div {
     public ReportsWidget(Patient patient, Function<Report, ComponentEventListener<ClickEvent<Button>>> callBackFunction) {
         this.patient = patient;
         this.callBackFunction = callBackFunction;
-        patientReports = reportPresenter.getReportsByPatentId(patient.getId());
+        patientReports = reportPresenter.getReportsByPatentId(patient.getId(), 10);
         doctorQuerier = new DoctorQuerier();
 
         addClassNames(BoxShadowBorders.BOTTOM,

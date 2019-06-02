@@ -48,7 +48,7 @@ public class MessageNotificationDispatcher {
                     .stream()
                     .map(x -> patientQuerier.getDossier(x.getId()))
                     .filter(x -> x != null)
-                    .flatMap(x -> dossierQuerier.getReports(x.getId()).stream())
+                    .flatMap(x -> dossierQuerier.getReports(x.getId(), 10).stream())
                     .anyMatch(x -> x != null && x.getId().equals(message.getReportId()))){
                 listenerPair.getValue().accept(message);
             }
