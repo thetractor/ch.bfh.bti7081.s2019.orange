@@ -1,6 +1,6 @@
 package ch.bfh.bti7081.ui.views;
 
-import ch.bfh.bti7081.Presenter.PatientPresenter;
+import ch.bfh.bti7081.presenter.PatientPresenter;
 import ch.bfh.bti7081.ui.MainLayout;
 import ch.bfh.bti7081.ui.util.UIUtils;
 import com.vaadin.flow.component.Component;
@@ -11,7 +11,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.ParentLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLayout;
-import model.entities.Objective;
+import ch.bfh.bti7081.model.entities.Objective;
 import org.bson.types.ObjectId;
 
 @Route(value = "objectives", layout = MainLayout.class)

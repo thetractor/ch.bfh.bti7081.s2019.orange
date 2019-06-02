@@ -1,8 +1,6 @@
 package ch.bfh.bti7081.ui.views;
 
-import ch.bfh.bti7081.Presenter.PatientPresenter;
-import ch.bfh.bti7081.Presenter.ReportPresenter;
-import ch.bfh.bti7081.ui.components.Divider;
+import ch.bfh.bti7081.presenter.PatientPresenter;
 import ch.bfh.bti7081.ui.components.ListItem;
 import ch.bfh.bti7081.ui.components.detailsdrawer.DetailsDrawer;
 import ch.bfh.bti7081.ui.components.detailsdrawer.DetailsDrawerHeader;
@@ -39,16 +37,13 @@ import ch.bfh.bti7081.ui.util.BoxShadowBorders;
 import ch.bfh.bti7081.ui.util.css.FlexDirection;
 import ch.bfh.bti7081.ui.util.css.FlexWrap;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.server.VaadinSession;
-import model.entities.Objective;
-import model.entities.Patient;
-import model.entities.Report;
-import model.objective.ObjectiveQuerier;
-import model.patient.PatientQuerier;
+import ch.bfh.bti7081.model.entities.Objective;
+import ch.bfh.bti7081.model.entities.Patient;
+import ch.bfh.bti7081.model.entities.Report;
+import ch.bfh.bti7081.model.objective.ObjectiveQuerier;
 import org.bson.types.ObjectId;
 import java.util.function.Function;
 
-import javax.swing.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
@@ -56,17 +51,23 @@ import java.util.List;
 
 import static ch.bfh.bti7081.ui.util.UIUtils.IMG_PATH;
 
+/**
+ * Class still needs a lot of refactoring, therefore the class description will be added
+ * after being in a more robust/ "more final" state.
+ *
+ * @author Team Orange
+ */
 @Route(value = "patient-details", layout = MainLayout.class)
 @PageTitle("Patient Details")
 public class PatientDetail extends SplitViewFrame implements HasUrlParameter<String> {
 
-  private DetailsDrawer detailsDrawer;
+  private DetailsDrawer reportDrawer;
+  private DetailsDrawer objectiveDrawer;
   private Patient patient;
   private ListItem patientName;
   private ListItem patientDisorder;
   private ListItem patientMedication;
   private PatientPresenter patientPresenter = new PatientPresenter();
-  private ReportPresenter reportPresenter = new ReportPresenter();
 
 
   @Override
@@ -84,7 +85,7 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
 
     setViewContent(createContent());
     // TODO: un-comment and make it work
-    //setViewDetails(createDetailsDrawer());
+    //setViewDetails(createReportDrawer());
   }
 
   @Override
@@ -168,10 +169,10 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
   }
 
   private Component createRecentReportsList() {
-    // Passes a reference to the showDetails function which shall be called after pressing of a reports
-    // Detail-button. The showDetails function requires the id of the given report.
+    // Passes a reference to the showReportDetails function which shall be called after pressing of a reports
+    // Detail-button. The showReportDetails function requires the id of the given report.
     Function<Report, ComponentEventListener<ClickEvent<Button>>> callBackFunction =  (report) -> {
-      ComponentEventListener<ClickEvent<Button>> clickEvent = e -> showDetails(report);
+      ComponentEventListener<ClickEvent<Button>> clickEvent = e -> showReportDetails(report);
       return clickEvent;
     };
     ReportsWidget reportsWidget = new ReportsWidget(patient, callBackFunction);
@@ -226,10 +227,10 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     return items;
   }
 
-  private void showDetails(Report report) {
-      //detailsDrawer.setContent(createDetails());
-    setViewDetails(createDetailsDrawer(report));
-    detailsDrawer.show();
+  private void showReportDetails(Report report) {
+    setViewDetails(createReportDrawer(report));
+    reportDrawer.setContent(createReportDetails(report));
+    reportDrawer.show();
   }
 
   private void showSubtasks(Objective objective){
@@ -238,13 +239,27 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
   }
 
   private void showObjectives(Objective objective) {
-    detailsDrawer.setContent(createObjective(objective));
-    detailsDrawer.show();
+    setViewDetails(createObjectiveDrawer(objective));
+    objectiveDrawer.setContent(createObjective(objective));
+    objectiveDrawer.show();
   }
 
-  private Component createDetails(Report report) {
-      // TODO: Implement details view
-    Div details = new Div(new Label("Details"));
+  private Component createReportDetails(Report report) {
+    // TODO: Implement details view further
+    // TODO: A frontend dev would be very welcome to design this properly... ;)
+    Div details = new Div();
+    Html detailsLabel = new Html(String.format(
+            "<div>" +
+                "<h3>Report title</h3>" +
+                "<h3>Report content</h3>" +
+                "<div style=\"background-color:lightgray;border-radius:5px;padding:1px;\">\n" +
+                    "<p>%s</p>\n" +
+                "</div>" +
+                "<h3>Date</h3>" +
+            "</div>",
+            report.getContent()));
+
+    details.add(detailsLabel);
     details.addClassNames(LumoStyles.Padding.Responsive.Horizontal.L, LumoStyles.Padding.Vertical.L);
     return details;
   }
@@ -291,6 +306,7 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     saveButton.addClickListener(
             e -> patientPresenter.createOrUpdateObjectives(
                     objective == null ? null : objective.getId(), titleField.getValue(), contentField.getValue(),
+                    // TODO: Null pointer exception if no value selected for cmbBox!
                     dateField.getValue(), progressField.getValue(), weightField.getValue(), patient.getId(), cmbBox.getValue().getId(), doctorId
             )
     );
@@ -315,32 +331,46 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     return objectives;
   }
 
-  private DetailsDrawer createDetailsDrawer(Report report) {
-    detailsDrawer = new DetailsDrawer(DetailsDrawer.Position.RIGHT);
+  private DetailsDrawer createReportDrawer(Report report) {
+    reportDrawer = new DetailsDrawer(DetailsDrawer.Position.RIGHT);
 
     // Header
-    Tab details = new Tab("Details");
-    Tab messages = new Tab("Messages");
-    Tab objectives = new Tab("Objectives");
+    Tab reportDetailTab = new Tab("Report details");
+    Tab messageTab = new Tab("Messages");
 
-    Tabs tabs = new Tabs(details, messages, objectives);
+    Tabs tabs = new Tabs(reportDetailTab, messageTab);
     tabs.addThemeVariants(TabsVariant.LUMO_EQUAL_WIDTH_TABS);
+
     tabs.addSelectedChangeListener(e -> {
       Tab selectedTab = tabs.getSelectedTab();
-      if (selectedTab.equals(details)) {
-        detailsDrawer.setContent(createDetails(report));
-      } else if (selectedTab.equals(messages)) {
-        detailsDrawer.setContent(createMessageView(report));
-      } else if (selectedTab.equals(objectives)) {
-        detailsDrawer.setContent(createObjective(null));
+      if (selectedTab.equals(reportDetailTab)) {
+        reportDrawer.setContent(createReportDetails(report));
+      } else if (selectedTab.equals(messageTab)) {
+        reportDrawer.setContent(createMessageView(report));
       }
     });
 
-    DetailsDrawerHeader detailsDrawerHeader = new DetailsDrawerHeader("Report Details", tabs);
-    detailsDrawerHeader.addCloseListener(buttonClickEvent -> detailsDrawer.hide());
-    detailsDrawer.setHeader(detailsDrawerHeader);
+    DetailsDrawerHeader detailsDrawerHeader = new DetailsDrawerHeader("Report", tabs);
+    detailsDrawerHeader.addCloseListener(buttonClickEvent -> reportDrawer.hide());
+    reportDrawer.setHeader(detailsDrawerHeader);
 
-    return detailsDrawer;
+    return reportDrawer;
   }
 
+  private DetailsDrawer createObjectiveDrawer(Objective objective){
+    objectiveDrawer = new DetailsDrawer(DetailsDrawer.Position.RIGHT);
+
+    // header
+    Tab objectiveDetailTab = new Tab("Objective details");
+
+    Tabs tabs = new Tabs(objectiveDetailTab);
+    tabs.addThemeVariants(TabsVariant.LUMO_EQUAL_WIDTH_TABS);
+
+    DetailsDrawerHeader objectiveDrawerHeader = new DetailsDrawerHeader("Objective", tabs);
+    objectiveDrawerHeader.addCloseListener(buttonClickEvent -> objectiveDrawer.hide());
+    objectiveDrawer.setHeader(objectiveDrawerHeader);
+
+    return objectiveDrawer;
+
+  }
 }

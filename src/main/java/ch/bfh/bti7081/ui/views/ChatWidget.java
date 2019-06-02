@@ -1,6 +1,6 @@
 package ch.bfh.bti7081.ui.views;
 
-import ch.bfh.bti7081.Presenter.MessagePresenter;
+import ch.bfh.bti7081.presenter.MessagePresenter;
 import ch.bfh.bti7081.ui.components.Divider;
 import ch.bfh.bti7081.ui.util.LumoStyles;
 import com.vaadin.flow.component.AttachEvent;
@@ -15,11 +15,11 @@ import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.shared.Registration;
-import model.doctor.DoctorQuerier;
-import model.entities.Message;
-import model.entities.Report;
-import model.message.MessageDispatcher;
-import model.message.MessageHandler;
+import ch.bfh.bti7081.model.doctor.DoctorQuerier;
+import ch.bfh.bti7081.model.entities.Message;
+import ch.bfh.bti7081.model.entities.Report;
+import ch.bfh.bti7081.model.message.MessageDispatcher;
+import ch.bfh.bti7081.model.message.MessageHandler;
 
 
 /**
