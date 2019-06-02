@@ -11,6 +11,7 @@ import com.vaadin.flow.router.*;
 import model.entities.Objective;
 import ch.bfh.bti7081.Presenter.ObjectivePresenter;
 import model.entities.Patient;
+import model.objective.ProgressCalculator;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -46,17 +47,11 @@ public class ObjectiveDetail extends ViewFrame implements RouterLayout, HasUrlPa
         ProgressBar progressBar = new ProgressBar();
         progressBar.setMax(100);
         progressBar.setMin(0);
-        progressBar.setValue(calculateTaskProgress());
+        progressBar.setValue(ProgressCalculator.calculateProgress(children));
 
         Div content = new Div(labeldiv, contdiv, text, progressBar, grid);
         content.addClassName("grid-view");
         return content;
-    }
-
-    private Double calculateTaskProgress(){
-        double totalWeight = children.stream().mapToDouble(Objective::getWeight).sum();
-        double currentWeightDone = children.parallelStream().mapToDouble(x -> (x.getProgress()/100) * x.getWeight()).sum();
-        return totalWeight * currentWeightDone;
     }
 
     private Grid createGrid() {
