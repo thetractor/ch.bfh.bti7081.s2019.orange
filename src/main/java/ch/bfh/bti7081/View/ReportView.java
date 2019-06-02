@@ -104,7 +104,7 @@ public class ReportView extends VerticalLayout {
         ObjectId patientId = (ObjectId) VaadinService.getCurrentRequest()
                 .getWrappedSession().getAttribute("patientId");
         if (patientId != null) {
-            grid.setItems(presenter.getReportsByPatentId(patientId));
+            grid.setItems(presenter.getReportsByPatentId(patientId, 10));
         }
     }
 

@@ -3,7 +3,6 @@ package ch.bfh.bti7081.ui.views;
 import ch.bfh.bti7081.Presenter.PatientPresenter;
 import ch.bfh.bti7081.ui.MainLayout;
 import ch.bfh.bti7081.ui.util.UIUtils;
-import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.grid.Grid;
@@ -12,7 +11,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.ParentLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLayout;
-import com.vaadin.flow.server.VaadinService;
 import model.entities.Objective;
 import org.bson.types.ObjectId;
 
@@ -60,7 +58,7 @@ public class Objectives extends ViewFrame implements RouterLayout {
         // this is currently hardcoded, as we have no session logic
         ObjectId patientId = new ObjectId("5ceda9592d441018a541f34c");
         if (patientId != null) {
-            grid.setItems(presenter.getObjectives(patientId));
+            grid.setItems(presenter.getObjectives(patientId, null));
         }
     }
 }

@@ -19,11 +19,38 @@ public class ObjectiveManipulator{
     //ToDo dependency injection for UnitOfWork
     private UnitOfWork transaction = new UnitOfWork(DbConnector.getDatabase());
 
-    public Objective build(String content, Date dueDate, ObjectId creator, ObjectId patient){
-        Objective obj = new Objective(dueDate,creator,patient,content,false);
+    public Objective build(
+            String content,
+            Date dueDate,
+            ObjectId creator,
+            ObjectId patient,
+            String title,
+            double weight,
+            double progress,
+            ObjectId parent
+    ){
+        Objective obj = new Objective(dueDate,creator,patient,content, title, weight, progress, parent);
         transaction.getObjectiveRepo().set(obj);
         transaction.commit();
         return obj;
+    }
+
+    public void update(
+            ObjectId entity,
+            String content,
+            Date dueDate,
+            String title,
+            double weight,
+            double progress
+    ){
+        Objective obj = transaction.getObjectiveRepo().get(entity);
+        obj.setTitle(title);
+        obj.setContent(content);
+        obj.setDueDate(dueDate);
+        obj.setWeight(weight);
+        obj.setProgress(progress);
+        transaction.getObjectiveRepo().update(obj);
+        transaction.commit();
     }
 
     public void delete(ObjectId entity) {

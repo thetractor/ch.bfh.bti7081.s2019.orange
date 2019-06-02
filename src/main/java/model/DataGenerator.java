@@ -43,11 +43,11 @@ class DataGenerator {
 
         System.out.println("[*] Going to delete all messages in db...");
         DataGenerator.unitOfWork.getMessageRepo().getAll().forEach(x -> unitOfWork.getMessageRepo().delete(x));
-        System.out.println("[+] ChatWidget have been deleted");
+        System.out.println("[+] Messages have been deleted");
 
         System.out.println("[*] Going to delete all objectives in db...");
         DataGenerator.unitOfWork.getObjectiveRepo().getAll().forEach(x -> unitOfWork.getObjectiveRepo().delete(x));
-        System.out.println("[+] ChatWidget have been deleted");
+        System.out.println("[+] Messages have been deleted");
 
         // Make changes valid
         unitOfWork.commit();
@@ -116,15 +116,22 @@ class DataGenerator {
                     new Date(),
                     doctors.get(0).getId(),
                     x.getId(),
-                    "This is my goal",
-                    false
+                    "Do not longer take drugs like a 18 year old girl on a Justin Bieber concert.",
+                    "No more drugs",
+                    3,
+                    2,
+                    null
+
             ));
             objectives.add(new Objective(
                     new Date(),
                     doctors.get(1).getId(),
                     x.getId(),
-                    "This is my goal 2",
-                    false
+                    "Elephants can drink up to 200 liters of water a day. Become 1% of an elephant and drink 2 liter a day.",
+                    "Drink water",
+                    3,
+                    0,
+                    null
             ));
         });
 
@@ -182,7 +189,7 @@ class DataGenerator {
 
         unitOfWork.getDoctorRepo().getAll().forEach(doctor -> {
             doctor.getPatients().forEach(patientID -> {
-                dossierQuerier.getReports(patientQuerier.getDossier(patientID).getId()).forEach(report -> {
+                dossierQuerier.getReports(patientQuerier.getDossier(patientID).getId(), 10).forEach(report -> {
                     messages.add(new Message("Hi guys", doctor.getId(), report.getId(), new Date()));
                 });
             });

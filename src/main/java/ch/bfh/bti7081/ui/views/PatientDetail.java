@@ -2,6 +2,7 @@ package ch.bfh.bti7081.ui.views;
 
 import ch.bfh.bti7081.Presenter.PatientPresenter;
 import ch.bfh.bti7081.Presenter.ReportPresenter;
+import ch.bfh.bti7081.ui.components.Divider;
 import ch.bfh.bti7081.ui.components.ListItem;
 import ch.bfh.bti7081.ui.components.detailsdrawer.DetailsDrawer;
 import ch.bfh.bti7081.ui.components.detailsdrawer.DetailsDrawerHeader;
@@ -19,6 +20,10 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
+import com.vaadin.flow.component.textfield.NumberField;
+import com.vaadin.flow.component.textfield.TextArea;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
@@ -33,10 +38,17 @@ import ch.bfh.bti7081.ui.util.BoxShadowBorders;
 import ch.bfh.bti7081.ui.util.css.FlexDirection;
 import ch.bfh.bti7081.ui.util.css.FlexWrap;
 import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.server.VaadinSession;
+import model.entities.Objective;
 import model.entities.Patient;
 import model.entities.Report;
 import org.bson.types.ObjectId;
 import java.util.function.Function;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.util.List;
 
 import static ch.bfh.bti7081.ui.util.UIUtils.IMG_PATH;
 
@@ -50,6 +62,7 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
   private ListItem patientDisorder;
   private ListItem patientMedication;
   private PatientPresenter patientPresenter = new PatientPresenter();
+  private ReportPresenter reportPresenter = new ReportPresenter();
 
 
   @Override
@@ -83,9 +96,13 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
   }
 
   private Component createContent() {
-    FlexBoxLayout content = new FlexBoxLayout(createLogoSection(),
-        createRecentReportsHeader(),
-        createRecentReportsList());
+    FlexBoxLayout content = new FlexBoxLayout(
+            createLogoSection(),
+            createSubHeader("Recent Reports"),
+            createRecentReportsList(),
+            createSubHeader("Objectives"),
+            createObjectiveList()
+    );
     content.setFlexDirection(FlexDirection.COLUMN);
     content.setMargin(Horizontal.AUTO, Vertical.RESPONSIVE_L);
     content.setMaxWidth("840px");
@@ -103,7 +120,7 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
 
 
     patientName = new ListItem(
-        UIUtils.createTertiaryIcon(VaadinIcon.USER_CARD), "Patient Name",
+        UIUtils.createTertiaryIcon(VaadinIcon.USER_CARD), patient.getFullName(),
         "Patient");
     patientName.getPrimary().addClassName(LumoStyles.Heading.H2);
     patientName.setDividerVisible(true);
@@ -135,8 +152,8 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     return section;
   }
 
-  private Component createRecentReportsHeader() {
-    Label title = UIUtils.createH3Label("Recent Reports");
+  private Component createSubHeader(String titleText) {
+    Label title = UIUtils.createH3Label(titleText);
 
     FlexBoxLayout header = new FlexBoxLayout(title);
     header.setAlignItems(FlexComponent.Alignment.CENTER);
@@ -155,13 +172,55 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     return reportsWidget;
   }
 
+    private Component createObjectiveList() {
+        Div items = new Div();
+        Div stats = new Div();
+
+        items.addClassNames(BoxShadowBorders.BOTTOM, LumoStyles.Padding.Bottom.L);
+
+        List<Objective> objectives = patientPresenter.getObjectives(patient.getId(), null);
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        Text intro = new Text("There are currently " + objectives.size() + " objectives for this patient.");
+        stats.add(intro);
+        stats.addClassName(LumoStyles.Margin.Left.L);
+        items.add(stats);
+        int counter = 0;
+        for (Objective objective : objectives) {
+            counter++;
+            Button details = UIUtils.createSmallButton("Show objective");
+            details.addClickListener(e -> showObjectives(objective));
+            ListItem item = new ListItem(
+                    UIUtils.createTertiaryIcon(VaadinIcon.OPEN_BOOK),
+                    objective.getTitle() + " (due by: " + dateFormat.format(objective.getDueDate()) + ")",
+                    objective.getContent(),
+                    details
+            );
+
+            // Dividers for all but the last item
+            item.setDividerVisible(counter != objectives.size());
+            items.add(item);
+        }
+        Button addNewObjective = new Button("Add a new objective");
+        addNewObjective.addClickListener(e -> showObjectives(null));
+
+        addNewObjective.addClassName(LumoStyles.Margin.Left.L);
+        items.add(addNewObjective);
+        return items;
+    }
+
   private void showDetails(Report report) {
+      //detailsDrawer.setContent(createDetails());
     setViewDetails(createDetailsDrawer(report));
     detailsDrawer.show();
   }
 
+  private void showObjectives(Objective objective) {
+    detailsDrawer.setContent(createObjective(objective));
+    detailsDrawer.show();
+  }
+
   private Component createDetails(Report report) {
-    // TODO: Implement details view
+      // TODO: Implement details view
     Div details = new Div(new Label("Details"));
     details.addClassNames(LumoStyles.Padding.Responsive.Horizontal.L, LumoStyles.Padding.Vertical.L);
     return details;
@@ -172,10 +231,58 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     return messageView;
   }
 
-  private Component createGoals() {
-    Div goals = new Div(new Label("Goals"));
-    goals.addClassNames(LumoStyles.Padding.Responsive.Horizontal.L, LumoStyles.Padding.Vertical.L);
-    return goals;
+  private Component createObjective(Objective objective) {
+    Div objectives = new Div();
+
+    objectives.addClassNames(
+            LumoStyles.Padding.Responsive.Horizontal.L, LumoStyles.Padding.Vertical.L
+    );
+
+    TextField titleField = new TextField("Title");
+    titleField.setWidth("100%");
+
+    TextArea contentField = new TextArea("Content");
+    contentField.setWidth("100%");
+
+    DatePicker dateField = new DatePicker("Due date");
+    dateField.setWidth("100%");
+
+
+    NumberField progressField = new NumberField("Progress in % (0-100)");
+    progressField.setWidth("40%");
+    progressField.setMax(100);
+    progressField.setMin(0);
+
+    NumberField weightField = new NumberField("Weight");
+    weightField.setWidth("40%");
+    weightField.addClassName(LumoStyles.Margin.Horizontal.L);
+    Button saveButton = new Button("Save");
+
+    ObjectId doctorId = (ObjectId) VaadinSession.getCurrent().getAttribute("doctorId");
+    saveButton.addClickListener(
+            e -> patientPresenter.createOrUpdateObjectives(
+                    objective == null ? null : objective.getId(), titleField.getValue(), contentField.getValue(),
+                    dateField.getValue(), progressField.getValue(), weightField.getValue(), patient.getId(), doctorId
+            )
+    );
+
+    if (objective != null) {
+      titleField.setValue(objective.getTitle());
+      contentField.setValue(objective.getContent());
+      dateField.setValue(objective.getDueDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+      progressField.setValue((double) objective.getProgress());
+      weightField.setValue((double) objective.getWeight());
+    }
+
+    // add fields to view
+    objectives.add(titleField);
+    objectives.add(contentField);
+    objectives.add(dateField);
+    objectives.add(progressField);
+    objectives.add(weightField);
+    objectives.add(saveButton);
+
+    return objectives;
   }
 
   private DetailsDrawer createDetailsDrawer(Report report) {
@@ -184,9 +291,9 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     // Header
     Tab details = new Tab("Details");
     Tab messages = new Tab("Messages");
-    Tab goals = new Tab("Goals");
+    Tab objectives = new Tab("Objectives");
 
-    Tabs tabs = new Tabs(details, messages, goals);
+    Tabs tabs = new Tabs(details, messages, objectives);
     tabs.addThemeVariants(TabsVariant.LUMO_EQUAL_WIDTH_TABS);
     tabs.addSelectedChangeListener(e -> {
       Tab selectedTab = tabs.getSelectedTab();
@@ -194,8 +301,8 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
         detailsDrawer.setContent(createDetails(report));
       } else if (selectedTab.equals(messages)) {
         detailsDrawer.setContent(createMessageView(report));
-      } else if (selectedTab.equals(goals)) {
-        detailsDrawer.setContent(createGoals());
+      } else if (selectedTab.equals(objectives)) {
+        detailsDrawer.setContent(createObjective(null));
       }
     });
 
