@@ -1,9 +1,9 @@
-package ch.bfh.bti7081.Presenter;
+package ch.bfh.bti7081.presenter;
 
-import model.entities.Objective;
-import model.entities.Patient;
-import model.objective.ObjectiveQuerier;
-import model.patient.PatientQuerier;
+import ch.bfh.bti7081.model.entities.Objective;
+import ch.bfh.bti7081.model.entities.Patient;
+import ch.bfh.bti7081.model.objective.ObjectiveQuerier;
+import ch.bfh.bti7081.model.patient.PatientQuerier;
 import org.bson.types.ObjectId;
 
 import java.util.List;

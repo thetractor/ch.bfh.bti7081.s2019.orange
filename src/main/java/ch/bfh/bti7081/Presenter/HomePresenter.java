@@ -1,12 +1,12 @@
-package ch.bfh.bti7081.Presenter;
+package ch.bfh.bti7081.presenter;
 
-import model.doctor.DoctorQuerier;
-import model.dossier.DossierQuerier;
-import model.entities.Doctor;
-import model.entities.Patient;
-import model.entities.Report;
-import model.patient.PatientQuerier;
-import model.report.ReportQuerier;
+import ch.bfh.bti7081.model.doctor.DoctorQuerier;
+import ch.bfh.bti7081.model.dossier.DossierQuerier;
+import ch.bfh.bti7081.model.entities.Doctor;
+import ch.bfh.bti7081.model.entities.Patient;
+import ch.bfh.bti7081.model.entities.Report;
+import ch.bfh.bti7081.model.patient.PatientQuerier;
+import ch.bfh.bti7081.model.report.ReportQuerier;
 import org.bson.types.ObjectId;
 
 import java.util.List;

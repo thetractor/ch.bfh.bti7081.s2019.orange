@@ -1,7 +1,7 @@
-package ch.bfh.bti7081.Presenter;
+package ch.bfh.bti7081.presenter;
 
-import model.entities.Message;
-import model.message.MessageQuerier;
+import ch.bfh.bti7081.model.entities.Message;
+import ch.bfh.bti7081.model.message.MessageQuerier;
 import org.bson.types.ObjectId;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package ch.bfh.bti7081.ui.components.navigation.bar;
 
-import ch.bfh.bti7081.Presenter.HomePresenter;
+import ch.bfh.bti7081.presenter.HomePresenter;
 import ch.bfh.bti7081.ui.MainLayout;
 import ch.bfh.bti7081.ui.components.FlexBoxLayout;
 import ch.bfh.bti7081.ui.components.navigation.tab.NaviTab;
@@ -31,13 +31,12 @@ import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.shared.Registration;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import model.entities.Doctor;
-import model.entities.Message;
-import model.entities.Patient;
-import model.entities.Report;
-import model.message.MessageNotificationDispatcher;
+import ch.bfh.bti7081.model.entities.Doctor;
+import ch.bfh.bti7081.model.entities.Message;
+import ch.bfh.bti7081.model.entities.Patient;
+import ch.bfh.bti7081.model.entities.Report;
+import ch.bfh.bti7081.model.message.MessageNotificationDispatcher;
 import org.bson.types.ObjectId;
 
 import static ch.bfh.bti7081.ui.util.UIUtils.IMG_PATH;

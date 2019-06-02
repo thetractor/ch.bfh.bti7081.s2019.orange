@@ -1,6 +1,6 @@
 package ch.bfh.bti7081.ui.views;
 
-import ch.bfh.bti7081.Presenter.ReportPresenter;
+import ch.bfh.bti7081.presenter.ReportPresenter;
 import ch.bfh.bti7081.ui.components.ListItem;
 import ch.bfh.bti7081.ui.util.BoxShadowBorders;
 import ch.bfh.bti7081.ui.util.LumoStyles;
@@ -10,9 +10,9 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import model.doctor.DoctorQuerier;
-import model.entities.Patient;
-import model.entities.Report;
+import ch.bfh.bti7081.model.doctor.DoctorQuerier;
+import ch.bfh.bti7081.model.entities.Patient;
+import ch.bfh.bti7081.model.entities.Report;
 import java.util.List;
 import java.util.function.Function;
 

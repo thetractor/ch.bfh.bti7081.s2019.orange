@@ -1,8 +1,7 @@
 package ch.bfh.bti7081.ui.views;
 
-import ch.bfh.bti7081.Presenter.PatientPresenter;
-import ch.bfh.bti7081.Presenter.ReportPresenter;
-import ch.bfh.bti7081.ui.components.Divider;
+import ch.bfh.bti7081.presenter.PatientPresenter;
+import ch.bfh.bti7081.presenter.ReportPresenter;
 import ch.bfh.bti7081.ui.components.ListItem;
 import ch.bfh.bti7081.ui.components.detailsdrawer.DetailsDrawer;
 import ch.bfh.bti7081.ui.components.detailsdrawer.DetailsDrawerHeader;
@@ -39,16 +38,13 @@ import ch.bfh.bti7081.ui.util.BoxShadowBorders;
 import ch.bfh.bti7081.ui.util.css.FlexDirection;
 import ch.bfh.bti7081.ui.util.css.FlexWrap;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.server.VaadinSession;
-import model.entities.Objective;
-import model.entities.Patient;
-import model.entities.Report;
-import model.objective.ObjectiveQuerier;
-import model.patient.PatientQuerier;
+import ch.bfh.bti7081.model.entities.Objective;
+import ch.bfh.bti7081.model.entities.Patient;
+import ch.bfh.bti7081.model.entities.Report;
+import ch.bfh.bti7081.model.objective.ObjectiveQuerier;
 import org.bson.types.ObjectId;
 import java.util.function.Function;
 
-import javax.swing.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;

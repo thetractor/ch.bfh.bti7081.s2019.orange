@@ -1,11 +1,11 @@
-package ch.bfh.bti7081.Presenter;
+package ch.bfh.bti7081.presenter;
 
-import model.doctor.DoctorQuerier;
-import model.entities.Objective;
-import model.entities.Patient;
-import model.objective.ObjectiveManipulator;
-import model.patient.PatientQuerier;
-import model.objective.ObjectiveQuerier;
+import ch.bfh.bti7081.model.doctor.DoctorQuerier;
+import ch.bfh.bti7081.model.entities.Objective;
+import ch.bfh.bti7081.model.entities.Patient;
+import ch.bfh.bti7081.model.objective.ObjectiveManipulator;
+import ch.bfh.bti7081.model.patient.PatientQuerier;
+import ch.bfh.bti7081.model.objective.ObjectiveQuerier;
 import org.bson.types.ObjectId;
 
 import java.time.LocalDate;
