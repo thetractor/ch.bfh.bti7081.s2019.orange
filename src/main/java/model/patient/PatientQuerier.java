@@ -2,6 +2,7 @@ package model.patient;
 
 import model.DbConnector;
 import model.UnitOfWork;
+import model.dossier.DossierQuerier;
 import model.entities.Dossier;
 import model.entities.Patient;
 import org.bson.types.ObjectId;
@@ -31,5 +32,13 @@ public class PatientQuerier {
     public Dossier getDossier(ObjectId id){
         ObjectId dossierId = this.get(id).getDossierId();
         return transaction.getDossierRepo().get(dossierId);
+    }
+
+    public Patient getByReport(ObjectId reportId, DossierQuerier dossierQuerier){
+        return getAll()
+                .stream()
+                .filter(x -> dossierQuerier.getReports(x.getDossierId(), 10).stream().anyMatch(y -> y.getId().equals(reportId)))
+                .findFirst()
+                .get();
     }
 }

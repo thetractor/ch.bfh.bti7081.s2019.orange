@@ -56,7 +56,7 @@ public class Objectives extends ViewFrame implements RouterLayout {
      */
     public void updateList() {
         // this is currently hardcoded, as we have no session logic
-        ObjectId patientId = new ObjectId("5cec1ada06ae6043cecbcf17");
+        ObjectId patientId = new ObjectId("5ceda9592d441018a541f34c");
         if (patientId != null) {
             grid.setItems(presenter.getObjectives(patientId, null));
         }

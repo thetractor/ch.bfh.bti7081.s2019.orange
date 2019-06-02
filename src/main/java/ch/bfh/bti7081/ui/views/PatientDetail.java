@@ -38,10 +38,12 @@ import ch.bfh.bti7081.ui.util.BoxShadowBorders;
 import ch.bfh.bti7081.ui.util.css.FlexDirection;
 import ch.bfh.bti7081.ui.util.css.FlexWrap;
 import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.server.VaadinSession;
 import model.entities.Objective;
 import model.entities.Patient;
 import model.entities.Report;
 import org.bson.types.ObjectId;
+import java.util.function.Function;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -50,12 +52,9 @@ import java.util.List;
 
 import static ch.bfh.bti7081.ui.util.UIUtils.IMG_PATH;
 
-
 @Route(value = "patient-details", layout = MainLayout.class)
 @PageTitle("Patient Details")
 public class PatientDetail extends SplitViewFrame implements HasUrlParameter<String> {
-
-  public int LENGTH_REPORT_LIST = 3;
 
   private DetailsDrawer detailsDrawer;
   private Patient patient;
@@ -68,13 +67,18 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
 
   @Override
   protected void onAttach(AttachEvent attachEvent) {
+    ObjectId doctorId = (ObjectId) VaadinSession.getCurrent().getAttribute("doctorId");
+    if (doctorId == null || !patientPresenter.getPatientsByDoctorId(doctorId).contains(patient)){
+      UI.getCurrent().navigate(Home.class);
+      return;
+    }
+
     super.onAttach(attachEvent);
     AppBar appBar = initAppBar();
     appBar.setTitle(patient.getName() + " " + patient.getSurname());
     UI.getCurrent().getPage().setTitle(patient.getName() + " " + patient.getSurname());
 
     setViewContent(createContent());
-    setViewDetails(createDetailsDrawer());
   }
 
   @Override
@@ -158,71 +162,55 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
   }
 
   private Component createRecentReportsList() {
-    Div items = new Div();
-    items.addClassNames(BoxShadowBorders.BOTTOM,
-            LumoStyles.Padding.Bottom.L);
-
-    List<Report> reports = reportPresenter.getReportsByPatentId(patient.getId(), LENGTH_REPORT_LIST);
-    int counter = 0;
-    for (Report report : reports) {
-      counter++;
-      Button details = UIUtils.createSmallButton("Details");
-      // todo: Pass report object to showDetails function
-      details.addClickListener(e -> showDetails());
-      ListItem item = new ListItem(
-              UIUtils.createTertiaryIcon(VaadinIcon.EDIT),
-              "created by DOCTOR",
-              report.getContent(),
-              details
-      );
-
-      // Dividers for all but the last item
-      item.setDividerVisible(counter != reports.size());
-      items.add(item);
-    }
-
-
-    return items;
+    // Passes a reference to the showDetails function which shall be called after pressing of a reports
+    // Detail-button. The showDetails function requires the id of the given report.
+    Function<Report, ComponentEventListener<ClickEvent<Button>>> callBackFunction =  (report) -> {
+      ComponentEventListener<ClickEvent<Button>> clickEvent = e -> showDetails(report);
+      return clickEvent;
+    };
+    ReportsWidget reportsWidget = new ReportsWidget(patient, callBackFunction);
+    return reportsWidget;
   }
 
-  private Component createObjectiveList() {
-    Div items = new Div();
-    Div stats = new Div();
+    private Component createObjectiveList() {
+        Div items = new Div();
+        Div stats = new Div();
 
-    items.addClassNames(BoxShadowBorders.BOTTOM, LumoStyles.Padding.Bottom.L);
+        items.addClassNames(BoxShadowBorders.BOTTOM, LumoStyles.Padding.Bottom.L);
 
-    List<Objective> objectives = patientPresenter.getObjectives(patient.getId(), null);
-    DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-    Text intro = new Text("There are currently " + objectives.size() + " objectives for this patient.");
-    stats.add(intro);
-    stats.addClassName(LumoStyles.Margin.Left.L);
-    items.add(stats);
-    int counter = 0;
-    for (Objective objective : objectives) {
-      counter++;
-      Button details = UIUtils.createSmallButton("Show objective");
-      details.addClickListener(e -> showObjectives(objective));
-      ListItem item = new ListItem(
-              UIUtils.createTertiaryIcon(VaadinIcon.OPEN_BOOK),
-              objective.getTitle() + " (due by: " + dateFormat.format(objective.getDueDate()) + ")",
-              objective.getContent(),
-              details
-      );
+        List<Objective> objectives = patientPresenter.getObjectives(patient.getId(), null);
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        Text intro = new Text("There are currently " + objectives.size() + " objectives for this patient.");
+        stats.add(intro);
+        stats.addClassName(LumoStyles.Margin.Left.L);
+        items.add(stats);
+        int counter = 0;
+        for (Objective objective : objectives) {
+            counter++;
+            Button details = UIUtils.createSmallButton("Show objective");
+            details.addClickListener(e -> showObjectives(objective));
+            ListItem item = new ListItem(
+                    UIUtils.createTertiaryIcon(VaadinIcon.OPEN_BOOK),
+                    objective.getTitle() + " (due by: " + dateFormat.format(objective.getDueDate()) + ")",
+                    objective.getContent(),
+                    details
+            );
 
-      // Dividers for all but the last item
-      item.setDividerVisible(counter != objectives.size());
-      items.add(item);
+            // Dividers for all but the last item
+            item.setDividerVisible(counter != objectives.size());
+            items.add(item);
+        }
+        Button addNewObjective = new Button("Add a new objective");
+        addNewObjective.addClickListener(e -> showObjectives(null));
+
+        addNewObjective.addClassName(LumoStyles.Margin.Left.L);
+        items.add(addNewObjective);
+        return items;
     }
-    Button addNewObjective = new Button("Add a new objective");
-    addNewObjective.addClickListener(e -> showObjectives(null));
 
-    addNewObjective.addClassName(LumoStyles.Margin.Left.L);
-    items.add(addNewObjective);
-    return items;
-  }
-
-  private void showDetails() {  // todo: Expect report object
-    detailsDrawer.setContent(createDetails()); // todo: pass report object
+  private void showDetails(Report report) {
+      //detailsDrawer.setContent(createDetails());
+    setViewDetails(createDetailsDrawer(report));
     detailsDrawer.show();
   }
 
@@ -231,20 +219,16 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     detailsDrawer.show();
   }
 
-  private Component createDetails() {  // todo: Expect report object
+  private Component createDetails(Report report) {
+      // TODO: Implement details view
     Div details = new Div(new Label("Details"));
     details.addClassNames(LumoStyles.Padding.Responsive.Horizontal.L, LumoStyles.Padding.Vertical.L);
     return details;
   }
 
-  private Component cerateMessages() {
-    Div header = new Div(new Label("Messages"));
-    Div divider = new Div(new Divider("1px"));
-    divider.addClassName(LumoStyles.Padding.Responsive.Vertical.M);
-    Div form = new Div(new Label("Form"));
-    Div messages = new Div(header, divider, form);
-    messages.addClassNames(LumoStyles.Padding.Responsive.Horizontal.L, LumoStyles.Padding.Vertical.L);
-    return messages;
+  private Component createMessageView(Report report) {
+    ChatWidget messageView = new ChatWidget(report);
+    return messageView;
   }
 
   private Component createObjective(Objective objective) {
@@ -301,7 +285,7 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     return objectives;
   }
 
-  private DetailsDrawer createDetailsDrawer() {
+  private DetailsDrawer createDetailsDrawer(Report report) {
     detailsDrawer = new DetailsDrawer(DetailsDrawer.Position.RIGHT);
 
     // Header
@@ -314,9 +298,9 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     tabs.addSelectedChangeListener(e -> {
       Tab selectedTab = tabs.getSelectedTab();
       if (selectedTab.equals(details)) {
-        detailsDrawer.setContent(createDetails());
+        detailsDrawer.setContent(createDetails(report));
       } else if (selectedTab.equals(messages)) {
-        detailsDrawer.setContent(cerateMessages());
+        detailsDrawer.setContent(createMessageView(report));
       } else if (selectedTab.equals(objectives)) {
         detailsDrawer.setContent(createObjective(null));
       }

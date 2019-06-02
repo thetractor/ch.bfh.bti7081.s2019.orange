@@ -8,6 +8,7 @@ import ch.bfh.bti7081.ui.components.navigation.tab.NaviTabs;
 import ch.bfh.bti7081.ui.util.LumoStyles;
 import ch.bfh.bti7081.ui.util.UIUtils;
 import ch.bfh.bti7081.ui.views.Home;
+import ch.bfh.bti7081.ui.views.PatientDetail;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Composite;
@@ -28,8 +29,16 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.shared.Registration;
+
 import java.util.List;
+import java.util.stream.Collectors;
+
 import model.entities.Doctor;
+import model.entities.Message;
+import model.entities.Patient;
+import model.entities.Report;
+import model.message.MessageNotificationDispatcher;
+import org.bson.types.ObjectId;
 
 import static ch.bfh.bti7081.ui.util.UIUtils.IMG_PATH;
 
@@ -46,6 +55,7 @@ public class AppBar extends Composite<FlexLayout> {
 
     private H4 title;
     private FlexBoxLayout actionItems;
+    private Image messages;
     private Image avatar;
     private Label doctorName;
 
@@ -55,6 +65,7 @@ public class AppBar extends Composite<FlexLayout> {
 
     private TextField search;
     private Registration searchRegistration;
+    private Registration messageNotifyRegistration;
 
     public enum NaviMode {
         MENU, CONTEXTUAL
@@ -69,6 +80,7 @@ public class AppBar extends Composite<FlexLayout> {
         initContextIcon();
         initTitle(title);
         initSearch();
+        initNotifications();
         initAvatar();
         initDoctorName();
         initActionItems();
@@ -134,7 +146,73 @@ public class AppBar extends Composite<FlexLayout> {
     private void clickDoctorEvent(Doctor doctor){
         VaadinSession.getCurrent().setAttribute("doctorId", doctor.getId());
         VaadinSession.getCurrent().setAttribute("doctorName", doctor.getName() + " " + doctor.getSurname());
+        if(messageNotifyRegistration != null){
+            messageNotifyRegistration.remove();
+            messageNotifyRegistration = null;
+        }
         UI.getCurrent().getPage().reload();
+    }
+
+    /**
+     * initializes the notification icon and registers a listener to the MessageNotificationDispatcher
+     */
+    private void initNotifications() {
+        messages = new Image();
+        messages.setClassName(CLASS_NAME + "__notification");
+        messages.setSrc(IMG_PATH + "logo-17.png");
+        messages.setWidth("20px");
+        messages.setHeight("20px");
+        messages.setAlt("Notifications");
+        messages.getStyle().set("display", "none");
+
+        ObjectId doctorId = (ObjectId) VaadinSession.getCurrent().getAttribute("doctorId");
+
+        if (doctorId == null){
+            messages.setVisible(false);
+            return;
+        }
+
+        ContextMenu contextMenu = new ContextMenu(messages);
+        contextMenu.setOpenOnClick(true);
+
+        UI ui = UI.getCurrent();
+
+        // Register a lambda function to the Broadcaster, which defines what to do in dispatch()
+        // Register returns a lambda, used to remove the registration
+        messageNotifyRegistration = MessageNotificationDispatcher.register(newMessage -> {
+            addMessageNotification(newMessage, contextMenu, doctorId, ui);
+        }, doctorId);
+    }
+
+    /**
+     * Sets the notification icon to visible and adds the message details to the notification list
+     * @param message Message the notification is about
+     * @param messageContextMenu Contextmenu which shows the notification
+     * @param doctorId doctorId of the Doc who receives the notification on the UI
+     * @param ui Ui that has to be updated
+     */
+    private void addMessageNotification(Message message, ContextMenu messageContextMenu, ObjectId doctorId, UI ui){
+        if (doctorId.equals(message.getFromDoctorId())) {
+            return;
+        }
+        ui.access(() -> messages.getStyle().set("display", "block"));
+
+        Doctor doctor = homePresenter.getDoctor(message.getFromDoctorId());
+        Patient patient = homePresenter.getPatientByReport(message.getReportId());
+        String text = doctor.getFullName() + " wrote regarding patient " + patient.getFullName() + ":\n" + message.getContent();
+        messageContextMenu.addItem(text,
+                e -> clickMessageEvent(message));
+    }
+
+    /**
+     * Handles the click on a message notification and redirects to the corresponding patient
+     * @param message
+     */
+    private void clickMessageEvent(Message message){
+        Report report = homePresenter.getReport(message.getReportId());
+        Patient patient = homePresenter.getPatientByReport(message.getReportId());
+        UI.getCurrent().navigate(PatientDetail.class, patient.getId().toString());
+        //ToDo: Open Report directly
     }
 
     private void initActionItems() {
@@ -150,7 +228,7 @@ public class AppBar extends Composite<FlexLayout> {
 
     private void initContainer() {
         container = new FlexBoxLayout(menuIcon, contextIcon, this.title, search,
-                actionItems, doctorName, avatar);
+                actionItems, messages, doctorName, avatar);
         container.addClassName(CLASS_NAME + "__container");
         container.setAlignItems(FlexComponent.Alignment.CENTER);
         container.setFlexGrow(1, search);

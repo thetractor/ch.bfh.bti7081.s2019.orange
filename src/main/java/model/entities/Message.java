@@ -2,6 +2,7 @@ package model.entities;
 
 import org.bson.types.ObjectId;
 
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -14,11 +15,13 @@ public class Message implements IEntity {
     private String content;
     private ObjectId fromDoctorId;
     private ObjectId reportId;
+    private Date sentDate;
 
-    public Message(String content, ObjectId fromDoctorId, ObjectId reportId) {
+    public Message(String content, ObjectId fromDoctorId, ObjectId reportId, Date sentDate) {
         this.content = content;
         this.fromDoctorId = fromDoctorId;
         this.reportId = reportId;
+        this.sentDate = sentDate;
     }
 
     public Message(){
@@ -55,6 +58,14 @@ public class Message implements IEntity {
 
     public void setFromDoctorId(ObjectId fromDoctorId) {
         this.fromDoctorId = fromDoctorId;
+    }
+
+    public Date getSentDate(){
+        return sentDate;
+    }
+
+    public void setSentDate(Date sentDate){
+        this.sentDate = sentDate;
     }
 
     @Override

@@ -6,6 +6,7 @@ import model.entities.Message;
 import org.bson.types.ObjectId;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * API to Query dossier related stuff
@@ -21,5 +22,12 @@ public class MessageQuerier {
 
     public Message get(ObjectId id) {
         return transaction.getMessageRepo().get(id);
+    }
+
+    public List<Message> getByReportId(ObjectId reportId){
+        return getAll()
+                .stream()
+                .filter(message -> message.getReportId().equals(reportId))
+                .collect(Collectors.toList());
     }
 }
