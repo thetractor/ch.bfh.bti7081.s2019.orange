@@ -55,11 +55,7 @@ public class HomePresenter {
      * @return
      */
     public Patient getPatientByReport(ObjectId reportId){
-        return patientQuerier.getAll()
-                .stream()
-                .filter(x -> dossierQuerier.getReports(x.getDossierId(), 10).stream().anyMatch(y -> y.getId().equals(reportId)))
-                .findFirst()
-                .get();
+        return patientQuerier.getByReport(reportId, dossierQuerier);
     }
 
     /**
