@@ -12,6 +12,7 @@ import ch.bfh.bti7081.ui.util.UIUtils;
 import ch.bfh.bti7081.ui.util.css.BorderRadius;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
@@ -42,9 +43,12 @@ import com.vaadin.flow.server.VaadinSession;
 import model.entities.Objective;
 import model.entities.Patient;
 import model.entities.Report;
+import model.objective.ObjectiveQuerier;
+import model.patient.PatientQuerier;
 import org.bson.types.ObjectId;
 import java.util.function.Function;
 
+import javax.swing.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
@@ -79,6 +83,8 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     UI.getCurrent().getPage().setTitle(patient.getName() + " " + patient.getSurname());
 
     setViewContent(createContent());
+    // TODO: un-comment and make it work
+    //setViewDetails(createDetailsDrawer());
   }
 
   @Override
@@ -172,46 +178,63 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     return reportsWidget;
   }
 
-    private Component createObjectiveList() {
-        Div items = new Div();
-        Div stats = new Div();
+  private Component createObjectiveList() {
+    Div items = new Div();
+    Div stats = new Div();
 
-        items.addClassNames(BoxShadowBorders.BOTTOM, LumoStyles.Padding.Bottom.L);
+    items.addClassNames(BoxShadowBorders.BOTTOM, LumoStyles.Padding.Bottom.L);
 
-        List<Objective> objectives = patientPresenter.getObjectives(patient.getId(), null);
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        Text intro = new Text("There are currently " + objectives.size() + " objectives for this patient.");
-        stats.add(intro);
-        stats.addClassName(LumoStyles.Margin.Left.L);
-        items.add(stats);
-        int counter = 0;
-        for (Objective objective : objectives) {
-            counter++;
-            Button details = UIUtils.createSmallButton("Show objective");
-            details.addClickListener(e -> showObjectives(objective));
-            ListItem item = new ListItem(
-                    UIUtils.createTertiaryIcon(VaadinIcon.OPEN_BOOK),
-                    objective.getTitle() + " (due by: " + dateFormat.format(objective.getDueDate()) + ")",
-                    objective.getContent(),
-                    details
-            );
+    List<Objective> objectives = patientPresenter.getObjectives(patient.getId(), null);
+    DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    Text intro = new Text("There are currently " + objectives.size() + " objectives for this patient.");
 
-            // Dividers for all but the last item
-            item.setDividerVisible(counter != objectives.size());
-            items.add(item);
-        }
-        Button addNewObjective = new Button("Add a new objective");
-        addNewObjective.addClickListener(e -> showObjectives(null));
+    stats.add(intro);
+    stats.addClassName(LumoStyles.Margin.Left.L);
+    items.add(stats);
 
-        addNewObjective.addClassName(LumoStyles.Margin.Left.L);
-        items.add(addNewObjective);
-        return items;
+    int counter = 0;
+    for (Objective objective : objectives) {
+      counter++;
+
+      Button details = UIUtils.createSmallButton("Show objective");
+      details.addClickListener(e -> showObjectives(objective));
+
+      Button subTasks = UIUtils.createSmallButton("Show subtasks");
+      subTasks.addClickListener(e -> showSubtasks(objective));
+
+
+
+      ListItem item = new ListItem(
+              UIUtils.createTertiaryIcon(VaadinIcon.OPEN_BOOK),
+              objective.getTitle() + " (due by: " + dateFormat.format(objective.getDueDate()) + ")",
+              objective.getContent(),
+              details
+
+      );
+        item.add(subTasks);
+
+
+      // Dividers for all but the last item
+      item.setDividerVisible(counter != objectives.size());
+      items.add(item);
     }
+    Button addNewObjective = new Button("Add a new objective");
+    addNewObjective.addClickListener(e -> showObjectives(null));
+
+    addNewObjective.addClassName(LumoStyles.Margin.Left.L);
+    items.add(addNewObjective);
+    return items;
+  }
 
   private void showDetails(Report report) {
       //detailsDrawer.setContent(createDetails());
     setViewDetails(createDetailsDrawer(report));
     detailsDrawer.show();
+  }
+
+  private void showSubtasks(Objective objective){
+      String param = objective.getId().toString() + ";" + patient.getId().toString();
+      UI.getCurrent().navigate(ObjectiveDetail.class, param);
   }
 
   private void showObjectives(Objective objective) {
@@ -256,13 +279,19 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     NumberField weightField = new NumberField("Weight");
     weightField.setWidth("40%");
     weightField.addClassName(LumoStyles.Margin.Horizontal.L);
+
+    ComboBox<Objective> cmbBox = new ComboBox<>("Parent");
+    cmbBox.setItems(new ObjectiveQuerier().getByPatient(patient.getId()));
+    cmbBox.setItemLabelGenerator(Objective::getTitle);
+    cmbBox.setWidth("100%");
+
     Button saveButton = new Button("Save");
 
     ObjectId doctorId = (ObjectId) VaadinSession.getCurrent().getAttribute("doctorId");
     saveButton.addClickListener(
             e -> patientPresenter.createOrUpdateObjectives(
                     objective == null ? null : objective.getId(), titleField.getValue(), contentField.getValue(),
-                    dateField.getValue(), progressField.getValue(), weightField.getValue(), patient.getId(), doctorId
+                    dateField.getValue(), progressField.getValue(), weightField.getValue(), patient.getId(), cmbBox.getValue().getId(), doctorId
             )
     );
 
@@ -270,8 +299,8 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
       titleField.setValue(objective.getTitle());
       contentField.setValue(objective.getContent());
       dateField.setValue(objective.getDueDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-      progressField.setValue((double) objective.getProgress());
-      weightField.setValue((double) objective.getWeight());
+      progressField.setValue(objective.getProgress());
+      weightField.setValue(objective.getWeight());
     }
 
     // add fields to view
@@ -280,6 +309,7 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     objectives.add(dateField);
     objectives.add(progressField);
     objectives.add(weightField);
+    objectives.add(cmbBox);
     objectives.add(saveButton);
 
     return objectives;

@@ -41,7 +41,8 @@ public class ObjectiveManipulator{
             Date dueDate,
             String title,
             double weight,
-            double progress
+            double progress,
+            ObjectId parent
     ){
         Objective obj = transaction.getObjectiveRepo().get(entity);
         obj.setTitle(title);
@@ -49,6 +50,7 @@ public class ObjectiveManipulator{
         obj.setDueDate(dueDate);
         obj.setWeight(weight);
         obj.setProgress(progress);
+        obj.setParent(parent);
         transaction.getObjectiveRepo().update(obj);
         transaction.commit();
     }
