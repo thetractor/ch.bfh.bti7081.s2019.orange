@@ -1,6 +1,6 @@
-package model.objective;
+package ch.bfh.bti7081.model.objective;
 
-import model.entities.Objective;
+import ch.bfh.bti7081.model.entities.Objective;
 
 import java.util.List;
 
