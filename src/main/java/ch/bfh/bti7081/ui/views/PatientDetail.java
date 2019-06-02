@@ -84,8 +84,6 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     UI.getCurrent().getPage().setTitle(patient.getName() + " " + patient.getSurname());
 
     setViewContent(createContent());
-    // TODO: un-comment and make it work
-    //setViewDetails(createReportDrawer());
   }
 
   @Override

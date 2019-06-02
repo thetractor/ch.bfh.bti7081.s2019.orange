@@ -6,10 +6,12 @@ import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.router.*;
 import ch.bfh.bti7081.model.entities.Objective;
 import ch.bfh.bti7081.presenter.ObjectivePresenter;
 import ch.bfh.bti7081.model.entities.Patient;
+import ch.bfh.bti7081.model.objective.ProgressCalculator;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -34,24 +36,22 @@ public class ObjectiveDetail extends ViewFrame implements RouterLayout, HasUrlPa
     private Grid<Objective> grid;
 
     private Component createContent() {
-
         Grid grid = createGrid();
 
         updateList();
         Div labeldiv = new Div(new Label(objective.getTitle()));
         Div contdiv = new Div(new Text(objective.getContent()));
 
-        Div content = new Div(labeldiv, contdiv,
-                new Text("total progress: "+ calculateTaskProgress().toString()+ "%"),
-                grid);
+        Div text = new Div(new Text("Progress: "));
+
+        ProgressBar progressBar = new ProgressBar();
+        progressBar.setMax(100);
+        progressBar.setMin(0);
+        progressBar.setValue(ProgressCalculator.calculateProgress(children));
+
+        Div content = new Div(labeldiv, contdiv, text, progressBar, grid);
         content.addClassName("grid-view");
         return content;
-    }
-
-    private Double calculateTaskProgress(){
-        double totalWeight = children.stream().mapToDouble(Objective::getWeight).sum();
-        double currentWeightDone = children.parallelStream().mapToDouble(x -> (x.getProgress()/100) * x.getWeight()).sum();
-        return totalWeight * currentWeightDone;
     }
 
     private Grid createGrid() {
