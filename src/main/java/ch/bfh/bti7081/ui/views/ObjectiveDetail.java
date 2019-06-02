@@ -6,6 +6,7 @@ import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.router.*;
 import model.entities.Objective;
 import ch.bfh.bti7081.Presenter.ObjectivePresenter;
@@ -34,16 +35,20 @@ public class ObjectiveDetail extends ViewFrame implements RouterLayout, HasUrlPa
     private Grid<Objective> grid;
 
     private Component createContent() {
-
         Grid grid = createGrid();
 
         updateList();
         Div labeldiv = new Div(new Label(objective.getTitle()));
         Div contdiv = new Div(new Text(objective.getContent()));
 
-        Div content = new Div(labeldiv, contdiv,
-                new Text("total progress: "+ calculateTaskProgress().toString()+ "%"),
-                grid);
+        Div text = new Div(new Text("Progress: "));
+
+        ProgressBar progressBar = new ProgressBar();
+        progressBar.setMax(100);
+        progressBar.setMin(0);
+        progressBar.setValue(calculateTaskProgress());
+
+        Div content = new Div(labeldiv, contdiv, text, progressBar, grid);
         content.addClassName("grid-view");
         return content;
     }
