@@ -2,8 +2,8 @@ package model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import model.entities.Objective;
-import model.objective.ProgressCalculator;
+import ch.bfh.bti7081.model.entities.Objective;
+import ch.bfh.bti7081.model.objective.ProgressCalculator;
 import org.bson.types.ObjectId;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
