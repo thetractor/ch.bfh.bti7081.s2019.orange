@@ -31,6 +31,8 @@ import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.shared.Registration;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import model.entities.Doctor;
 import model.entities.Message;
 import model.entities.Patient;
@@ -185,20 +187,19 @@ public class AppBar extends Composite<FlexLayout> {
     /**
      * Sets the notification icon to visible and adds the message details to the notification list
      * @param message Message the notification is about
-     * @param messageContextMenu Contextmenu wich shows the notification
-     * @param doctorId doctorId of the Doc who recieves the notification on the UI
+     * @param messageContextMenu Contextmenu which shows the notification
+     * @param doctorId doctorId of the Doc who receives the notification on the UI
      * @param ui Ui that has to be updated
      */
     private void addMessageNotification(Message message, ContextMenu messageContextMenu, ObjectId doctorId, UI ui){
-        if (doctorId == message.getFromDoctorId()) {
+        if (doctorId.equals(message.getFromDoctorId())) {
             return;
         }
-
         ui.access(() -> messages.getStyle().set("display", "block"));
 
         Doctor doctor = homePresenter.getDoctor(message.getFromDoctorId());
-        Patient patient = homePresenter.getPatient(message.getReportId());
-        String text = doctor.getFullName() + " betreffend Patient " + patient.getFullName() + ": " + message.getContent();
+        Patient patient = homePresenter.getPatientByReport(message.getReportId());
+        String text = doctor.getFullName() + " wrote regarding patient " + patient.getFullName() + ":\n" + message.getContent();
         messageContextMenu.addItem(text,
                 e -> clickMessageEvent(message));
     }
@@ -209,7 +210,7 @@ public class AppBar extends Composite<FlexLayout> {
      */
     private void clickMessageEvent(Message message){
         Report report = homePresenter.getReport(message.getReportId());
-        Patient patient = homePresenter.getPatient(message.getReportId());
+        Patient patient = homePresenter.getPatientByReport(message.getReportId());
         UI.getCurrent().navigate(PatientDetail.class, patient.getId().toString());
         //ToDo: Open Report directly
     }
