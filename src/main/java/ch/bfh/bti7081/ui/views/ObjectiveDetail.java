@@ -7,9 +7,9 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.router.*;
-import model.entities.Objective;
-import ch.bfh.bti7081.Presenter.ObjectivePresenter;
-import model.entities.Patient;
+import ch.bfh.bti7081.model.entities.Objective;
+import ch.bfh.bti7081.presenter.ObjectivePresenter;
+import ch.bfh.bti7081.model.entities.Patient;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
