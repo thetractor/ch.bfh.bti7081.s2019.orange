@@ -198,20 +198,32 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     List<Objective> objectives = patientPresenter.getObjectives(patient.getId(), null);
     DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
     Text intro = new Text("There are currently " + objectives.size() + " objectives for this patient.");
+
     stats.add(intro);
     stats.addClassName(LumoStyles.Margin.Left.L);
     items.add(stats);
+
     int counter = 0;
     for (Objective objective : objectives) {
       counter++;
+
       Button details = UIUtils.createSmallButton("Show objective");
       details.addClickListener(e -> showObjectives(objective));
+
+      Button subTasks = UIUtils.createSmallButton("Show subtasks");
+      subTasks.addClickListener(e -> showSubtasks(objective));
+
+
+
       ListItem item = new ListItem(
               UIUtils.createTertiaryIcon(VaadinIcon.OPEN_BOOK),
               objective.getTitle() + " (due by: " + dateFormat.format(objective.getDueDate()) + ")",
               objective.getContent(),
               details
+
       );
+        item.add(subTasks);
+
 
       // Dividers for all but the last item
       item.setDividerVisible(counter != objectives.size());
@@ -228,6 +240,11 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
   private void showDetails() {  // todo: Expect report object
     detailsDrawer.setContent(createDetails()); // todo: pass report object
     detailsDrawer.show();
+  }
+
+  private void showSubtasks(Objective objective){
+      String param = objective.getId().toString() + ";" + patient.getId().toString();
+      UI.getCurrent().navigate(ObjectiveDetail.class, param);
   }
 
   private void showObjectives(Objective objective) {
@@ -278,7 +295,7 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     weightField.addClassName(LumoStyles.Margin.Horizontal.L);
 
     ComboBox<Objective> cmbBox = new ComboBox<>("Parent");
-    cmbBox.setItems(new ObjectiveQuerier().getByPatient(patient.getId(), null));
+    cmbBox.setItems(new ObjectiveQuerier().getByPatient(patient.getId()));
     cmbBox.setItemLabelGenerator(Objective::getTitle);
     cmbBox.setWidth("100%");
 

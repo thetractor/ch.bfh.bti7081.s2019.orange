@@ -25,12 +25,24 @@ public class ObjectiveQuerier {
         return transaction.getObjectiveRepo().get(id);
     }
 
-    public List<Objective> getByPatient(ObjectId id, ObjectId parent){
+    public List<Objective> getByPatient(ObjectId id){
         return transaction.getObjectiveRepo()
                 .getAll()
                 .stream()
                 .filter(x -> x.getPatientId().equals(id))
-                .filter(x -> x.getParent() == parent || x.getParent().equals(parent))
+                .filter(x -> x.getParent() == null)
+                .collect(Collectors.toList());
+    }
+
+    public List<Objective> getByPatient(ObjectId id, ObjectId parent){
+        System.out.println(parent);
+        System.out.println(id);
+        return transaction.getObjectiveRepo()
+                .getAll()
+                .stream()
+                .filter(x -> x.getPatientId().equals(id))
+                .filter(x -> x.getParent() != null)
+                .filter(x -> x.getParent().equals(parent))
                 .collect(Collectors.toList());
     }
 }

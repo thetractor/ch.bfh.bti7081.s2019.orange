@@ -51,7 +51,7 @@ public class PatientPresenter {
      * @return   list of all objectives from the given doctor
      */
     public List<Objective> getObjectives(ObjectId id, ObjectId parent) {
-        return objectiveQuerier.getByPatient(id, parent);
+        return objectiveQuerier.getByPatient(id);
     }
 
     /**
