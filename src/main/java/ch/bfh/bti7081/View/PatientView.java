@@ -1,8 +1,10 @@
 package ch.bfh.bti7081.View;
 
 import ch.bfh.bti7081.Presenter.PatientPresenter;
+import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinService;
 import model.entities.Patient;
@@ -59,4 +61,12 @@ public class PatientView extends VerticalLayout {
         }
     }
 
+    @Override
+    protected void onAttach(AttachEvent attachEvent){
+        // Redirects client to homepage if there is no doctorId in the session
+        if(VaadinService.getCurrentRequest().getWrappedSession().getAttribute("doctorId") == null){
+            getUI().ifPresent(ui -> ui.navigate(""));
+            return;
+        }
+    }
 }

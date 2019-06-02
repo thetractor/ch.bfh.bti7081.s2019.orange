@@ -180,7 +180,7 @@ class DataGenerator {
      *     for every one of doctor's patients:
      *         get patient's dossier
      *         for every report in dossier
-     *             add one message for this report, written by a specific docter
+     *             add one message for this report, written by a specific doctor
      */
     private static void generateMessages(){
         List<Message> messages = new ArrayList<>();
@@ -190,7 +190,7 @@ class DataGenerator {
         unitOfWork.getDoctorRepo().getAll().forEach(doctor -> {
             doctor.getPatients().forEach(patientID -> {
                 dossierQuerier.getReports(patientQuerier.getDossier(patientID).getId(), 10).forEach(report -> {
-                    messages.add(new Message("Dummy message", doctor.getId(), report.getId()));
+                    messages.add(new Message("Hi guys", doctor.getId(), report.getId(), new Date()));
                 });
             });
         });

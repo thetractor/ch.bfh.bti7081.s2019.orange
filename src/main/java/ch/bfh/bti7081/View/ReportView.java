@@ -1,6 +1,7 @@
 package ch.bfh.bti7081.View;
 
 import ch.bfh.bti7081.Presenter.ReportPresenter;
+import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -41,13 +42,20 @@ public class ReportView extends VerticalLayout {
      */
     private void showPatientData() {
         HorizontalLayout box = new HorizontalLayout();
+        TextField nameField = new TextField("Vorname");
+        TextField surnameField = new TextField("Nachname");
+
         ObjectId patientId = (ObjectId) VaadinService.getCurrentRequest()
                 .getWrappedSession().getAttribute("patientId");
-        Patient patient = presenter.getPatientById(patientId);
-        TextField nameField = new TextField("Vorname");
-        nameField.setValue(patient.getName());
-        TextField surnameField = new TextField("Nachname");
-        surnameField.setValue(patient.getSurname());
+
+        if (patientId != null){
+            Patient patient = presenter.getPatientById(patientId);
+            nameField.setValue(patient.getName());
+            surnameField.setValue(patient.getSurname());
+        } else {
+            // TODO: Indicate if this happened
+        }
+
         box.add(nameField);
         box.add(surnameField);
         add(box);
@@ -97,6 +105,15 @@ public class ReportView extends VerticalLayout {
                 .getWrappedSession().getAttribute("patientId");
         if (patientId != null) {
             grid.setItems(presenter.getReportsByPatentId(patientId, 10));
+        }
+    }
+
+    @Override
+    protected void onAttach(AttachEvent attachEvent){
+        // Redirects client to homepage if there is no doctorId in the session
+        if(VaadinService.getCurrentRequest().getWrappedSession().getAttribute("doctorId") == null){
+            getUI().ifPresent(ui -> ui.navigate(""));
+            return;
         }
     }
 

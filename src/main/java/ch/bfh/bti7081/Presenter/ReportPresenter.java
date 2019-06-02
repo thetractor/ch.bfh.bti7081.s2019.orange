@@ -1,6 +1,8 @@
 package ch.bfh.bti7081.Presenter;
 
+import model.doctor.DoctorQuerier;
 import model.dossier.DossierQuerier;
+import model.entities.Doctor;
 import model.entities.Patient;
 import model.entities.Report;
 import model.patient.PatientQuerier;
@@ -20,11 +22,13 @@ public class ReportPresenter {
     private ReportQuerier reportQuerier;
     private PatientQuerier patientQuerier;
     private DossierQuerier dossierQuerier;
+    private DoctorQuerier doctorQuerier;
 
     public ReportPresenter(){
         reportQuerier = new ReportQuerier();
         patientQuerier = new PatientQuerier();
         dossierQuerier = new DossierQuerier();
+        doctorQuerier = new DoctorQuerier();
     }
 
     /**
@@ -58,5 +62,18 @@ public class ReportPresenter {
      */
     public Report getReportById(ObjectId id) {
         return reportQuerier.get(id);
+    }
+
+    public String getDoctorName(ObjectId id){
+        return doctorQuerier.get(id).getName();
+    }
+
+    public String getDoctorSurName(ObjectId id){
+        return doctorQuerier.get(id).getSurname();
+    }
+
+    public String getDoctorFullName(ObjectId id){
+        Doctor doctor = doctorQuerier.get(id);
+        return String.format("%s %s", doctor.getName(), doctor.getSurname());
     }
 }
