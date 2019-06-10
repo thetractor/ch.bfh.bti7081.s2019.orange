@@ -13,6 +13,8 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import ch.bfh.bti7081.model.doctor.DoctorQuerier;
 import ch.bfh.bti7081.model.entities.Patient;
 import ch.bfh.bti7081.model.entities.Report;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.function.Function;
 
@@ -25,11 +27,13 @@ import java.util.function.Function;
  */
 public class ReportsWidget extends Div {
 
-    private ReportPresenter reportPresenter = new ReportPresenter();
-    private Patient patient;
-    private List<Report> patientReports;
+
+    private static final long serialVersionUID = 1L;
+    private transient ReportPresenter reportPresenter = new ReportPresenter();
+    private transient Patient patient;
+    private transient List<Report> patientReports;
     private Function<Report, ComponentEventListener<ClickEvent<Button>>> callBackFunction;
-    private DoctorQuerier doctorQuerier;
+    private transient DoctorQuerier doctorQuerier;
 
     public ReportsWidget(Patient patient, Function<Report, ComponentEventListener<ClickEvent<Button>>> callBackFunction) {
         this.patient = patient;
@@ -64,5 +68,10 @@ public class ReportsWidget extends Div {
         }
     }
 
+    private void readObject(java.io.ObjectInputStream in)
+            throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        patientReports = reportPresenter.getReportsByPatentId(patient.getId(), 10);
+    }
 
 }

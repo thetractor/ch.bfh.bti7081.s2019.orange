@@ -18,7 +18,7 @@ import com.vaadin.flow.component.html.Div;
  */
 public class ViewFrame extends Composite<Div> implements HasStyle {
 
-    private final String CLASS_NAME = "view-frame";
+    private static final String CLASS_NAME = "view-frame";
 
     private final Div header = new Div();
     private final Div content = new Div();

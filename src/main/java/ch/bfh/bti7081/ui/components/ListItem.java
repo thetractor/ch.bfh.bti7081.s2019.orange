@@ -13,7 +13,7 @@ import com.vaadin.flow.component.orderedlayout.FlexLayout;
 
 public class ListItem extends FlexLayout implements HasStyle {
 
-    private final String CLASS_NAME = "list-item";
+    private static final String CLASS_NAME = "list-item";
 
     private Div prefix;
     private Div suffix;

@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<BugCollection version='4.0.0-beta2' threshold='medium' effort='default'>
+    <Error></Error>
+    <Project>
+        <SrcDir>/home/adrian/Code/bfh/se/ch.bfh.bti7081.s2019.orange/src/main/java</SrcDir>
+        <SrcDir>/home/adrian/Code/bfh/se/ch.bfh.bti7081.s2019.orange/src/test/java</SrcDir>
+    </Project>
+</BugCollection>

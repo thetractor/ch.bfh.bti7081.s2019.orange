@@ -33,11 +33,12 @@ import ch.bfh.bti7081.model.message.MessageHandler;
 @Route("push")
 public class ChatWidget extends VerticalLayout {
 
-    private MessagePresenter messagePresenter;
+    private static final long serialVersionUID = 1L;
+    private transient MessagePresenter messagePresenter;
     private VerticalLayout messageLayout;
-    private Report report;
-    private DoctorQuerier doctorQuerier;
-    private MessageHandler messageHandler;
+    private transient Report report;
+    private transient DoctorQuerier doctorQuerier;
+    private transient MessageHandler messageHandler;
 
     private Registration messageDispatchRegistration;
 
@@ -76,16 +77,15 @@ public class ChatWidget extends VerticalLayout {
 
     private Html createMessageLabel(Message message){
         // TODO: A frontend dev would be very welcome to implement this properly... ;)
-        Html messageLabel = new Html(String.format(
-                "<div style=\"background-color:lightblue;border-radius:20px;padding:5px;\">\n" +
-                "<p><b>%s</b></p>\n" +
-                "<p>%s</p>\n" +
-                "<p><i>%s</i></p>\n" +
+        return new Html(String.format(
+                "<div style=\"background-color:lightblue;border-radius:20px;padding:5px;\">%n" +
+                "<p><b>%s</b></p>%n" +
+                "<p>%s</p>%n" +
+                "<p><i>%s</i></p>%n" +
                 "</div>",
                 doctorQuerier.get(message.getFromDoctorId()).getFullName(),
                 message.getContent(),
                 message.getSentDate().toString()));
-        return messageLabel;
     }
 
     @Override

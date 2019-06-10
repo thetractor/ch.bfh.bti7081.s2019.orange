@@ -19,7 +19,9 @@ import org.bson.types.ObjectId;
 @PageTitle("Objectives")
 public class Objectives extends ViewFrame implements RouterLayout {
 
-    private PatientPresenter presenter;
+
+    private static final long serialVersionUID = 1L;
+    private transient PatientPresenter presenter;
     private Grid<Objective> grid;
 
     public Objectives() {

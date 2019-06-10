@@ -21,7 +21,7 @@ import com.vaadin.flow.component.html.Div;
  */
 public class SplitViewFrame extends Composite<Div> implements HasStyle {
 
-    private final String CLASS_NAME = "view-frame";
+    private static final String CLASS_NAME = "view-frame";
 
     private final Div header = new Div();
     private final FlexBoxLayout wrapper = new FlexBoxLayout();

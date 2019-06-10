@@ -61,13 +61,14 @@ import static ch.bfh.bti7081.ui.util.UIUtils.IMG_PATH;
 @PageTitle("Patient Details")
 public class PatientDetail extends SplitViewFrame implements HasUrlParameter<String> {
 
+  private static final long serialVersionUID = 1L;
   private DetailsDrawer reportDrawer;
   private DetailsDrawer objectiveDrawer;
-  private Patient patient;
+  private transient Patient patient;
   private ListItem patientName;
   private ListItem patientDisorder;
   private ListItem patientMedication;
-  private PatientPresenter patientPresenter = new PatientPresenter();
+  private transient PatientPresenter patientPresenter = new PatientPresenter();
 
 
   @Override
@@ -250,8 +251,8 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
             "<div>" +
                 "<h3>Report title</h3>" +
                 "<h3>Report content</h3>" +
-                "<div style=\"background-color:lightgray;border-radius:5px;padding:1px;\">\n" +
-                    "<p>%s</p>\n" +
+                "<div style=\"background-color:lightgray;border-radius:5px;padding:1px;\">%n" +
+                    "<p>%s</p>%n" +
                 "</div>" +
                 "<h3>Date</h3>" +
             "</div>",

@@ -20,7 +20,7 @@ import static com.vaadin.flow.component.button.ButtonVariant.LUMO_ICON;
 
 public class Token extends Composite<FlexBoxLayout> implements HasStyle {
 
-    private final String CLASS_NAME = "token";
+    private static final String CLASS_NAME = "token";
 
     public Token(String text) {
         addClassName(CLASS_NAME);

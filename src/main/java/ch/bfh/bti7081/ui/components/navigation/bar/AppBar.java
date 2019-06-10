@@ -43,8 +43,6 @@ import static ch.bfh.bti7081.ui.util.UIUtils.IMG_PATH;
 
 public class AppBar extends Composite<FlexLayout> {
 
-    private HomePresenter homePresenter;
-
     private String CLASS_NAME = "app-bar";
 
     private FlexBoxLayout container;
@@ -73,7 +71,6 @@ public class AppBar extends Composite<FlexLayout> {
     public AppBar(String title, NaviTab... tabs) {
         getContent().setClassName(CLASS_NAME);
         getElement().setAttribute(LumoStyles.THEME, LumoStyles.DARK);
-        homePresenter = new HomePresenter();
 
         initMenuIcon();
         initContextIcon();
@@ -127,6 +124,7 @@ public class AppBar extends Composite<FlexLayout> {
     }
 
     private void initAvatar() {
+        HomePresenter homePresenter = new HomePresenter();
         avatar = new Image();
         avatar.setClassName(CLASS_NAME + "__avatar");
         avatar.setSrc(IMG_PATH + "avatar.png");
@@ -191,6 +189,7 @@ public class AppBar extends Composite<FlexLayout> {
      * @param ui Ui that has to be updated
      */
     private void addMessageNotification(Message message, ContextMenu messageContextMenu, ObjectId doctorId, UI ui){
+        HomePresenter homePresenter = new HomePresenter();
         if (doctorId.equals(message.getFromDoctorId())) {
             return;
         }
@@ -208,7 +207,7 @@ public class AppBar extends Composite<FlexLayout> {
      * @param message
      */
     private void clickMessageEvent(Message message){
-        Report report = homePresenter.getReport(message.getReportId());
+        HomePresenter homePresenter = new HomePresenter();
         Patient patient = homePresenter.getPatientByReport(message.getReportId());
         UI.getCurrent().navigate(PatientDetail.class, patient.getId().toString());
         //ToDo: Open Report directly
