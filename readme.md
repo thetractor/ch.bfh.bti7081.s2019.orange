@@ -64,3 +64,37 @@ use <db name>
 show collections
 db.<collectionName>.find().pretty()
 ```
+
+PMS Orange Application Setup
+----------------------------
+
+This chapter describes how to setup the PMS Orange application. 
+
+First you have to checkout the source code from the repository:
+```
+git clone https://github.com/thetractor/ch.bfh.bti7081.s2019.orange.git
+```
+
+Start the mongoDB service (be sure mongoDB is installed as described above)
+```
+mongod
+```
+
+Generate dummy data by executing the following file:
+```
+DataGenerator.java
+```
+
+
+Create a new "Run/Debug Configuration" using Maven and define the "Parameters" tab as followed:
+```
+Working directory:    /path to/ch.bfh.bti7081.s2019.orange
+Command line:         jetty:run
+```
+
+Then run the project and you'll be good to go!
+
+You'll be able to visit the web-app by accessing your localhost on port 8080 using a browser of your choice. 
+```
+http://127.0.0.1:8080
+```
