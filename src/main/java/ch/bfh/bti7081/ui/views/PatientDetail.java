@@ -8,6 +8,8 @@ import ch.bfh.bti7081.ui.layout.size.Top;
 import ch.bfh.bti7081.ui.util.LumoStyles;
 import ch.bfh.bti7081.ui.util.UIUtils;
 import ch.bfh.bti7081.ui.util.css.BorderRadius;
+import ch.bfh.bti7081.ui.widgets.ChatWidget;
+import ch.bfh.bti7081.ui.widgets.SubtaskWidget;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -196,13 +198,8 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     for (Objective objective : objectives) {
       counter++;
 
-      Button details = UIUtils.createSmallButton("Show objective");
+      Button details = UIUtils.createSmallButton("Details", VaadinIcon.SEARCH);
       details.addClickListener(e -> showObjectives(objective));
-
-      Button subTasks = UIUtils.createSmallButton("Show subtasks");
-      subTasks.addClickListener(e -> showSubtasks(objective));
-
-
 
       ListItem item = new ListItem(
               UIUtils.createTertiaryIcon(VaadinIcon.OPEN_BOOK),
@@ -211,8 +208,6 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
               details
 
       );
-        item.add(subTasks);
-
 
       // Dividers for all but the last item
       item.setDividerVisible(counter != objectives.size());
@@ -230,11 +225,6 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     setViewDetails(createReportDrawer(report));
     reportDrawer.setContent(createReportDetails(report));
     reportDrawer.show();
-  }
-
-  private void showSubtasks(Objective objective){
-      String param = objective.getId().toString() + ";" + patient.getId().toString();
-      UI.getCurrent().navigate(ObjectiveDetail.class, param);
   }
 
   private void showObjectives(Objective objective) {
@@ -264,8 +254,7 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
   }
 
   private Component createMessageView(Report report) {
-    ChatWidget messageView = new ChatWidget(report);
-    return messageView;
+    return new ChatWidget(report);
   }
 
   private Component createObjective(Objective objective) {
@@ -330,6 +319,10 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     return objectives;
   }
 
+  private Component createSubtaskView(Objective objective) {
+    return new SubtaskWidget(objective, patient);
+  }
+
   private DetailsDrawer createReportDrawer(Report report) {
     reportDrawer = new DetailsDrawer(DetailsDrawer.Position.RIGHT);
 
@@ -360,10 +353,21 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     objectiveDrawer = new DetailsDrawer(DetailsDrawer.Position.RIGHT);
 
     // header
-    Tab objectiveDetailTab = new Tab("Objective details");
+    Tab objectiveDetailTab = new Tab("Details");
+    Tab objectiveSubtaskTab = new Tab("Subtask");
 
-    Tabs tabs = new Tabs(objectiveDetailTab);
+    Tabs tabs = new Tabs(objectiveDetailTab, objectiveSubtaskTab);
     tabs.addThemeVariants(TabsVariant.LUMO_EQUAL_WIDTH_TABS);
+
+    tabs.addSelectedChangeListener(
+        e -> {
+          Tab selectedTab = tabs.getSelectedTab();
+          if (selectedTab.equals(objectiveDetailTab)) {
+            objectiveDrawer.setContent(createObjective(objective));
+          } else if (selectedTab.equals(objectiveSubtaskTab)) {
+            objectiveDrawer.setContent(createSubtaskView(objective));
+          }
+        });
 
     DetailsDrawerHeader objectiveDrawerHeader = new DetailsDrawerHeader("Objective", tabs);
     objectiveDrawerHeader.addCloseListener(buttonClickEvent -> objectiveDrawer.hide());

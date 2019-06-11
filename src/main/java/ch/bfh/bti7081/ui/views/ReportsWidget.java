@@ -53,7 +53,7 @@ public class ReportsWidget extends Div {
         for (Integer i = 0; i < patientReports.size(); i++) {
             Report report = patientReports.get(i);
 
-            Button details = UIUtils.createSmallButton("Details");
+            Button details = UIUtils.createSmallButton("Details", VaadinIcon.SEARCH);
             details.addClickListener(callBackFunction.apply(report));
             ListItem item = new ListItem(UIUtils.createTertiaryIcon(VaadinIcon.EDIT),
                     report.getContent(),
