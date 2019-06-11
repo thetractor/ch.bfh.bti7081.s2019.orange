@@ -7,16 +7,15 @@ import ch.bfh.bti7081.ui.components.detailsdrawer.DetailsDrawerHeader;
 import ch.bfh.bti7081.ui.layout.size.Top;
 import ch.bfh.bti7081.ui.util.LumoStyles;
 import ch.bfh.bti7081.ui.util.UIUtils;
-import ch.bfh.bti7081.ui.util.css.BorderRadius;
 import ch.bfh.bti7081.ui.util.css.WhiteSpace;
 import ch.bfh.bti7081.ui.widgets.ChatWidget;
+import ch.bfh.bti7081.ui.widgets.PatientImageWidget;
 import ch.bfh.bti7081.ui.widgets.ReportsWidget;
 import ch.bfh.bti7081.ui.widgets.SubtaskWidget;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -39,7 +38,6 @@ import ch.bfh.bti7081.ui.layout.size.Horizontal;
 import ch.bfh.bti7081.ui.layout.size.Vertical;
 import ch.bfh.bti7081.ui.util.BoxShadowBorders;
 import ch.bfh.bti7081.ui.util.css.FlexDirection;
-import ch.bfh.bti7081.ui.util.css.FlexWrap;
 import com.vaadin.flow.server.VaadinSession;
 import ch.bfh.bti7081.model.entities.Objective;
 import ch.bfh.bti7081.model.entities.Patient;
@@ -53,7 +51,6 @@ import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.List;
 
-import static ch.bfh.bti7081.ui.util.UIUtils.IMG_PATH;
 
 /**
  * Class still needs a lot of refactoring, therefore the class description will be added
@@ -69,9 +66,6 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
   private DetailsDrawer reportDrawer;
   private DetailsDrawer objectiveDrawer;
   private transient Patient patient;
-  private ListItem patientName;
-  private ListItem patientDisorder;
-  private ListItem patientMedication;
   private transient PatientPresenter patientPresenter = new PatientPresenter();
 
 
@@ -107,7 +101,7 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
 
   private Component createContent() {
     FlexBoxLayout content = new FlexBoxLayout(
-            createLogoSection(),
+            new PatientImageWidget(patient),
             createSubHeader("Recent Reports"),
             createRecentReportsList(),
             createSubHeader("Objectives"),
@@ -117,49 +111,6 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     content.setMargin(Horizontal.AUTO, Vertical.RESPONSIVE_L);
     content.setMaxWidth("840px");
     return content;
-  }
-
-  private FlexBoxLayout createLogoSection() {
-    Image image = new Image();
-    image.setSrc(IMG_PATH + "patient.png");
-    image.setAlt("Patient image");
-    image.setHeight("250px");
-    image.setWidth("250px");
-    image.addClassName(LumoStyles.Margin.Horizontal.L);
-    UIUtils.setBorderRadius(BorderRadius._50, image);
-
-
-    patientName = new ListItem(
-        UIUtils.createTertiaryIcon(VaadinIcon.USER_CARD), patient.getFullName(),
-        "Patient");
-    patientName.getPrimary().addClassName(LumoStyles.Heading.H2);
-    patientName.setDividerVisible(true);
-    patientName.setReverse(true);
-
-    patientDisorder = new ListItem(
-        UIUtils.createTertiaryIcon(VaadinIcon.SPARK_LINE), "Anxiety disorders",
-        "Disorder");
-    patientDisorder.getPrimary().addClassName(LumoStyles.Heading.H2);
-    patientDisorder.setDividerVisible(true);
-    patientDisorder.setReverse(true);
-
-    patientMedication = new ListItem(
-        UIUtils.createTertiaryIcon(VaadinIcon.PILLS), "Panic Disorder Booster 400mg",
-        "Medication");
-    patientMedication.getPrimary().addClassName(LumoStyles.Heading.H2);
-    patientMedication.setReverse(true);
-
-    FlexBoxLayout listItems = new FlexBoxLayout(patientName, patientDisorder, patientMedication);
-    listItems.setFlexDirection(FlexDirection.COLUMN);
-
-    FlexBoxLayout section = new FlexBoxLayout(image, listItems);
-    section.addClassName(BoxShadowBorders.BOTTOM);
-    section.setAlignItems(FlexComponent.Alignment.CENTER);
-    section.setFlex("1", listItems);
-    section.setFlexWrap(FlexWrap.WRAP);
-    section.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
-    section.setPadding(Bottom.L);
-    return section;
   }
 
   private Component createSubHeader(String titleText) {
