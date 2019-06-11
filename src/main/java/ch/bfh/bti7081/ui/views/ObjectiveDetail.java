@@ -14,6 +14,7 @@ import ch.bfh.bti7081.model.entities.Patient;
 import ch.bfh.bti7081.model.objective.ProgressCalculator;
 import org.bson.types.ObjectId;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,12 +23,13 @@ import java.util.List;
 @PageTitle("Objective")
 public class ObjectiveDetail extends ViewFrame implements RouterLayout, HasUrlParameter<String> {
 
-    private Objective objective;
-    private List<Objective> children = new ArrayList<>();
+    private static final long serialVersionUID = 1L;
+    private transient Objective objective;
+    private transient List<Objective> children = new ArrayList<>();
 
-    private Patient patient;
+    private transient Patient patient;
 
-    private ObjectivePresenter presenter = new ObjectivePresenter();
+    private transient ObjectivePresenter presenter = new ObjectivePresenter();
 
 
     public ObjectiveDetail() {
@@ -91,5 +93,11 @@ public class ObjectiveDetail extends ViewFrame implements RouterLayout, HasUrlPa
         if(params.length > 1)
             patient = presenter.getPatient(new ObjectId(params[1]));
         setViewContent(createContent());
+    }
+
+    private void readObject(java.io.ObjectInputStream in)
+            throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        children = presenter.getObjectives(patient.getId(), objective.getId());
     }
 }

@@ -26,7 +26,7 @@ import java.util.List;
 
 public class NaviItem extends Div {
 
-    protected final String CLASS_NAME = "navi-item";
+    protected static final String CLASS_NAME = "navi-item";
 
     private String text;
     private Class<? extends Component> navigationTarget;

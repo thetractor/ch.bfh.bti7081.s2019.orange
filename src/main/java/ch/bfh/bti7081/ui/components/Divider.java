@@ -9,7 +9,7 @@ import com.vaadin.flow.component.orderedlayout.FlexLayout;
 
 public class Divider extends Composite<FlexLayout> {
 
-    private final String CLASS_NAME = "divider";
+    private static final String CLASS_NAME = "divider";
 
     private final Div divider;
 

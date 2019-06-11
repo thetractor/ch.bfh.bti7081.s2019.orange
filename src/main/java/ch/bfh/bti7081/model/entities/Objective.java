@@ -31,7 +31,7 @@ public class Objective implements IEntity {
             double progress,
             ObjectId parent
     ) {
-        this.dueDate = dueDate;
+        this.dueDate = new Date(dueDate.getTime());
         this.creatorId = creatorId;
         this.patientId = patientId;
         this.content = content;
@@ -54,11 +54,11 @@ public class Objective implements IEntity {
     }
 
     public Date getDueDate() {
-        return dueDate;
+        return new Date(dueDate.getTime());
     }
 
     public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
+        this.dueDate = new Date(dueDate.getTime());
     }
 
     public ObjectId getCreatorId() {

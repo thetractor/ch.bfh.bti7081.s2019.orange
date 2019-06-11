@@ -1,0 +1,221 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<BugCollection version='4.0.0-beta2' threshold='medium' effort='default'>
+    <file classname='ch.bfh.bti7081.model.entities.Message'>
+        <BugInstance type='EI_EXPOSE_REP' priority='Normal' category='MALICIOUS_CODE'
+                     message='ch.bfh.bti7081.model.entities.Message.getSentDate() may expose internal representation by returning Message.sentDate'
+                     lineNumber='64'/>
+        <BugInstance type='EI_EXPOSE_REP2' priority='Normal' category='MALICIOUS_CODE'
+                     message='new ch.bfh.bti7081.model.entities.Message(String, ObjectId, ObjectId, Date) may expose internal representation by storing an externally mutable object into Message.sentDate'
+                     lineNumber='24'/>
+        <BugInstance type='EI_EXPOSE_REP2' priority='Normal' category='MALICIOUS_CODE'
+                     message='ch.bfh.bti7081.model.entities.Message.setSentDate(Date) may expose internal representation by storing an externally mutable object into Message.sentDate'
+                     lineNumber='68'/>
+    </file>
+    <file classname='ch.bfh.bti7081.model.entities.Objective'>
+        <BugInstance type='EI_EXPOSE_REP' priority='Normal' category='MALICIOUS_CODE'
+                     message='ch.bfh.bti7081.model.entities.Objective.getDueDate() may expose internal representation by returning Objective.dueDate'
+                     lineNumber='57'/>
+        <BugInstance type='EI_EXPOSE_REP2' priority='Normal' category='MALICIOUS_CODE'
+                     message='new ch.bfh.bti7081.model.entities.Objective(Date, ObjectId, ObjectId, String, String, double, double, ObjectId) may expose internal representation by storing an externally mutable object into Objective.dueDate'
+                     lineNumber='34'/>
+        <BugInstance type='EI_EXPOSE_REP2' priority='Normal' category='MALICIOUS_CODE'
+                     message='ch.bfh.bti7081.model.entities.Objective.setDueDate(Date) may expose internal representation by storing an externally mutable object into Objective.dueDate'
+                     lineNumber='61'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.components.Divider'>
+        <BugInstance type='SS_SHOULD_BE_STATIC' priority='Normal' category='PERFORMANCE'
+                     message='Unread field: ch.bfh.bti7081.ui.components.Divider.CLASS_NAME; should this field be static?'
+                     lineNumber='12'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.components.ListItem'>
+        <BugInstance type='SS_SHOULD_BE_STATIC' priority='Normal' category='PERFORMANCE'
+                     message='Unread field: ch.bfh.bti7081.ui.components.ListItem.CLASS_NAME; should this field be static?'
+                     lineNumber='16'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.components.Token'>
+        <BugInstance type='SS_SHOULD_BE_STATIC' priority='Normal' category='PERFORMANCE'
+                     message='Unread field: ch.bfh.bti7081.ui.components.Token.CLASS_NAME; should this field be static?'
+                     lineNumber='23'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.components.navigation.bar.AppBar'>
+        <BugInstance type='DLS_DEAD_LOCAL_STORE' priority='Normal' category='STYLE'
+                     message='Dead store to report in ch.bfh.bti7081.ui.components.navigation.bar.AppBar.clickMessageEvent(Message)'
+                     lineNumber='211'/>
+        <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
+                     message='Class ch.bfh.bti7081.ui.components.navigation.bar.AppBar defines non-transient non-serializable instance field homePresenter'
+                     lineNumber='-1'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.components.navigation.bar.TabBar'>
+        <BugInstance type='NP_UNWRITTEN_FIELD' priority='Normal' category='CORRECTNESS'
+                     message='Read of unwritten field actionItems in ch.bfh.bti7081.ui.components.navigation.bar.TabBar.addActionItem(Component)'
+                     lineNumber='138'/>
+        <BugInstance type='NP_UNWRITTEN_FIELD' priority='Normal' category='CORRECTNESS'
+                     message='Read of unwritten field actionItems in ch.bfh.bti7081.ui.components.navigation.bar.TabBar.removeAllActionItems()'
+                     lineNumber='151'/>
+        <BugInstance type='NP_UNWRITTEN_FIELD' priority='Normal' category='CORRECTNESS'
+                     message='Read of unwritten field actionItems in ch.bfh.bti7081.ui.components.navigation.bar.TabBar.updateActionItemsVisibility()'
+                     lineNumber='158'/>
+        <BugInstance type='SS_SHOULD_BE_STATIC' priority='Normal' category='PERFORMANCE'
+                     message='Unread field: ch.bfh.bti7081.ui.components.navigation.bar.TabBar.CLASS_NAME; should this field be static?'
+                     lineNumber='24'/>
+        <BugInstance type='UWF_UNWRITTEN_FIELD' priority='Normal' category='CORRECTNESS'
+                     message='Unwritten field: ch.bfh.bti7081.ui.components.navigation.bar.TabBar.actionItems'
+                     lineNumber='138'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.components.navigation.drawer.NaviItem'>
+        <BugInstance type='SS_SHOULD_BE_STATIC' priority='Normal' category='PERFORMANCE'
+                     message='Unread field: ch.bfh.bti7081.ui.components.navigation.drawer.NaviItem.CLASS_NAME; should this field be static?'
+                     lineNumber='29'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.util.LumoStyles$BorderRadius'>
+        <BugInstance type='SIC_INNER_SHOULD_BE_STATIC' priority='Normal' category='PERFORMANCE'
+                     message='Should ch.bfh.bti7081.ui.util.LumoStyles$BorderRadius be a _static_ inner class?'
+                     lineNumber='8'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.util.LumoStyles$Color'>
+        <BugInstance type='SIC_INNER_SHOULD_BE_STATIC' priority='Normal' category='PERFORMANCE'
+                     message='Should ch.bfh.bti7081.ui.util.LumoStyles$Color be a _static_ inner class?'
+                     lineNumber='15'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.util.LumoStyles$FontFamily'>
+        <BugInstance type='SIC_INNER_SHOULD_BE_STATIC' priority='Normal' category='PERFORMANCE'
+                     message='Should ch.bfh.bti7081.ui.util.LumoStyles$FontFamily be a _static_ inner class?'
+                     lineNumber='79'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.util.LumoStyles$Heading'>
+        <BugInstance type='SIC_INNER_SHOULD_BE_STATIC' priority='Normal' category='PERFORMANCE'
+                     message='Should ch.bfh.bti7081.ui.util.LumoStyles$Heading be a _static_ inner class?'
+                     lineNumber='83'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.util.LumoStyles$Margin'>
+        <BugInstance type='SIC_INNER_SHOULD_BE_STATIC' priority='Normal' category='PERFORMANCE'
+                     message='Should ch.bfh.bti7081.ui.util.LumoStyles$Margin be a _static_ inner class?'
+                     lineNumber='92'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.util.LumoStyles$Margin$Responsive$Horizontal'>
+        <BugInstance type='SIC_INNER_SHOULD_BE_STATIC' priority='Normal' category='PERFORMANCE'
+                     message='Should ch.bfh.bti7081.ui.util.LumoStyles$Margin$Responsive$Horizontal be a _static_ inner class?'
+                     lineNumber='121'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.util.LumoStyles$Margin$Responsive$Vertical'>
+        <BugInstance type='SIC_INNER_SHOULD_BE_STATIC' priority='Normal' category='PERFORMANCE'
+                     message='Should ch.bfh.bti7081.ui.util.LumoStyles$Margin$Responsive$Vertical be a _static_ inner class?'
+                     lineNumber='126'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.util.LumoStyles$Padding'>
+        <BugInstance type='SIC_INNER_SHOULD_BE_STATIC' priority='Normal' category='PERFORMANCE'
+                     message='Should ch.bfh.bti7081.ui.util.LumoStyles$Padding be a _static_ inner class?'
+                     lineNumber='185'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.util.LumoStyles$Padding$Responsive$Horizontal'>
+        <BugInstance type='SIC_INNER_SHOULD_BE_STATIC' priority='Normal' category='PERFORMANCE'
+                     message='Should ch.bfh.bti7081.ui.util.LumoStyles$Padding$Responsive$Horizontal be a _static_ inner class?'
+                     lineNumber='211'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.util.LumoStyles$Padding$Responsive$Vertical'>
+        <BugInstance type='SIC_INNER_SHOULD_BE_STATIC' priority='Normal' category='PERFORMANCE'
+                     message='Should ch.bfh.bti7081.ui.util.LumoStyles$Padding$Responsive$Vertical be a _static_ inner class?'
+                     lineNumber='216'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.util.LumoStyles$Shadow'>
+        <BugInstance type='SIC_INNER_SHOULD_BE_STATIC' priority='Normal' category='PERFORMANCE'
+                     message='Should ch.bfh.bti7081.ui.util.LumoStyles$Shadow be a _static_ inner class?'
+                     lineNumber='271'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.util.LumoStyles$Size'>
+        <BugInstance type='SIC_INNER_SHOULD_BE_STATIC' priority='Normal' category='PERFORMANCE'
+                     message='Should ch.bfh.bti7081.ui.util.LumoStyles$Size be a _static_ inner class?'
+                     lineNumber='279'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.util.LumoStyles$Space'>
+        <BugInstance type='SIC_INNER_SHOULD_BE_STATIC' priority='Normal' category='PERFORMANCE'
+                     message='Should ch.bfh.bti7081.ui.util.LumoStyles$Space be a _static_ inner class?'
+                     lineNumber='287'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.util.LumoStyles$Spacing'>
+        <BugInstance type='SIC_INNER_SHOULD_BE_STATIC' priority='Normal' category='PERFORMANCE'
+                     message='Should ch.bfh.bti7081.ui.util.LumoStyles$Spacing be a _static_ inner class?'
+                     lineNumber='295'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.views.ChatWidget'>
+        <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
+                     message='Class ch.bfh.bti7081.ui.views.ChatWidget defines non-transient non-serializable instance field doctorQuerier'
+                     lineNumber='-1'/>
+        <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
+                     message='Class ch.bfh.bti7081.ui.views.ChatWidget defines non-transient non-serializable instance field messageHandler'
+                     lineNumber='-1'/>
+        <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
+                     message='Class ch.bfh.bti7081.ui.views.ChatWidget defines non-transient non-serializable instance field messagePresenter'
+                     lineNumber='-1'/>
+        <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
+                     message='Class ch.bfh.bti7081.ui.views.ChatWidget defines non-transient non-serializable instance field report'
+                     lineNumber='-1'/>
+        <BugInstance type='VA_FORMAT_STRING_USES_NEWLINE' priority='Normal' category='BAD_PRACTICE'
+                     message='Format string should use %n rather than \n in ch.bfh.bti7081.ui.views.ChatWidget.createMessageLabel(Message)'
+                     lineNumber='79'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.views.ObjectiveDetail'>
+        <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
+                     message='Class ch.bfh.bti7081.ui.views.ObjectiveDetail defines non-transient non-serializable instance field children'
+                     lineNumber='-1'/>
+        <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
+                     message='Class ch.bfh.bti7081.ui.views.ObjectiveDetail defines non-transient non-serializable instance field objective'
+                     lineNumber='-1'/>
+        <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
+                     message='Class ch.bfh.bti7081.ui.views.ObjectiveDetail defines non-transient non-serializable instance field patient'
+                     lineNumber='-1'/>
+        <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
+                     message='Class ch.bfh.bti7081.ui.views.ObjectiveDetail defines non-transient non-serializable instance field presenter'
+                     lineNumber='-1'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.views.Objectives'>
+        <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
+                     message='Class ch.bfh.bti7081.ui.views.Objectives defines non-transient non-serializable instance field presenter'
+                     lineNumber='-1'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.views.PatientDetail'>
+        <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
+                     message='Class ch.bfh.bti7081.ui.views.PatientDetail defines non-transient non-serializable instance field patient'
+                     lineNumber='-1'/>
+        <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
+                     message='Class ch.bfh.bti7081.ui.views.PatientDetail defines non-transient non-serializable instance field patientPresenter'
+                     lineNumber='-1'/>
+        <BugInstance type='VA_FORMAT_STRING_USES_NEWLINE' priority='Normal' category='BAD_PRACTICE'
+                     message='Format string should use %n rather than \n in ch.bfh.bti7081.ui.views.PatientDetail.createReportDetails(Report)'
+                     lineNumber='249'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.views.Patients'>
+        <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
+                     message='Class ch.bfh.bti7081.ui.views.Patients defines non-transient non-serializable instance field presenter'
+                     lineNumber='-1'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.views.ReportsWidget'>
+        <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
+                     message='Class ch.bfh.bti7081.ui.views.ReportsWidget defines non-transient non-serializable instance field doctorQuerier'
+                     lineNumber='-1'/>
+        <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
+                     message='Class ch.bfh.bti7081.ui.views.ReportsWidget defines non-transient non-serializable instance field patient'
+                     lineNumber='-1'/>
+        <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
+                     message='Class ch.bfh.bti7081.ui.views.ReportsWidget defines non-transient non-serializable instance field patientReports'
+                     lineNumber='-1'/>
+        <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
+                     message='Class ch.bfh.bti7081.ui.views.ReportsWidget defines non-transient non-serializable instance field reportPresenter'
+                     lineNumber='-1'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.views.SplitViewFrame'>
+        <BugInstance type='SS_SHOULD_BE_STATIC' priority='Normal' category='PERFORMANCE'
+                     message='Unread field: ch.bfh.bti7081.ui.views.SplitViewFrame.CLASS_NAME; should this field be static?'
+                     lineNumber='24'/>
+    </file>
+    <file classname='ch.bfh.bti7081.ui.views.ViewFrame'>
+        <BugInstance type='SS_SHOULD_BE_STATIC' priority='Normal' category='PERFORMANCE'
+                     message='Unread field: ch.bfh.bti7081.ui.views.ViewFrame.CLASS_NAME; should this field be static?'
+                     lineNumber='21'/>
+    </file>
+    <Error></Error>
+    <Project>
+        <SrcDir>/home/adrian/Code/bfh/se/ch.bfh.bti7081.s2019.orange/src/main/java</SrcDir>
+        <SrcDir>/home/adrian/Code/bfh/se/ch.bfh.bti7081.s2019.orange/src/test/java</SrcDir>
+    </Project>
+</BugCollection>

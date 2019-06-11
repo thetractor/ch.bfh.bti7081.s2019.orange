@@ -6,7 +6,6 @@ import ch.bfh.bti7081.ui.util.LumoStyles;
 import ch.bfh.bti7081.ui.util.UIUtils;
 import ch.bfh.bti7081.ui.views.Home;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -15,17 +14,15 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.tabs.Tab;
-import com.vaadin.flow.component.tabs.Tabs;
 
 import static ch.bfh.bti7081.ui.util.UIUtils.IMG_PATH;
 
 public class TabBar extends Composite<FlexLayout> {
 
-    private final String CLASS_NAME = "tab-bar";
+    private static final String CLASS_NAME = "tab-bar";
 
     private Button menuIcon;
 
-    private FlexLayout actionItems;
     private Image avatar;
 
     private Button addTab;
@@ -64,34 +61,12 @@ public class TabBar extends Composite<FlexLayout> {
         getContent().add(menuIcon, tabs, addTab, avatar);
     }
 
-    /* === MENU ICON === */
-
-    public Button getMenuIcon() {
-        return menuIcon;
-    }
-
     /* === TABS === */
-
-    public void centerTabs() {
-        tabs.addClassName(LumoStyles.Margin.Horizontal.AUTO);
-    }
 
     private void configureTab(Tab tab) {
         tab.addClassName(CLASS_NAME + "__tab");
     }
 
-    public Tab addTab(String text) {
-        Tab tab = tabs.addTab(text);
-        configureTab(tab);
-        return tab;
-    }
-
-    public Tab addTab(String text,
-            Class<? extends Component> navigationTarget) {
-        Tab tab = tabs.addTab(text, navigationTarget);
-        configureTab(tab);
-        return tab;
-    }
 
     public Tab addClosableTab(String text,
             Class<? extends Component> navigationTarget) {
@@ -100,9 +75,6 @@ public class TabBar extends Composite<FlexLayout> {
         return tab;
     }
 
-    public Tab getSelectedTab() {
-        return tabs.getSelectedTab();
-    }
 
     public void setSelectedTab(Tab selectedTab) {
         tabs.setSelectedTab(selectedTab);
@@ -113,48 +85,8 @@ public class TabBar extends Composite<FlexLayout> {
         tabs.updateSelectedTab(text, navigationTarget);
     }
 
-    public void addTabSelectionListener(
-            ComponentEventListener<Tabs.SelectedChangeEvent> listener) {
-        tabs.addSelectedChangeListener(listener);
-    }
 
     public int getTabCount() {
         return tabs.getTabCount();
-    }
-
-    public void removeAllTabs() {
-        tabs.removeAll();
-    }
-
-    /* === ADD TAB BUTTON === */
-
-    public void setAddTabVisible(boolean visible) {
-        addTab.setVisible(visible);
-    }
-
-    /* === ACTION ITEMS === */
-
-    public Component addActionItem(Component component) {
-        actionItems.add(component);
-        updateActionItemsVisibility();
-        return component;
-    }
-
-    public Button addActionItem(VaadinIcon icon) {
-        Button button = UIUtils.createButton(icon, ButtonVariant.LUMO_SMALL,
-                ButtonVariant.LUMO_TERTIARY);
-        addActionItem(button);
-        return button;
-    }
-
-    public void removeAllActionItems() {
-        actionItems.removeAll();
-        updateActionItemsVisibility();
-    }
-
-    /* === UPDATE VISIBILITY === */
-
-    private void updateActionItemsVisibility() {
-        actionItems.setVisible(actionItems.getComponentCount() > 0);
     }
 }

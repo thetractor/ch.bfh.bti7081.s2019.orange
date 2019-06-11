@@ -21,7 +21,7 @@ public class Message implements IEntity {
         this.content = content;
         this.fromDoctorId = fromDoctorId;
         this.reportId = reportId;
-        this.sentDate = sentDate;
+        this.sentDate = new Date(sentDate.getTime());
     }
 
     public Message(){
@@ -61,11 +61,11 @@ public class Message implements IEntity {
     }
 
     public Date getSentDate(){
-        return sentDate;
+        return new Date(sentDate.getTime());
     }
 
     public void setSentDate(Date sentDate){
-        this.sentDate = sentDate;
+        this.sentDate = new Date(sentDate.getTime());
     }
 
     @Override
