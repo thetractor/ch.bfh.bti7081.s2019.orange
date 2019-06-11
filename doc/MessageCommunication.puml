@@ -6,7 +6,7 @@ participant MessageQuerier
 participant MessageHandler
 participant MessageManipulator
 participant MessageDispatcher
-participant MessageNotifier
+'participant NotificationDispatcher
 actor DoctorN
 
 'asynchron: a ->> b
@@ -40,13 +40,13 @@ deactivate Presenter
 ReportView --> Doctor1: display content
 deactivate ReportView
 
-== ==
+== Message dispatching ==
 ...
 
 ==  ==
 Doctor1 -> ReportView: Types in message and submits
 activate ReportView
-ReportView -> MessageHandler: Pass message
+ReportView -> MessageHandler: handleSentMessage(message)
 activate MessageHandler
 MessageHandler -> MessageManipulator: save message
 activate MessageManipulator
@@ -57,15 +57,19 @@ deactivate MessageManipulator
 MessageHandler -> MessageDispatcher: dispatch
 activate MessageDispatcher
 ' TODO
-MessageDispatcher ->> DoctorN: display
+loop for every registered\nlistener
+    MessageDispatcher ->> DoctorN: display message
+end
 MessageDispatcher --> MessageHandler
 deactivate MessageDispatcher
 
-MessageHandler -> MessageNotifier: dispatch
-activate MessageNotifier
-MessageNotifier ->> DoctorN: display
-MessageNotifier --> MessageHandler
-deactivate MessageNotifier
+/'
+MessageHandler -> NotificationDispatcher: dispatch
+activate NotificationDispatcher
+NotificationDispatcher ->> DoctorN: display
+NotificationDispatcher --> MessageHandler
+deactivate NotificationDispatcher
+'/
 
 MessageHandler --> ReportView
 deactivate MessageHandler

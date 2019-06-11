@@ -1,7 +1,7 @@
 package ch.bfh.bti7081.model.message;
 
 import com.vaadin.flow.shared.Registration;
-import javafx.util.Pair;
+import ch.bfh.bti7081.model.util.Pair;
 import ch.bfh.bti7081.model.doctor.DoctorQuerier;
 import ch.bfh.bti7081.model.dossier.DossierQuerier;
 import ch.bfh.bti7081.model.entities.Message;
@@ -44,13 +44,13 @@ public class MessageNotificationDispatcher {
 
         for (Pair<ObjectId, Consumer<Message>> listenerPair : listeners) {
 
-            if (doctorQuerier.getPatients(listenerPair.getKey())
+            if (doctorQuerier.getPatients(listenerPair.getFirst())
                     .stream()
                     .map(x -> patientQuerier.getDossier(x.getId()))
                     .filter(x -> x != null)
                     .flatMap(x -> dossierQuerier.getReports(x.getId(), 10).stream())
                     .anyMatch(x -> x != null && x.getId().equals(message.getReportId()))){
-                listenerPair.getValue().accept(message);
+                listenerPair.getSecond().accept(message);
             }
         }
     }
