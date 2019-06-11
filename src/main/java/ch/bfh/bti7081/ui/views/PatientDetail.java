@@ -328,7 +328,7 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
     reportDrawer = new DetailsDrawer(DetailsDrawer.Position.RIGHT);
 
     // Header
-    Tab reportDetailTab = new Tab("Report details");
+    Tab reportDetailTab = new Tab("Details");
     Tab messageTab = new Tab("Messages");
 
     Tabs tabs = new Tabs(reportDetailTab, messageTab);
