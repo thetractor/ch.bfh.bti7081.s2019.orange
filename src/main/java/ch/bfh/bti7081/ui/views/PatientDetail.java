@@ -8,6 +8,7 @@ import ch.bfh.bti7081.ui.layout.size.Top;
 import ch.bfh.bti7081.ui.util.LumoStyles;
 import ch.bfh.bti7081.ui.util.UIUtils;
 import ch.bfh.bti7081.ui.util.css.BorderRadius;
+import ch.bfh.bti7081.ui.util.css.WhiteSpace;
 import ch.bfh.bti7081.ui.widgets.ChatWidget;
 import ch.bfh.bti7081.ui.widgets.ReportsWidget;
 import ch.bfh.bti7081.ui.widgets.SubtaskWidget;
@@ -235,22 +236,26 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
   }
 
   private Component createReportDetails(Report report) {
-    // TODO: Implement details view further
-    // TODO: A frontend dev would be very welcome to design this properly... ;)
-    Div details = new Div();
-    Html detailsLabel = new Html(String.format(
-            "<div>" +
-                "<h3>Report title</h3>" +
-                "<h3>Report content</h3>" +
-                "<div style=\"background-color:lightgray;border-radius:5px;padding:1px;\">%n" +
-                    "<p>%s</p>%n" +
-                "</div>" +
-                "<h3>Date</h3>" +
-            "</div>",
-            report.getContent()));
+    ListItem content = new ListItem(
+        UIUtils.createTertiaryIcon(VaadinIcon.FILE_TEXT_O),
+        report.getContent(), "Content");
 
-    details.add(detailsLabel);
-    details.addClassNames(LumoStyles.Padding.Responsive.Horizontal.L, LumoStyles.Padding.Vertical.L);
+    ListItem docter = new ListItem(
+        UIUtils.createTertiaryIcon(VaadinIcon.DOCTOR),
+        "Peter Petersen", "Docter");
+
+    ListItem date = new ListItem(
+        UIUtils.createTertiaryIcon(VaadinIcon.CALENDAR_O),
+        "21.05.2019", "Date");
+
+
+    for (ListItem item : new ListItem[] {content, docter, date}) {
+      item.setReverse(true);
+      item.setWhiteSpace(WhiteSpace.PRE_LINE);
+    }
+
+    Div details = new Div(content, docter, date);
+    details.addClassName(LumoStyles.Padding.Vertical.S);
     return details;
   }
 
