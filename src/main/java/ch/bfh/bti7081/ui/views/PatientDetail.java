@@ -9,6 +9,7 @@ import ch.bfh.bti7081.ui.util.LumoStyles;
 import ch.bfh.bti7081.ui.util.UIUtils;
 import ch.bfh.bti7081.ui.util.css.BorderRadius;
 import ch.bfh.bti7081.ui.widgets.ChatWidget;
+import ch.bfh.bti7081.ui.widgets.ReportsWidget;
 import ch.bfh.bti7081.ui.widgets.SubtaskWidget;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;

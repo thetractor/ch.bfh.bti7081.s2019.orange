@@ -189,18 +189,18 @@
                      message='Class ch.bfh.bti7081.ui.views.Patients defines non-transient non-serializable instance field presenter'
                      lineNumber='-1'/>
     </file>
-    <file classname='ch.bfh.bti7081.ui.views.ReportsWidget'>
+    <file classname='ch.bfh.bti7081.ui.widgets.ReportsWidget'>
         <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
-                     message='Class ch.bfh.bti7081.ui.views.ReportsWidget defines non-transient non-serializable instance field doctorQuerier'
+                     message='Class ch.bfh.bti7081.ui.widgets.ReportsWidget defines non-transient non-serializable instance field doctorQuerier'
                      lineNumber='-1'/>
         <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
-                     message='Class ch.bfh.bti7081.ui.views.ReportsWidget defines non-transient non-serializable instance field patient'
+                     message='Class ch.bfh.bti7081.ui.widgets.ReportsWidget defines non-transient non-serializable instance field patient'
                      lineNumber='-1'/>
         <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
-                     message='Class ch.bfh.bti7081.ui.views.ReportsWidget defines non-transient non-serializable instance field patientReports'
+                     message='Class ch.bfh.bti7081.ui.widgets.ReportsWidget defines non-transient non-serializable instance field patientReports'
                      lineNumber='-1'/>
         <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
-                     message='Class ch.bfh.bti7081.ui.views.ReportsWidget defines non-transient non-serializable instance field reportPresenter'
+                     message='Class ch.bfh.bti7081.ui.widgets.ReportsWidget defines non-transient non-serializable instance field reportPresenter'
                      lineNumber='-1'/>
     </file>
     <file classname='ch.bfh.bti7081.ui.views.SplitViewFrame'>

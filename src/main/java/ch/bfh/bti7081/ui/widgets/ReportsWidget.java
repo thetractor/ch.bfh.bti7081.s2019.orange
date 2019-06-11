@@ -1,4 +1,4 @@
-package ch.bfh.bti7081.ui.views;
+package ch.bfh.bti7081.ui.widgets;
 
 import ch.bfh.bti7081.presenter.ReportPresenter;
 import ch.bfh.bti7081.ui.components.ListItem;
