@@ -5,6 +5,7 @@ import org.bson.types.ObjectId;
 import java.util.Objects;
 
 /**
+ * Implementation of the Patient entity
  * @author gian.demarmels@students.bf.ch
  * @author yannis.schmutz@students.bf.ch
  */
@@ -20,42 +21,85 @@ public class Patient implements IEntity {
         this.surname = surname;
     }
 
+    /**
+     * Empty constructor is needed in order to create an object out of the database
+     */
     public Patient(){
 
     }
 
+    /**
+     * Returns the entities Id
+     * @return ObjectId
+     */
     public ObjectId getId() {
         return id;
     }
 
+    /**
+     * Sets the entities ID
+     * This method is needed in order to create an object out of the database, it has to be public to do that.
+     *
+     * TODO: Encapsulate this so the method is not publicly accessible
+     *
+     * @param id ObjectId
+     */
     public void setId(ObjectId id) {
         this.id = id;
     }
 
+    /**
+     * gets the patients name
+     * @return String
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * sets the patients name
+     * @param name String
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * gets the patients surname
+     * @return String
+     */
     public String getSurname() {
         return surname;
     }
 
+    /**
+     * sets the patients surname
+     * @param surname String
+     */
     public void setSurname(String surname) {
         this.surname = surname;
     }
 
+    /**
+     * get the dossier id, which is assigned to the patient
+     * @return ObjectId
+     */
     public ObjectId getDossierId() {
         return dossierId;
     }
 
+    /**
+     * set patients dossier
+     * @param dossierId ObjectId
+     */
     public void setDossierId(ObjectId dossierId) {
         this.dossierId = dossierId;
     }
-    
+
+    /**
+     * returns the patients full name
+     * @return
+     */
     public String getFullName(){
         return getName() + " " + getSurname();
     }

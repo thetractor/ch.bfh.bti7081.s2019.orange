@@ -16,10 +16,23 @@ import java.util.List;
 public class PatientQuerier {
     //ToDo dependency injection for UnitOfWork
     private UnitOfWork transaction = new UnitOfWork(DbConnector.getDatabase());
+
+    /**
+     * Returns all patients
+     *
+     * TODO: Getting all data in memory might be dangerous!
+     *
+     * @return List of Patients
+     */
     public List<Patient> getAll() {
         return transaction.getPatientRepo().getAll();
     }
 
+    /**
+     * Get a specific patient by its ID
+     * @param id ObjectId
+     * @return Patient
+     */
     public Patient get(ObjectId id) {
         return transaction.getPatientRepo().get(id);
     }

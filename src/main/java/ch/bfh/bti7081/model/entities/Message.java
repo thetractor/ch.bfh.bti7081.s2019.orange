@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
+ * Implementation of the Message entity
  * @author gian.demarmels@students.bf.ch
  * @author yannis.schmutz@students.bf.ch
  */
@@ -24,10 +25,17 @@ public class Message implements IEntity {
         this.sentDate = new Date(sentDate.getTime());
     }
 
+    /**
+     * Empty constructor is needed in order to create an object out of the database
+     */
     public Message(){
 
     }
 
+    /**
+     * Returns the ID of the report the message was written on
+     * @return ObjectId
+     */
     public ObjectId getReportId() {
         return reportId;
     }
@@ -36,34 +44,70 @@ public class Message implements IEntity {
         this.reportId = reportId;
     }
 
+    /**
+     * Sets the entities ID
+     * This method is needed in order to create an object out of the database, it has to be public to do that.
+     *
+     * TODO: Encapsulate this so the method is not publicly accessible
+     *
+     * @param id ObjectId
+     */
     public void setId(ObjectId id) {
         this.id = id;
     }
 
+    /**
+     * Returns the entities Id
+     * @return ObjectId
+     */
     public ObjectId getId() {
         return id;
     }
 
+    /**
+     * Gets the content of the message
+     * @return String
+     */
     public String getContent() {
         return content;
     }
 
+    /**
+     * Sets the content of the message
+     * @param content String
+     */
     public void setContent(String content) {
         this.content = content;
     }
 
+    /**
+     * Returns the doctorId of the author of the message
+     * @return ObjectId
+     */
     public ObjectId getFromDoctorId() {
         return fromDoctorId;
     }
 
+    /**
+     * Sets the author of the message
+     * @param fromDoctorId ObjectId
+     */
     public void setFromDoctorId(ObjectId fromDoctorId) {
         this.fromDoctorId = fromDoctorId;
     }
 
+    /**
+     * Get the date the message was sent
+     * @return Date
+     */
     public Date getSentDate(){
         return new Date(sentDate.getTime());
     }
 
+    /**
+     * Sets the date the message was sent
+     * @param sentDate Date
+     */
     public void setSentDate(Date sentDate){
         this.sentDate = new Date(sentDate.getTime());
     }
