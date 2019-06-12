@@ -53,7 +53,9 @@ public class NaviDrawer extends Composite<Div>
         initMainContent();
 
         initHeader();
-        initSearch();
+
+        /* Remove search field as we will not use this */
+        // initSearch();
 
         initScrollableArea();
         initMenu();

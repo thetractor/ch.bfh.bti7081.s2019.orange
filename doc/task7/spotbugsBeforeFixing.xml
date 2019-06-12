@@ -137,35 +137,35 @@
                      message='Should ch.bfh.bti7081.ui.util.LumoStyles$Spacing be a _static_ inner class?'
                      lineNumber='295'/>
     </file>
-    <file classname='ch.bfh.bti7081.ui.views.ChatWidget'>
+    <file classname='ch.bfh.bti7081.ui.widgets.ChatWidget'>
         <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
-                     message='Class ch.bfh.bti7081.ui.views.ChatWidget defines non-transient non-serializable instance field doctorQuerier'
+                     message='Class ch.bfh.bti7081.ui.widgets.ChatWidget defines non-transient non-serializable instance field doctorQuerier'
                      lineNumber='-1'/>
         <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
-                     message='Class ch.bfh.bti7081.ui.views.ChatWidget defines non-transient non-serializable instance field messageHandler'
+                     message='Class ch.bfh.bti7081.ui.widgets.ChatWidget defines non-transient non-serializable instance field messageHandler'
                      lineNumber='-1'/>
         <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
-                     message='Class ch.bfh.bti7081.ui.views.ChatWidget defines non-transient non-serializable instance field messagePresenter'
+                     message='Class ch.bfh.bti7081.ui.widgets.ChatWidget defines non-transient non-serializable instance field messagePresenter'
                      lineNumber='-1'/>
         <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
-                     message='Class ch.bfh.bti7081.ui.views.ChatWidget defines non-transient non-serializable instance field report'
+                     message='Class ch.bfh.bti7081.ui.widgets.ChatWidget defines non-transient non-serializable instance field report'
                      lineNumber='-1'/>
         <BugInstance type='VA_FORMAT_STRING_USES_NEWLINE' priority='Normal' category='BAD_PRACTICE'
-                     message='Format string should use %n rather than \n in ch.bfh.bti7081.ui.views.ChatWidget.createMessageLabel(Message)'
+                     message='Format string should use %n rather than \n in ch.bfh.bti7081.ui.widgets.ChatWidget.createMessageLabel(Message)'
                      lineNumber='79'/>
     </file>
-    <file classname='ch.bfh.bti7081.ui.views.ObjectiveDetail'>
+    <file classname='ch.bfh.bti7081.ui.widgets.SubtaskWidget'>
         <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
-                     message='Class ch.bfh.bti7081.ui.views.ObjectiveDetail defines non-transient non-serializable instance field children'
+                     message='Class ch.bfh.bti7081.ui.widgets.SubtaskWidget defines non-transient non-serializable instance field children'
                      lineNumber='-1'/>
         <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
-                     message='Class ch.bfh.bti7081.ui.views.ObjectiveDetail defines non-transient non-serializable instance field objective'
+                     message='Class ch.bfh.bti7081.ui.widgets.SubtaskWidget defines non-transient non-serializable instance field objective'
                      lineNumber='-1'/>
         <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
-                     message='Class ch.bfh.bti7081.ui.views.ObjectiveDetail defines non-transient non-serializable instance field patient'
+                     message='Class ch.bfh.bti7081.ui.widgets.SubtaskWidget defines non-transient non-serializable instance field patient'
                      lineNumber='-1'/>
         <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
-                     message='Class ch.bfh.bti7081.ui.views.ObjectiveDetail defines non-transient non-serializable instance field presenter'
+                     message='Class ch.bfh.bti7081.ui.widgets.SubtaskWidget defines non-transient non-serializable instance field presenter'
                      lineNumber='-1'/>
     </file>
     <file classname='ch.bfh.bti7081.ui.views.Objectives'>
@@ -189,18 +189,18 @@
                      message='Class ch.bfh.bti7081.ui.views.Patients defines non-transient non-serializable instance field presenter'
                      lineNumber='-1'/>
     </file>
-    <file classname='ch.bfh.bti7081.ui.views.ReportsWidget'>
+    <file classname='ch.bfh.bti7081.ui.widgets.ReportsWidget'>
         <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
-                     message='Class ch.bfh.bti7081.ui.views.ReportsWidget defines non-transient non-serializable instance field doctorQuerier'
+                     message='Class ch.bfh.bti7081.ui.widgets.ReportsWidget defines non-transient non-serializable instance field doctorQuerier'
                      lineNumber='-1'/>
         <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
-                     message='Class ch.bfh.bti7081.ui.views.ReportsWidget defines non-transient non-serializable instance field patient'
+                     message='Class ch.bfh.bti7081.ui.widgets.ReportsWidget defines non-transient non-serializable instance field patient'
                      lineNumber='-1'/>
         <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
-                     message='Class ch.bfh.bti7081.ui.views.ReportsWidget defines non-transient non-serializable instance field patientReports'
+                     message='Class ch.bfh.bti7081.ui.widgets.ReportsWidget defines non-transient non-serializable instance field patientReports'
                      lineNumber='-1'/>
         <BugInstance type='SE_BAD_FIELD' priority='Normal' category='BAD_PRACTICE'
-                     message='Class ch.bfh.bti7081.ui.views.ReportsWidget defines non-transient non-serializable instance field reportPresenter'
+                     message='Class ch.bfh.bti7081.ui.widgets.ReportsWidget defines non-transient non-serializable instance field reportPresenter'
                      lineNumber='-1'/>
     </file>
     <file classname='ch.bfh.bti7081.ui.views.SplitViewFrame'>
