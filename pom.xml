@@ -3,7 +3,7 @@
     <groupId>ch.bfh.bti7081.s2019.orange</groupId>
     <artifactId>PMS-Orange</artifactId>
     <name>PMS-Orange</name>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>war</packaging>
 
     <properties>
