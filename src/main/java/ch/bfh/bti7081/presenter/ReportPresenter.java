@@ -64,16 +64,31 @@ public class ReportPresenter {
         return reportQuerier.get(id);
     }
 
-    public String getDoctorName(ObjectId id){
-        return doctorQuerier.get(id).getName();
+    /**
+     * Returns the name of a given Doctor
+     * @param doctorId ObjectId
+     * @return
+     */
+    public String getDoctorName(ObjectId doctorId){
+        return doctorQuerier.get(doctorId).getName();
     }
 
-    public String getDoctorSurName(ObjectId id){
-        return doctorQuerier.get(id).getSurname();
+    /**
+     * Returns the surname of a given Doctor
+     * @param doctorId ObjectId
+     * @return
+     */
+    public String getDoctorSurName(ObjectId doctorId){
+        return doctorQuerier.get(doctorId).getSurname();
     }
 
-    public String getDoctorFullName(ObjectId id){
-        Doctor doctor = doctorQuerier.get(id);
+    /**
+     * Returns the full name of a given Doctor
+     * @param doctorId ObjectId
+     * @return
+     */
+    public String getDoctorFullName(ObjectId doctorId){
+        Doctor doctor = doctorQuerier.get(doctorId);
         return String.format("%s %s", doctor.getName(), doctor.getSurname());
     }
 }
