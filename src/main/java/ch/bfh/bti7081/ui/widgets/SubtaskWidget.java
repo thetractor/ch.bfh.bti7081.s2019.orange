@@ -53,7 +53,7 @@ public class SubtaskWidget extends VerticalLayout {
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         ListItem taskInfo = new ListItem(
             UIUtils.createTertiaryIcon(VaadinIcon.INFO_CIRCLE_O),
-            dateFormat.format(obj.getDueDate()) + " / " + obj.getProgress() + "% / " + obj.getWeight() + "Kg",
+            dateFormat.format(obj.getDueDate()) + " / " + obj.getProgress() + "% / " + obj.getWeight(),
             "Due date / Progress / Weight"
         );
         ListItem task = new ListItem(obj.getTitle(), obj.getContent());
