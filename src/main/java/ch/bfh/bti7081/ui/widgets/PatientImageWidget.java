@@ -19,6 +19,7 @@ import static ch.bfh.bti7081.ui.util.UIUtils.IMG_PATH;
 /**
  * Class for creating patient image and details for
  * patient detail view.
+ *
  * @author lars.peyer@students.bfh.ch
  */
 

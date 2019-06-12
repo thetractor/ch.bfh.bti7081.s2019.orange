@@ -19,6 +19,7 @@ import java.util.List;
 /**
  * Class for creating sub tasks to include in
  * side drawer of patient objective detail view.
+ *
  * @author lars.peyer@students.bfh.ch
  */
 
