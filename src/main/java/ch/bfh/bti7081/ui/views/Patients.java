@@ -14,6 +14,13 @@ import com.vaadin.flow.server.VaadinSession;
 import ch.bfh.bti7081.model.entities.Patient;
 import org.bson.types.ObjectId;
 
+/**
+ * Class to render a list with all patients of a
+ * logged in doctor.
+ *
+ * @author lars.peyer@students.bfh.ch
+ */
+
 @Route(value = "patients", layout = MainLayout.class)
 @ParentLayout(MainLayout.class)
 @PageTitle("Patients")

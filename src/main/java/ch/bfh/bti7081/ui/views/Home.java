@@ -13,6 +13,14 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+/**
+ * Home view with some instructions how to
+ * login as a doctor and with link to the source
+ * code of this project
+ *
+ * @author lars.peyer@students.bfh.ch
+ */
+
 @Route(value = "", layout = MainLayout.class)
 @PageTitle("PMS-Orange :: Home")
 public class Home extends ViewFrame {

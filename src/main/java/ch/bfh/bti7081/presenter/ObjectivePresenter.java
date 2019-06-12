@@ -8,22 +8,48 @@ import org.bson.types.ObjectId;
 
 import java.util.List;
 
+/**
+ * Implementation of the ObjectivePresenter
+ * @author gian.demarmelsz@students.bfh.ch
+ */
 public class ObjectivePresenter {
     private ObjectiveQuerier querier = new ObjectiveQuerier();
     private PatientQuerier patientQuerier = new PatientQuerier();
 
-    public List<Objective> getObjectives(ObjectId id) {
-        return  querier.getByPatient(id);
+    /**
+     * Get objectives corresponding to a patient
+     * @param patientId ObjectId
+     * @return List of objective objects
+     */
+    public List<Objective> getObjectives(ObjectId patientId) {
+        return  querier.getByPatient(patientId);
     }
 
-    public List<Objective> getObjectives(ObjectId id, ObjectId parent) {
-        return  querier.getByPatient(id,parent);
+    /**
+     * Overloaded method.
+     * Get sub-objectives by parent corresponding to a patient
+     * @param patientId ObjectId
+     * @param parent ObjectId
+     * @return List of objective objects
+     */
+    public List<Objective> getObjectives(ObjectId patientId, ObjectId parent) {
+        return  querier.getByPatient(patientId,parent);
     }
 
+    /**
+     * Get objective by its id
+     * @param objectId ObjectId
+     * @return Objective object
+     */
     public Objective getObjective(ObjectId objectId) {
         return querier.get(objectId);
     }
 
+    /**
+     * Get the patient the objective is assigned to.
+     * @param objectId ObjectId
+     * @return Patient
+     */
     public Patient getPatient(ObjectId objectId) {
         return patientQuerier.get(objectId);
     }

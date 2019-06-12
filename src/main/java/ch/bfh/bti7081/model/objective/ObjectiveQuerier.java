@@ -16,10 +16,22 @@ public class ObjectiveQuerier {
     //ToDo dependency injection for UnitOfWork
     private UnitOfWork transaction = new UnitOfWork(DbConnector.getDatabase());
 
+    /**
+     * Returns all objectives
+     *
+     * TODO: Getting all data in memory might be dangerous!
+     *
+     * @return List of Objectives
+     */
     public List<Objective> getAll() {
         return transaction.getObjectiveRepo().getAll();
     }
 
+    /**
+     * Get a specific objective by its ID
+     * @param id ObjectId
+     * @return Objective
+     */
     public Objective get(ObjectId id) {
         return transaction.getObjectiveRepo().get(id);
     }

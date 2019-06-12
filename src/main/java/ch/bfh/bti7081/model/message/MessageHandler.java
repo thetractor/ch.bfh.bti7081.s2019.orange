@@ -21,12 +21,27 @@ public class MessageHandler {
         messageManipulator = new MessageManipulator();
     }
 
+    /**
+     * Implements the business logic which defines what to do if a new message gets submitted.
+     *
+     * Creates a new Message object
+     * Dispatches the message
+     * Dispatches a notification for the message
+     * @param messageContent String
+     * @param affectedReport Report object
+     */
     public void handleSentMessage(String messageContent, Report affectedReport){
         Message message = saveMessage(messageContent, affectedReport);
         MessageDispatcher.dispatch(message);
         MessageNotificationDispatcher.dispatch(message);
     }
 
+    /**
+     * Saves a new message persistently and returns the message Object
+     * @param messageText String
+     * @param affectedReport ObjectId
+     * @return Message
+     */
     private Message saveMessage(String messageText, Report affectedReport){
         ObjectId doctorId = (ObjectId) VaadinSession.getCurrent().getAttribute("doctorId");
         return messageManipulator.build(messageText, doctorId, affectedReport.getId(), new Date());
