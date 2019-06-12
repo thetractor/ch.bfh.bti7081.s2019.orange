@@ -16,6 +16,7 @@ import java.util.function.Consumer;
  * @author yannisvalentin.schmutz@students.bfh.ch
  */
 public class MessageDispatcher {
+    // The usage of the executor ensures the prevention of race conditions
     static Executor executor = Executors.newSingleThreadExecutor();
 
     static LinkedList<Pair<ObjectId, Consumer<Message>>> listeners = new LinkedList<>();
@@ -30,7 +31,7 @@ public class MessageDispatcher {
         Pair<ObjectId, Consumer<Message>> listenerPair = new Pair<>(reportId, listener);
         listeners.add(listenerPair);
 
-        // Used to remove the listener when leaving the
+        // Used to remove the listener when leaving the view
         return () -> {
             synchronized (MessageDispatcher.class) {
                 listeners.remove(listenerPair);

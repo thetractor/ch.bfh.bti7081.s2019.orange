@@ -18,6 +18,12 @@ public class PatientManipulator {
     //ToDo dependency injection for UnitOfWork
     private UnitOfWork transaction = new UnitOfWork(DbConnector.getDatabase());
 
+    /**
+     * Creates a patient object, saves it to the DB and returns the object.
+     * @param name String
+     * @param surname String
+     * @return Patient object
+     */
     public Patient build(String name, String surname){
         Patient obj = new Patient(name, surname);
         transaction.getPatientRepo().set(obj);
@@ -25,12 +31,20 @@ public class PatientManipulator {
         return obj;
     }
 
+    /**
+     * Deletes a patient by a given ID
+     * @param entity ObjectId
+     */
     public void delete(ObjectId entity) {
         Patient obj = transaction.getPatientRepo().get(entity);
         transaction.getPatientRepo().delete(obj);
         transaction.commit();
     }
 
+    /**
+     * Deletes multiple patients
+     * @param entities List of patient-IDs
+     */
     public void deleteMany(List<ObjectId> entities) {
         List<Patient> lst = entities.stream().map(x -> transaction.getPatientRepo().get(x)).collect(Collectors.toList());
         transaction.getPatientRepo().deleteMany(lst);
