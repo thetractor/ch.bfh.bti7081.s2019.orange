@@ -306,7 +306,6 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
             e -> {
               patientPresenter.createOrUpdateObjectives(
                     objective == null ? null : objective.getId(), titleField.getValue(), contentField.getValue(),
-                    // TODO: Null pointer exception if no value selected for cmbBox!
                     dateField.getValue(), progressField.getValue(), weightField.getValue(), patient.getId(), cmbBox.getValue() == null ? null : cmbBox.getValue().getId(), doctorId
               );
               Notification.show("Objective has been saved");
