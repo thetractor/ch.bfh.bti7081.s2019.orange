@@ -156,7 +156,7 @@ public class AppBar extends Composite<FlexLayout> {
     private void initNotifications() {
         messages = new Image();
         messages.setClassName(CLASS_NAME + "__notification");
-        messages.setSrc(IMG_PATH + "logo-17.png");
+        messages.setSrc(IMG_PATH + "notifications.png");
         messages.setWidth("20px");
         messages.setHeight("20px");
         messages.setAlt("Notifications");
