@@ -18,6 +18,7 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
@@ -249,11 +250,14 @@ public class PatientDetail extends SplitViewFrame implements HasUrlParameter<Str
 
     ObjectId doctorId = (ObjectId) VaadinSession.getCurrent().getAttribute("doctorId");
     saveButton.addClickListener(
-            e -> patientPresenter.createOrUpdateObjectives(
+            e -> {
+              patientPresenter.createOrUpdateObjectives(
                     objective == null ? null : objective.getId(), titleField.getValue(), contentField.getValue(),
-                    // TODO: Null pointer exception if no value selected for cmbBox!
-                    dateField.getValue(), progressField.getValue(), weightField.getValue(), patient.getId(), cmbBox.getValue().getId(), doctorId
-            )
+                    dateField.getValue(), progressField.getValue(), weightField.getValue(), patient.getId(), cmbBox.getValue() == null ? null : cmbBox.getValue().getId(), doctorId
+              );
+              Notification.show("Objective has been saved");
+              UI.getCurrent().getPage().reload();
+            }
     );
 
     if (objective != null) {
